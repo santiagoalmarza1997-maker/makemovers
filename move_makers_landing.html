@@ -496,7 +496,7 @@
         </div>
 
         <!-- EMBEDDED HERO LEAD FORM (MULTI-STEP SAFE SHIP PATTERN) -->
-        <div class="hero-form-card">
+        <div class="hero-form-card" id="heroLeadForm">
           <div style="text-align:center;">
             <h3>Get Instant Quote</h3>
             <p class="sub">Receive your free moving estimate</p>
@@ -1003,6 +1003,18 @@
     function handleFinalSubmit() {
       alert('Thank you! Your quote request has been received. A Move Makers relocation coordinator will contact you in under 5 minutes.');
     }
+
+    // Auto-scroll to hero form only on mobile phone load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          const heroForm = document.getElementById('heroLeadForm');
+          if (heroForm) {
+            heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 250);
+      }
+    });
   </script>
 </body>
 </html>
