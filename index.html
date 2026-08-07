@@ -126,10 +126,26 @@
     .stat-item h3 { color: var(--orange); font-size: 2.3rem; font-weight: 900; }
     .stat-item p { font-size: .82rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .5px; }
 
+    /* Hero Multi-Step Progress Bar (Safe Ship Pattern) */
+    .hero-form-steps { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; position: relative; padding: 0 10px; }
+    .form-step-item { display: flex; flex-direction: column; align-items: center; gap: 4px; z-index: 2; cursor: pointer; }
+    .form-step-item .step-circle { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-200); color: var(--gray-600); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 800; font-size: .9rem; transition: all .3s var(--ease); }
+    .form-step-item span { font-family: var(--font-heading); font-weight: 700; font-size: .74rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: .5px; transition: color .3s; }
+    .form-step-item.active .step-circle { background: var(--orange); color: var(--white); box-shadow: 0 4px 14px var(--orange-glow); }
+    .form-step-item.active span { color: var(--navy); }
+    .form-step-item.completed .step-circle { background: var(--green); color: var(--white); }
+    .form-step-item.completed span { color: var(--green); }
+    
+    .step-line-bg { position: absolute; top: 17px; left: 40px; right: 40px; height: 3px; background: var(--gray-200); z-index: 1; border-radius: 2px; }
+    .step-line-fill { height: 100%; width: 0%; background: var(--orange); border-radius: 2px; transition: width .35s var(--ease); }
+
+    .form-step-pane { display: none; flex-direction: column; gap: 14px; }
+    .form-step-pane.active { display: flex; }
+
     /* Hero Lead Form Card */
     .hero-form-card { background: var(--white); border-radius: var(--radius-md); padding: 34px; box-shadow: var(--shadow-lg); color: var(--black); }
-    .hero-form-card h3 { font-size: 1.45rem; margin-bottom: 4px; }
-    .hero-form-card .sub { font-size: .88rem; color: var(--gray-600); margin-bottom: 22px; }
+    .hero-form-card h3 { font-size: 1.45rem; margin-bottom: 2px; }
+    .hero-form-card .sub { font-size: .88rem; color: var(--gray-600); margin-bottom: 18px; }
     .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group label { font-family: var(--font-heading); font-weight: 700; font-size: .78rem; text-transform: uppercase; color: var(--navy); letter-spacing: .3px; }
     .form-control { width: 100%; padding: 12px 15px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: .93rem; outline: none; transition: border .2s, box-shadow .2s; }
@@ -479,49 +495,95 @@
           </div>
         </div>
 
-        <!-- EMBEDDED HERO LEAD FORM (WIRKS PATTERN) -->
+        <!-- EMBEDDED HERO LEAD FORM (MULTI-STEP SAFE SHIP PATTERN) -->
         <div class="hero-form-card">
-          <h3>Where Are You Moving?</h3>
-          <p class="sub">Get a guaranteed estimate in under 2 minutes</p>
-          
-          <form style="display:flex;flex-direction:column;gap:14px;" onsubmit="event.preventDefault(); alert('Thank you! A Move Makers relocation coordinator will call you shortly.');">
-            <div class="form-group">
-              <label>Service Type</label>
-              <select class="form-control">
-                <option>Local Residential Moving</option>
-                <option>Long Distance (State-to-State)</option>
-                <option>International Moving</option>
-                <option>Commercial / Office Relocation</option>
-                <option>Auto Transport & Freight</option>
-              </select>
+          <div style="text-align:center;">
+            <h3>Get Instant Quote</h3>
+            <p class="sub">Receive your free moving estimate</p>
+          </div>
+
+          <!-- 3-Step Progress Indicator (Safe Ship Pattern) -->
+          <div class="hero-form-steps">
+            <div class="step-line-bg"><div class="step-line-fill" id="stepLineFill"></div></div>
+            <div class="form-step-item active" id="stepInd1" onclick="goToStep(1)">
+              <div class="step-circle" id="stepCircle1">1</div>
+              <span>Location</span>
             </div>
-            <div class="form-row">
+            <div class="form-step-item" id="stepInd2" onclick="goToStep(2)">
+              <div class="step-circle" id="stepCircle2">2</div>
+              <span>Details</span>
+            </div>
+            <div class="form-step-item" id="stepInd3" onclick="goToStep(3)">
+              <div class="step-circle" id="stepCircle3">3</div>
+              <span>Quote</span>
+            </div>
+          </div>
+
+          <form id="heroMultiStepForm" onsubmit="event.preventDefault(); handleFinalSubmit();">
+            <!-- STEP 1: LOCATION -->
+            <div class="form-step-pane active" id="stepPane1">
               <div class="form-group">
-                <label>Moving From</label>
-                <input type="text" class="form-control" placeholder="ZIP or City, State" required>
+                <label>Pickup Location</label>
+                <input type="text" class="form-control" id="pickupLoc" placeholder="City, State or ZIP Code" required>
               </div>
               <div class="form-group">
-                <label>Moving To</label>
-                <input type="text" class="form-control" placeholder="ZIP or City, State" required>
+                <label>Destination Location</label>
+                <input type="text" class="form-control" id="destLoc" placeholder="City, State or ZIP Code" required>
               </div>
+              <div class="form-group">
+                <label>Service Type</label>
+                <select class="form-control" id="svcType">
+                  <option>Local Residential Moving</option>
+                  <option>Long Distance (State-to-State)</option>
+                  <option>International Relocation</option>
+                  <option>Commercial / Office Move</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-orange" style="width:100%;margin-top:6px;" onclick="goToStep(2)">Next: Move Details →</button>
             </div>
-            <div class="form-row">
+
+            <!-- STEP 2: DETAILS -->
+            <div class="form-step-pane" id="stepPane2">
               <div class="form-group">
                 <label>Move Size</label>
-                <select class="form-control">
-                  <option>1-2 Bedroom Apt</option>
+                <select class="form-control" id="moveSize">
+                  <option>1-2 Bedroom Apartment</option>
                   <option>3-4 Bedroom House</option>
                   <option>5+ Bedroom Executive Home</option>
                   <option>Commercial Office</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Move Date</label>
-                <input type="date" class="form-control" required>
+                <label>Target Move Date</label>
+                <input type="date" class="form-control" id="moveDate" required>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;">
+                <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(1)">← Back</button>
+                <button type="button" class="btn btn-orange" onclick="goToStep(3)">Next: Final Quote →</button>
               </div>
             </div>
-            <button type="submit" class="btn btn-orange" style="width:100%;margin-top:6px;">Get Your Free Estimate</button>
-            <div class="form-urgency">🔒 100% Free · No Obligation · Spam-Free Guarantee</div>
+
+            <!-- STEP 3: QUOTE / CONTACT -->
+            <div class="form-step-pane" id="stepPane3">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" class="form-control" placeholder="(404) 555-0194" required>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" placeholder="john@example.com" required>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:10px;margin-top:6px;">
+                <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(2)">← Back</button>
+                <button type="submit" class="btn btn-orange">Get Free Estimate ⚡</button>
+              </div>
+            </div>
+
+            <div class="form-urgency" style="margin-top:12px;">🔒 100% Free · No Obligation · Instant Response</div>
           </form>
         </div>
       </div>
@@ -899,6 +961,47 @@
       document.querySelector('.mobile-menu-btn')?.classList.toggle('active');
       document.getElementById('mobileDrawer')?.classList.toggle('active');
       document.getElementById('drawerOverlay')?.classList.toggle('active');
+    }
+
+    /* Multi-Step Hero Form Logic */
+    let currentFormStep = 1;
+    function goToStep(step) {
+      if (step > currentFormStep && currentFormStep === 1) {
+        const pickup = document.getElementById('pickupLoc');
+        const dest = document.getElementById('destLoc');
+        if (!pickup.value.trim() || !dest.value.trim()) {
+          pickup.reportValidity();
+          dest.reportValidity();
+          return;
+        }
+      }
+      currentFormStep = step;
+      document.querySelectorAll('.form-step-pane').forEach((p, idx) => {
+        p.classList.toggle('active', idx + 1 === step);
+      });
+      
+      const lineFill = document.getElementById('stepLineFill');
+      if (lineFill) lineFill.style.width = step === 1 ? '0%' : step === 2 ? '50%' : '100%';
+      
+      for (let i = 1; i <= 3; i++) {
+        const ind = document.getElementById('stepInd' + i);
+        const circle = document.getElementById('stepCircle' + i);
+        if (ind && circle) {
+          ind.classList.remove('active', 'completed');
+          if (i < step) {
+            ind.classList.add('completed');
+            circle.innerText = '✓';
+          } else if (i === step) {
+            ind.classList.add('active');
+            circle.innerText = i;
+          } else {
+            circle.innerText = i;
+          }
+        }
+      }
+    }
+    function handleFinalSubmit() {
+      alert('Thank you! Your quote request has been received. A Move Makers relocation coordinator will contact you in under 5 minutes.');
     }
   </script>
 </body>
