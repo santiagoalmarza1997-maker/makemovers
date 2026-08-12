@@ -752,37 +752,65 @@
     </div>
   </section>
 
-  <!-- ═══ INSTANT QUOTES ═══ -->
+  <!-- ═══ INSTANT QUOTES & LIVE CALCULATOR ═══ -->
   <section class="estimator" id="quotes">
     <div class="container">
       <div class="est-wrapper" style="text-align:center;">
         <div style="margin-bottom:24px;">
-          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Instant Quotes & Pricing</div>
-          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Get Your Official Move Quote</h2>
-          <p style="color:var(--gray-400);max-width:640px;margin:10px auto 0;font-size:0.95rem;">Select service types, distance, trucks & special items to lock in your binding quote.</p>
+          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Instant Live Quote Calculator</div>
+          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Calculate Your Move Rate In Real-Time</h2>
+          <p style="color:var(--gray-400);max-width:640px;margin:10px auto 0;font-size:0.95rem;">Select your property size and add-on services below to instantly calculate your binding move price range.</p>
         </div>
 
-        <div class="est-options" id="typeSelector" style="margin-bottom:28px;">
-          <div class="est-opt selected" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <h4>Local Move</h4><p>Hourly Crew Rate</p>
-          </div>
-          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-            <h4>Long Distance</h4><p>Interstate Relocation</p>
-          </div>
-          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            <h4>Commercial Move</h4><p>Office & Business</p>
-          </div>
-          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            <h4>Packing & Loading</h4><p>Full-Service Supplies</p>
-          </div>
-        </div>
+        <div class="quote-calc-box" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius-md);padding:28px 24px;text-align:left;">
+          <div class="quote-calc-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <!-- Left Column: Inputs -->
+            <div>
+              <div class="form-group" style="margin-bottom:18px;">
+                <label style="color:var(--orange);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;">1. Select Property Size</label>
+                <select class="form-control" id="calcHomeSize" onchange="updateCalcQuote()" style="background:#0B2345;color:white;border-color:rgba(255,255,255,0.2);margin-top:6px;">
+                  <option value="350">1 Bedroom Studio / Apt ($350 base)</option>
+                  <option value="650" selected>2-3 Bedroom Family Home ($650 base)</option>
+                  <option value="1100">4+ Bedroom Executive Home ($1,100 base)</option>
+                  <option value="950">Commercial Office / Retail ($950 base)</option>
+                </select>
+              </div>
 
-        <div class="est-summary" style="justify-content:center;gap:20px;flex-wrap:wrap;">
-          <a href="#heroLeadForm" class="btn btn-orange" style="padding:18px 36px;font-size:1.05rem;" onclick="document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">⚡ Lock In Your Guaranteed Quote</a>
+              <label style="color:var(--orange);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:8px;">2. Add-On Services (Optional)</label>
+              
+              <label class="calc-addon" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.08);padding:12px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12);margin-bottom:10px;cursor:pointer;color:white;">
+                <span><input type="checkbox" class="calc-addon-check" value="150" onchange="updateCalcQuote()" style="margin-right:10px;"> Full Packing & Unpacking Service</span>
+                <strong style="color:var(--orange);">+$150</strong>
+              </label>
+
+              <label class="calc-addon" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.08);padding:12px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12);margin-bottom:10px;cursor:pointer;color:white;">
+                <span><input type="checkbox" class="calc-addon-check" value="80" onchange="updateCalcQuote()" style="margin-right:10px;"> TV Mounting & Dismounting</span>
+                <strong style="color:var(--orange);">+$80</strong>
+              </label>
+
+              <label class="calc-addon" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.08);padding:12px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.12);margin-bottom:10px;cursor:pointer;color:white;">
+                <span><input type="checkbox" class="calc-addon-check" value="120" onchange="updateCalcQuote()" style="margin-right:10px;"> Heavy Item (Piano / Safe) Handling</span>
+                <strong style="color:var(--orange);">+$120</strong>
+              </label>
+            </div>
+
+            <!-- Right Column: Live Output & CTA -->
+            <div style="background:rgba(11,35,69,0.7);padding:24px;border-radius:var(--radius-sm);border:1px solid rgba(255,107,0,0.3);display:flex;flex-direction:column;justify-content:space-between;">
+              <div>
+                <div style="font-size:0.85rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Estimated Quote Range:</div>
+                <div id="calcDisplayPrice" style="font-family:var(--font-heading);font-size:2.8rem;font-weight:900;color:var(--orange);margin:8px 0 14px;">$650 - $812</div>
+
+                <ul style="list-style:none;padding:0;margin:0 0 20px;font-size:0.85rem;color:rgba(255,255,255,0.85);display:flex;flex-direction:column;gap:8px;">
+                  <li>✔ Full 2-3 Man Uniformed Pro Movers</li>
+                  <li>✔ Branded Air-Ride Moving Truck included</li>
+                  <li>✔ Furniture Pads, Blankets & Shrink Wrap</li>
+                  <li>✔ Full Valuation Insurance & GPS Tracking</li>
+                </ul>
+              </div>
+
+              <button type="button" class="btn btn-orange" style="width:100%;padding:16px;font-size:1.05rem;" onclick="lockInCalcQuote()">⚡ Lock-In This Quote Rate →</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1033,6 +1061,41 @@
           submitBtn.innerText = 'Get Free Estimate ⚡';
         }
       }
+    }
+
+    /* Interactive Quote Calculator Logic */
+    function updateCalcQuote() {
+      const sizeSelect = document.getElementById('calcHomeSize');
+      const baseVal = parseInt(sizeSelect ? sizeSelect.value : 650, 10);
+      
+      let addons = 0;
+      document.querySelectorAll('.calc-addon-check:checked').forEach(cb => {
+        addons += parseInt(cb.value, 10);
+      });
+
+      const totalMin = baseVal + addons;
+      const totalMax = Math.round(totalMin * 1.25);
+
+      const priceDisplay = document.getElementById('calcDisplayPrice');
+      if (priceDisplay) {
+        priceDisplay.innerText = `$${totalMin} - $${totalMax}`;
+      }
+    }
+
+    function lockInCalcQuote() {
+      const sizeSelect = document.getElementById('calcHomeSize');
+      const selectedText = sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].text : '';
+      
+      const heroMoveSize = document.getElementById('moveSize');
+      if (heroMoveSize && selectedText) {
+        if (selectedText.includes('1 Bedroom')) heroMoveSize.selectedIndex = 0;
+        else if (selectedText.includes('2-3 Bedroom')) heroMoveSize.selectedIndex = 1;
+        else if (selectedText.includes('4+ Bedroom')) heroMoveSize.selectedIndex = 2;
+        else if (selectedText.includes('Commercial')) heroMoveSize.selectedIndex = 3;
+      }
+
+      document.getElementById('heroLeadForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      goToStep(1);
     }
 
     // Auto-scroll to hero stats and form on mobile phone load
