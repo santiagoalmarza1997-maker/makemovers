@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Movers Co. — Interactive Moving Quote & Estimator</title>
+  <meta name="description" content="Calculate your moving quote instantly with Top Movers Co. Select service types, inventory items, distance, and generate PDF quotes or share via WhatsApp.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+  
+  <!-- HTML2PDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #0B2345;
+      --navy-dark: #06152B;
+      --navy-light: #163663;
+      --orange: #FF6B00;
+      --orange-hover: #E05E00;
+      --orange-glow: rgba(255,107,0,0.3);
+      --orange-light: #FFF0E5;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-300: #CBD5E1;
+      --gray-600: #475569;
+      --gray-800: #1E293B;
+      --black: #0F172A;
+      --white: #FFFFFF;
+      --green: #10B981;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 4px 12px rgba(11,35,69,0.06);
+      --shadow-md: 0 10px 25px rgba(11,35,69,0.12);
+      --shadow-lg: 0 20px 40px rgba(11,35,69,0.18);
+      --shadow-orange: 0 8px 25px rgba(255,107,0,0.35);
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: var(--gray-50); color: var(--black); min-height: 100vh; line-height: 1.5; }
+
+    /* SVG Icon Styling */
+    .svg-icon { display: inline-block; vertical-align: middle; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-lg { width: 32px; height: 32px; }
+    .icon-md { width: 22px; height: 22px; }
+    .icon-sm { width: 16px; height: 16px; }
+
+    /* Modal Company Selector */
+    #company-modal {
+      position: fixed; inset: 0; background: rgba(6,21,43,0.92); backdrop-filter: blur(12px);
+      z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-box {
+      background: var(--white); border-radius: var(--radius-lg); padding: 2.5rem 2rem; max-width: 560px; width: 100%;
+      text-align: center; box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200);
+    }
+    .modal-logo-img { height: 75px; width: auto; object-fit: contain; margin: 0 auto 1.25rem; display: block; }
+    .modal-title { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 0.4rem; }
+    .modal-sub { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 2rem; }
+    .company-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; width: 100%; }
+    .company-card {
+      background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: var(--radius-md);
+      padding: 1.5rem 1rem; cursor: pointer; transition: all 0.25s ease; text-align: center;
+    }
+    .company-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .company-card.selected { border-color: var(--navy); background: rgba(11,35,69,0.04); }
+    .cc-badge { background: var(--navy); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 0.75rem; }
+    .cc-name { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 800; color: var(--navy); margin-bottom: 0.2rem; }
+    .cc-city { color: var(--gray-600); font-size: 0.82rem; font-weight: 500; }
+
+    /* Header */
+    header {
+      background: var(--navy-dark); color: var(--white); position: sticky; top: 0; z-index: 1000;
+      border-bottom: 2px solid var(--orange); box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .header-brand { display: flex; align-items: center; gap: 0.85rem; cursor: pointer; }
+    .header-logo-img { height: 48px; width: auto; object-fit: contain; display: block; }
+    .header-title { font-family: var(--font-heading); font-weight: 800; font-size: 1.15rem; color: var(--white); }
+    .header-city { font-size: 0.75rem; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.8px; }
+    .header-right { display: flex; align-items: center; gap: 0.75rem; }
+    .btn-header-call {
+      display: inline-flex; align-items: center; gap: 0.5rem; background: var(--orange); color: var(--white);
+      padding: 0.5rem 1.1rem; border-radius: var(--radius-sm); font-family: var(--font-heading); font-weight: 700;
+      font-size: 0.85rem; text-decoration: none; transition: all 0.2s ease; box-shadow: var(--shadow-orange);
+    }
+    .btn-header-call:hover { background: var(--orange-hover); transform: translateY(-1px); }
+    .btn-switch-company {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+      padding: 0.5rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-switch-company:hover { background: rgba(255,255,255,0.2); }
+    .lang-toggle { display: flex; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
+    .lang-btn { background: none; border: none; color: var(--gray-300); padding: 0.4rem 0.7rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+    .lang-btn.active { background: var(--orange); color: var(--white); }
+
+    /* Layout & Main */
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .page-head { text-align: center; margin-bottom: 2rem; }
+    .page-head h1 { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 900; color: var(--navy); text-transform: uppercase; letter-spacing: -0.5px; }
+    .page-head p { color: var(--gray-600); font-size: 1rem; margin-top: 0.3rem; }
+
+    .calc-container { display: grid; grid-template-columns: 1fr 380px; gap: 1.75rem; }
+    @media (max-width: 992px) { .calc-container { grid-template-columns: 1fr; } }
+
+    /* Steps & Sections */
+    .calc-card {
+      background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--gray-200);
+      padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding-bottom: 0.85rem;
+      border-bottom: 2px solid var(--gray-100);
+    }
+    .step-badge {
+      background: var(--navy); color: var(--white); font-family: var(--font-heading); font-weight: 800;
+      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+    }
+    .step-title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; }
+    .step-sub { font-size: 0.8rem; color: var(--gray-600); margin-left: auto; font-weight: 500; }
+
+    /* Service Types Grid */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
+    .service-card {
+      background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+      padding: 1.1rem 0.6rem; text-align: center; cursor: pointer; transition: all 0.2s ease;
+    }
+    .service-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .service-card.active { border-color: var(--orange); background: var(--orange-light); box-shadow: var(--shadow-sm); }
+    .service-card.active .sc-icon-wrap { background: var(--orange); color: var(--white); }
+    .sc-icon-wrap {
+      width: 44px; height: 44px; border-radius: 10px; background: var(--white); color: var(--navy);
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 0.6rem; border: 1px solid var(--gray-200);
+      transition: all 0.2s ease;
+    }
+    .sc-name { font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+    .sc-rate { font-size: 0.7rem; color: var(--gray-600); font-weight: 600; }
+
+    /* Details Grid */
+    .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 576px) { .details-grid { grid-template-columns: 1fr; } }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group label { font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-control {
+      background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+      padding: 0.65rem 0.9rem; font-size: 0.9rem; font-family: var(--font-body); color: var(--black); transition: all 0.2s ease; width: 100%;
+    }
+    .form-control:focus { outline: none; border-color: var(--orange); background: var(--white); box-shadow: 0 0 0 3px rgba(255,107,0,0.15); }
+    select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%475569' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2rem; }
+
+    /* Counters */
+    .counter-wrap { display: flex; align-items: center; gap: 0.75rem; }
+    .counter-btn {
+      width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--navy); color: var(--white);
+      border: none; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .counter-btn:hover { background: var(--orange); }
+    .counter-val { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; min-width: 2.2rem; text-align: center; color: var(--navy); }
+
+    /* Truck Cards */
+    .truck-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .truck-card {
+      background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: var(--radius-sm);
+      padding: 0.85rem; text-align: center; cursor: pointer; transition: all 0.2s ease;
+    }
+    .truck-card:hover { border-color: var(--orange); }
+    .truck-card.active { border-color: var(--orange); background: var(--orange-light); }
+    .tc-icon-wrap { color: var(--navy); margin-bottom: 0.3rem; }
+    .truck-card.active .tc-icon-wrap { color: var(--orange); }
+    .tc-name { font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; color: var(--navy); }
+    .tc-price { font-size: 0.75rem; color: var(--orange); font-weight: 700; margin-top: 0.1rem; }
+
+    /* Miles Distance Widget */
+    .miles-box { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 1rem; }
+    .miles-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .btn-mile {
+      background: var(--white); border: 1.5px solid var(--gray-300); color: var(--navy); padding: 0.4rem 0.75rem;
+      border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-mile:hover { border-color: var(--orange); color: var(--orange); }
+    .miles-input { width: 90px !important; text-align: center; font-weight: 800; font-size: 1.1rem !important; }
+    .btn-auto-dist {
+      display: inline-flex; align-items: center; gap: 0.4rem; background: var(--navy); color: var(--white);
+      border: none; padding: 0.55rem 1rem; border-radius: 6px; font-family: var(--font-heading); font-size: 0.78rem;
+      font-weight: 700; cursor: pointer; transition: all 0.2s ease; margin-top: 0.4rem;
+    }
+    .btn-auto-dist:hover { background: var(--orange); }
+
+    /* Interactive Inventory Picker Widget */
+    .inventory-section { margin-top: 1.25rem; border-top: 2px dashed var(--gray-200); padding-top: 1.25rem; }
+    .inv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
+    .inv-title { font-family: var(--font-heading); font-size: 0.9rem; font-weight: 800; color: var(--navy); text-transform: uppercase; display: flex; align-items: center; gap: 0.4rem; }
+    .inv-total-badge { background: var(--navy-light); color: var(--white); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+    .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.65rem; }
+    .inv-item {
+      background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+      padding: 0.6rem 0.75rem; display: flex; align-items: center; justify-content: space-between;
+    }
+    .inv-info { display: flex; flex-direction: column; }
+    .inv-name { font-size: 0.8rem; font-weight: 700; color: var(--black); display: flex; align-items: center; gap: 0.4rem; }
+    .inv-cuft { font-size: 0.68rem; color: var(--gray-600); }
+    .inv-ctrl { display: flex; align-items: center; gap: 0.4rem; }
+    .inv-btn { width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--gray-300); background: var(--white); cursor: pointer; font-weight: 800; font-size: 0.85rem; }
+    .inv-btn:hover { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .inv-qty { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; min-width: 1.2rem; text-align: center; }
+
+    /* Addons Grid */
+    .addons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.65rem; }
+    .addon-card {
+      background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem; display: flex; align-items: center; gap: 0.65rem; cursor: pointer; transition: all 0.2s ease;
+    }
+    .addon-card:hover { border-color: var(--orange); }
+    .addon-card.active { border-color: var(--orange); background: var(--orange-light); }
+    .addon-check {
+      width: 20px; height: 20px; border-radius: 4px; border: 2px solid var(--gray-300); display: flex;
+      align-items: center; justify-content: center; font-size: 0.75rem; color: var(--white); flex-shrink: 0;
+    }
+    .addon-card.active .addon-check { background: var(--orange); border-color: var(--orange); }
+    .addon-card.active .addon-check::after { content: '✓'; }
+    .addon-title { font-size: 0.82rem; font-weight: 700; color: var(--navy); flex: 1; display: flex; align-items: center; gap: 0.4rem; }
+    .addon-price { font-size: 0.78rem; font-weight: 800; color: var(--orange); }
+
+    /* Sidebar Summary Sticky */
+    .summary-card { position: sticky; top: 80px; background: var(--navy); color: var(--white); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: var(--shadow-lg); }
+    .summary-header { border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 1rem; margin-bottom: 1rem; }
+    .summary-title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--orange); }
+    .summary-amount { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; color: var(--white); margin: 0.3rem 0; }
+    .summary-range { font-size: 0.8rem; color: var(--gray-300); }
+    
+    .breakdown-box { max-height: 260px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.4rem; }
+    .breakdown-box::-webkit-scrollbar { width: 4px; }
+    .breakdown-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    .bd-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.35rem 0; border-bottom: 1px dashed rgba(255,255,255,0.1); color: var(--gray-300); }
+    .bd-row.total-row { border-top: 2px solid var(--orange); border-bottom: none; font-weight: 800; color: var(--white); font-size: 0.95rem; margin-top: 0.5rem; padding-top: 0.6rem; }
+
+    .btn-action {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.85rem 1rem;
+      border-radius: var(--radius-sm); font-family: var(--font-heading); font-weight: 800; font-size: 0.9rem;
+      border: none; cursor: pointer; transition: all 0.25s ease; text-decoration: none; margin-bottom: 0.6rem;
+    }
+    .btn-gen-quote { background: var(--orange); color: var(--white); box-shadow: var(--shadow-orange); }
+    .btn-gen-quote:hover { background: var(--orange-hover); transform: translateY(-2px); }
+    .btn-pdf { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-pdf:hover { background: rgba(255,255,255,0.25); }
+    .btn-wa { background: #25D366; color: var(--white); }
+    .btn-wa:hover { background: #1ebe5d; }
+    .btn-share-link { background: transparent; color: var(--gray-300); border: 1px solid rgba(255,255,255,0.2); font-size: 0.78rem; }
+    .btn-share-link:hover { color: var(--white); border-color: var(--white); }
+
+    .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; }
+
+    /* Quote Document Preview */
+    #quote-preview-modal { display: none; margin-top: 2rem; }
+    .quote-doc {
+      background: var(--white); color: var(--black); border-radius: var(--radius-md); padding: 3rem 2.5rem;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--gray-200); font-family: var(--font-body);
+    }
+    .q-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--navy); padding-bottom: 1.5rem; margin-bottom: 1.75rem; }
+    .q-brand { display: flex; align-items: center; gap: 1rem; }
+    .q-official-logo { height: 60px; width: auto; max-width: 220px; object-fit: contain; }
+    .q-company-name { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 900; color: var(--navy); }
+    .q-company-details { font-size: 0.78rem; color: var(--gray-600); line-height: 1.6; margin-top: 0.25rem; }
+    .q-meta { text-align: right; }
+    .q-doc-title { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 900; color: var(--navy); text-transform: uppercase; }
+    .q-doc-num { font-size: 0.85rem; font-weight: 700; color: var(--orange); margin-top: 0.2rem; }
+    .q-doc-date { font-size: 0.78rem; color: var(--gray-600); }
+
+    .q-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.75rem; background: var(--gray-50); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+    .q-block-label { font-family: var(--font-heading); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--navy); letter-spacing: 0.8px; margin-bottom: 0.4rem; }
+    .q-block-val { font-size: 0.88rem; color: var(--gray-800); line-height: 1.6; }
+
+    .q-table { width: 100%; border-collapse: collapse; margin-bottom: 1.75rem; font-size: 0.88rem; }
+    .q-table th { background: var(--navy); color: var(--white); font-family: var(--font-heading); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; padding: 0.75rem 1rem; text-align: left; }
+    .q-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); color: var(--gray-800); }
+    .q-table tr:nth-child(even) td { background: var(--gray-50); }
+    .q-table .q-total-row td { background: var(--orange-light) !important; font-weight: 800; font-size: 1rem; color: var(--navy); border-top: 2px solid var(--orange); }
+
+    .q-guarantee-box { background: var(--navy-dark); color: var(--white); padding: 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .q-guarantee-title { font-family: var(--font-heading); font-weight: 800; font-size: 0.95rem; color: var(--orange); display: flex; align-items: center; gap: 0.4rem; }
+    .q-guarantee-desc { font-size: 0.78rem; color: var(--gray-300); }
+
+    /* Footer */
+    footer { background: var(--navy-dark); color: var(--gray-300); padding: 2.5rem 1.5rem; text-align: center; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-brand { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 900; color: var(--white); margin-bottom: 0.5rem; }
+    .footer-text { font-size: 0.85rem; color: var(--gray-300); max-width: 600px; margin: 0 auto 1.25rem; line-height: 1.7; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--navy-dark); color: var(--white); padding: 0.75rem 1.75rem; border-radius: 50px;
+      font-weight: 700; font-size: 0.88rem; box-shadow: var(--shadow-lg); border: 1px solid var(--orange);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; z-index: 3000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- COMPANY SELECTOR MODAL -->
+  <div id="company-modal">
+    <div class="modal-box">
+      <img src="logo_transparent.png" alt="Top Movers Co. Official Logo" class="modal-logo-img" />
+      <h2 class="modal-title">Select Location Branch</h2>
+      <p class="modal-sub">Choose your Top Movers office branch to apply local rates & dispatch team</p>
+      <div class="company-grid">
+        <div class="company-card selected" onclick="selectCompany('atlanta')" id="card-atlanta">
+          <div class="cc-badge">GA</div>
+          <div class="cc-name">Top Movers Atlanta (HQ)</div>
+          <div class="cc-city">Atlanta, GA & Metro Area</div>
+        </div>
+        <div class="company-card" onclick="selectCompany('carolinas')" id="card-carolinas">
+          <div class="cc-badge">NC</div>
+          <div class="cc-name">Top Movers Carolinas</div>
+          <div class="cc-city">Wilmington & Raleigh, NC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="header-brand" onclick="showModal()">
+        <img src="logo_transparent.png" alt="Top Movers Co. Official Logo" class="header-logo-img" />
+        <div>
+          <div class="header-title" id="h-name">Top Movers Co.</div>
+          <div class="header-city" id="h-city">Atlanta, GA (HQ)</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="btn-switch-company" onclick="showModal()">⇄ Switch Branch</button>
+        <a id="h-call" href="tel:18005550194" class="btn-header-call">
+          <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span id="h-phone">(800) 555-0194</span>
+        </a>
+        <div class="lang-toggle">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('es')">ES</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="page-head">
+      <h1 data-t="calcTitle">Interactive Moving Quote Estimator</h1>
+      <p data-t="calcSubtitle">Get a binding transparent quote instantly. Customize inventory, distance, and options.</p>
+    </div>
+
+    <div class="calc-container">
+      <!-- LEFT FORM STEPS -->
+      <div class="calc-left">
+
+        <!-- STEP 1: SERVICE TYPE -->
+        <div class="calc-card">
+          <div class="card-header">
+            <div class="step-badge">1</div>
+            <div class="step-title" data-t="step1">Service & Move Type</div>
+            <div class="step-sub" data-t="step1Sub">Select your relocation model</div>
+          </div>
+          <div class="services-grid">
+            <div class="service-card active" onclick="setService('local')" id="svc-local">
+              <div class="sc-icon-wrap">
+                <svg class="svg-icon icon-md" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="sc-name" data-t="svcLocal">Local Move</div>
+              <div class="sc-rate" id="r-local">$60/hr/mover</div>
+            </div>
+            <div class="service-card" onclick="setService('longdistance')" id="svc-longdistance">
+              <div class="sc-icon-wrap">
+                <svg class="svg-icon icon-md" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+              </div>
+              <div class="sc-name" data-t="svcLong">Long Distance</div>
+              <div class="sc-rate" id="r-long">$75/hr/mover</div>
+            </div>
+            <div class="service-card" onclick="setService('singleitem')" id="svc-singleitem">
+              <div class="sc-icon-wrap">
+                <svg class="svg-icon icon-md" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <div class="sc-name" data-t="svcSingle">Single Heavy Item</div>
+              <div class="sc-rate" id="r-single">$150 + $3/mi</div>
+            </div>
+            <div class="service-card" onclick="setService('laboronly')" id="svc-laboronly">
+              <div class="sc-icon-wrap">
+                <svg class="svg-icon icon-md" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="sc-name" data-t="svcLabor">Labor Only</div>
+              <div class="sc-rate" id="r-labor">$60/hr/mover</div>
+            </div>
+            <div class="service-card" onclick="setService('junk')" id="svc-junk">
+              <div class="sc-icon-wrap">
+                <svg class="svg-icon icon-md" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </div>
+              <div class="sc-name" data-t="svcJunk">Junk Removal</div>
+              <div class="sc-rate" id="r-junk">From $150</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: DETAILS & MOVERS -->
+        <div class="calc-card">
+          <div class="card-header">
+            <div class="step-badge">2</div>
+            <div class="step-title" data-t="step2">Crew, Hours & Distance</div>
+          </div>
+
+          <!-- MOVERS & HOURS -->
+          <div id="d-movers-hours">
+            <div class="details-grid">
+              <div class="form-group">
+                <label data-t="numMovers">Number of Movers</label>
+                <div class="counter-wrap">
+                  <button class="counter-btn" onclick="adj('movers',-1)">−</button>
+                  <span class="counter-val" id="v-movers">2</span>
+                  <button class="counter-btn" onclick="adj('movers',1)">+</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label data-t="estHours">Estimated Hours</label>
+                <div class="counter-wrap">
+                  <button class="counter-btn" onclick="adj('hours',-1)">−</button>
+                  <span class="counter-val" id="v-hours">2</span>
+                  <button class="counter-btn" onclick="adj('hours',1)">+</button>
+                </div>
+                <small style="color:var(--orange);font-size:0.7rem;margin-top:0.3rem;font-weight:700;display:flex;align-items:center;gap:0.3rem;" data-t="minHours">
+                  <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  2 Hours Minimum
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRUCK SELECTION -->
+          <div id="d-truck" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label data-t="truckSize">Branded Truck Size</label>
+              <div class="truck-grid">
+                <div class="truck-card active" onclick="setTruck('small')" id="tk-small">
+                  <div class="tc-icon-wrap">
+                    <svg class="svg-icon icon-md" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                  </div>
+                  <div class="tc-name" data-t="truckSmall">Medium Truck (16ft - 20ft)</div>
+                  <div class="tc-price" id="tp-small">+$150</div>
+                </div>
+                <div class="truck-card" onclick="setTruck('large')" id="tk-large">
+                  <div class="tc-icon-wrap">
+                    <svg class="svg-icon icon-md" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                  </div>
+                  <div class="tc-name" data-t="truckLarge">Large Rig (24ft - 26ft)</div>
+                  <div class="tc-price" id="tp-large">+$200</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MILES DISTANCE WIDGET -->
+          <div id="d-miles" class="hidden" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label data-t="milesLabel">Distance in Miles</label>
+              <div class="miles-box">
+                <div class="miles-row">
+                  <button class="btn-mile" onclick="adjMiles('ld',-50)">−50</button>
+                  <button class="btn-mile" onclick="adjMiles('ld',-10)">−10</button>
+                  <input type="number" id="v-miles" value="50" min="0" class="form-control miles-input" oninput="calc()">
+                  <button class="btn-mile" onclick="adjMiles('ld',10)">+10</button>
+                  <button class="btn-mile" onclick="adjMiles('ld',50)">+50</button>
+                </div>
+                <button type="button" class="btn-auto-dist" onclick="calcDistanceAPI()">
+                  <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Auto-Calculate Distance from Addresses
+                </button>
+                <small style="display:block;color:var(--gray-600);font-size:0.72rem;margin-top:0.3rem;">Uses Origin & Destination entered in Step 4</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- SINGLE ITEM SPECIAL FIELD -->
+          <div id="d-singleitem" class="hidden" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label data-t="itemDesc">Item Name / Description</label>
+              <input type="text" id="single-desc" class="form-control" placeholder="e.g. Baby Grand Piano, Heavy Gun Safe, Marble Dining Table..." oninput="calc()">
+            </div>
+            <div class="form-group">
+              <label data-t="milesLabel">Transport Distance (Miles)</label>
+              <div class="miles-row">
+                <button class="btn-mile" onclick="adjMiles('si',-5)">−5</button>
+                <input type="number" id="v-miles-si" value="15" min="0" class="form-control miles-input" oninput="calc()">
+                <button class="btn-mile" onclick="adjMiles('si',5)">+5</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- JUNK REMOVAL LOAD FIELD -->
+          <div id="d-junk" class="hidden" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label data-t="loadSize">Junk Volume Size</label>
+              <div class="truck-grid">
+                <div class="truck-card active" onclick="setLoad('small')" id="ld-small">
+                  <div class="tc-icon-wrap"><svg class="svg-icon icon-md" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                  <div class="tc-name">1/4 Truck Load</div><div class="tc-price">$150</div>
+                </div>
+                <div class="truck-card" onclick="setLoad('medium')" id="ld-medium">
+                  <div class="tc-icon-wrap"><svg class="svg-icon icon-md" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                  <div class="tc-name">1/2 Truck Load</div><div class="tc-price">$250</div>
+                </div>
+                <div class="truck-card" onclick="setLoad('large')" id="ld-large">
+                  <div class="tc-icon-wrap"><svg class="svg-icon icon-md" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                  <div class="tc-name">3/4 Truck Load</div><div class="tc-price">$350</div>
+                </div>
+                <div class="truck-card" onclick="setLoad('full')" id="ld-full">
+                  <div class="tc-icon-wrap"><svg class="svg-icon icon-md" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+                  <div class="tc-name">Full Truck Load</div><div class="tc-price">$450</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-t="junkDesc">Items List to Haul Away</label>
+              <textarea id="junk-desc" class="form-control" rows="2" placeholder="e.g., Old sofa, broken washer, mattresses, yard debris..." oninput="calc()"></textarea>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE ROOM INVENTORY ESTIMATOR WIDGET -->
+          <div class="inventory-section">
+            <div class="inv-header">
+              <span class="inv-title">
+                <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                Visual Room Inventory Builder
+              </span>
+              <span class="inv-total-badge" id="inv-cuft-badge">0 Cu. Ft.</span>
+            </div>
+            <div class="inv-grid" id="inv-items-grid"></div>
+          </div>
+
+        </div>
+
+        <!-- STEP 3: ADD-ONS & ACCESS -->
+        <div class="calc-card">
+          <div class="card-header">
+            <div class="step-badge">3</div>
+            <div class="step-title" data-t="step3">Add-Ons & Access Features</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label data-t="assemblyLabel">Furniture Items to Assemble / Disassemble</label>
+            <div class="counter-wrap">
+              <button class="counter-btn" onclick="adj('assembly',-1)">−</button>
+              <span class="counter-val" id="v-assembly">0</span>
+              <button class="counter-btn" onclick="adj('assembly',1)">+</button>
+              <span style="font-size:0.85rem;color:var(--orange);font-weight:700;">($50 / item)</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-t="specialItems">Specialty Items & Access Add-Ons</label>
+            <div class="addons-grid" id="addons-special"></div>
+          </div>
+        </div>
+
+        <!-- STEP 4: CONTACT & LOCATIONS -->
+        <div class="calc-card">
+          <div class="card-header">
+            <div class="step-badge">4</div>
+            <div class="step-title" data-t="step4">Contact & Location Info</div>
+          </div>
+          <div class="details-grid">
+            <div class="form-group"><label data-t="clientName">Full Name</label><input type="text" id="c-name" class="form-control" placeholder="John Smith"></div>
+            <div class="form-group"><label data-t="clientPhone">Phone Number</label><input type="tel" id="c-phone" class="form-control" placeholder="(404) 555-0199"></div>
+            <div class="form-group"><label data-t="clientEmail">Email Address</label><input type="email" id="c-email" class="form-control" placeholder="john@example.com"></div>
+            <div class="form-group"><label data-t="clientDate">Estimated Move Date</label><input type="date" id="c-date" class="form-control"></div>
+            <div class="form-group"><label data-t="originAddr">Origin Address (Pick-up)</label><input type="text" id="c-origin" class="form-control" placeholder="123 Peachtree St NE, Atlanta, GA"></div>
+            <div class="form-group"><label data-t="destAddr">Destination Address (Drop-off)</label><input type="text" id="c-dest" class="form-control" placeholder="456 Piedmont Rd, Atlanta, GA"></div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label data-t="homeSize">Home / Property Size</label>
+              <select id="c-homesize" class="form-control">
+                <option value="">-- Select Property Type --</option>
+                <option>Studio Apartment</option>
+                <option>1 Bedroom Apartment</option>
+                <option>2 Bedroom Apartment / Condo</option>
+                <option>3 Bedroom Single Family House</option>
+                <option>4+ Bedroom Luxury Home</option>
+                <option>Commercial Office Space</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label data-t="notes">Special Access Notes / Instructions</label>
+              <textarea id="c-notes" class="form-control" rows="2" placeholder="Stairs, elevator reservation, narrow driveway, fragile artwork..."></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR SUMMARY -->
+      <div class="calc-right">
+        <div class="summary-card">
+          <div class="summary-header">
+            <div class="summary-title" data-t="estTotal">Instant Estimated Quote</div>
+            <div class="summary-amount" id="total-display">$0</div>
+            <div class="summary-range" id="range-display">Rate includes crew, fuel & insurance</div>
+          </div>
+
+          <div class="breakdown-box" id="breakdown-list"></div>
+
+          <button class="btn-action btn-gen-quote" onclick="generateQuote()">
+            <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span data-t="genQuote">Generate Official PDF Quote</span>
+          </button>
+          
+          <div id="action-buttons-group" class="actions-grid hidden">
+            <button class="btn-action btn-pdf" onclick="downloadPDF()">Download PDF</button>
+            <button class="btn-action btn-wa" onclick="shareWA()">Send WhatsApp</button>
+          </div>
+          
+          <button class="btn-action btn-share-link" style="margin-top:0.4rem;" onclick="copyShareLink()">Copy Shareable Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW DOCUMENT AREA -->
+    <div id="quote-preview-modal"></div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand" id="f-name">Top Movers Co.</div>
+      <div class="footer-text">
+        <span id="f-phone">(800) 555-0194</span> &nbsp;·&nbsp; <span id="f-email">quotes@topmoversco.com</span><br>
+        <span id="f-city">Atlanta HQ: 1200 Peachtree St, Atlanta, GA 30309</span>
+      </div>
+      <p style="font-size:0.75rem;color:var(--gray-600);">USDOT #394021 · MC #109482 · Georgia PSC Licensed & Fully Insured</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Branch Company Specs
+    const BRANCHES = {
+      atlanta: {
+        name: "Top Movers Atlanta (HQ)",
+        city: "Atlanta, GA & Metro Area",
+        phone: "(800) 555-0194",
+        phoneRaw: "18005550194",
+        email: "quotes@topmoversco.com",
+        addr: "1200 Peachtree St, Atlanta, GA 30309",
+        badge: "GA",
+        rates: { local: 60, longdistance: 75, singleitem: 150, singleitemMile: 3, laboronly: 60, junkBase: 150, truckSmall: 150, truckLarge: 200 }
+      },
+      carolinas: {
+        name: "Top Movers Carolinas",
+        city: "Wilmington & Raleigh, NC",
+        phone: "(919) 555-0188",
+        phoneRaw: "19195550188",
+        email: "carolinas@topmoversco.com",
+        addr: "400 Market St, Wilmington, NC 28401",
+        badge: "NC",
+        rates: { local: 55, longdistance: 70, singleitem: 140, singleitemMile: 3, laboronly: 55, junkBase: 140, truckSmall: 130, truckLarge: 180 }
+      }
+    };
+
+    // Specialty Addon Prices with Vector SVG Icons
+    const ADDONS_DATA = [
+      { id: 'piano', name: 'Upright / Grand Piano', price: 150, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12v6M10 12v6M14 12v6M18 12v6"/></svg>' },
+      { id: 'safe', name: 'Heavy Gun Safe (300+ lbs)', price: 150, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' },
+      { id: 'pooltable', name: 'Pool / Billiard Table', price: 200, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/></svg>' },
+      { id: 'gym', name: 'Gym & Fitness Equipment', price: 100, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12"/></svg>' },
+      { id: 'hottub', name: 'Hot Tub / Jacuzzi', price: 250, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M2 12h20v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/><path d="M6 8V4M12 8V4M18 8V4"/></svg>' },
+      { id: 'marble', name: 'Marble / Glass Table Top', price: 75, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 17 22 12"/></svg>' },
+      { id: 'stairs', name: 'Stairs (per flight)', price: 30, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M4 19h4v-4h4v-4h4V7h4"/></svg>' },
+      { id: 'elevator', name: 'Elevator Access', price: 40, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 10 12 7 15 10"/><polyline points="9 14 12 17 15 14"/></svg>' },
+      { id: 'longcarry', name: 'Long Carry (>75 ft)', price: 50, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M13 4v16M17 4v16M7 4v16"/></svg>' },
+      { id: 'packing', name: 'Full Packing & Boxes Service', price: 120, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>' }
+    ];
+
+    // Inventory Items Data with Vector SVG Icons
+    const INVENTORY_DATA = [
+      { id: 'sofa', name: '3-Seater Sofa', cuft: 35, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M3 10v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M3 13h18M6 10V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4"/></svg>' },
+      { id: 'tvstand', name: 'TV & Console Table', cuft: 15, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>' },
+      { id: 'bedqueen', name: 'Queen Bed & Mattress', cuft: 60, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M2 4v16M2 10h20M22 4v16M6 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/></svg>' },
+      { id: 'bedking', name: 'King Bed & Mattress', cuft: 80, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M2 4v16M2 10h20M22 4v16M6 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/></svg>' },
+      { id: 'dresser', name: 'Bedroom Dresser', cuft: 25, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18"/></svg>' },
+      { id: 'dining', name: 'Dining Table & Chairs', cuft: 45, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M3 12h18M6 12v7M18 12v7M10 12V8M14 12V8"/></svg>' },
+      { id: 'fridge', name: 'Refrigerator', cuft: 30, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M4 10h16M8 6v2M8 14v4"/></svg>' },
+      { id: 'washer', name: 'Washer / Dryer', cuft: 25, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="13" r="5"/></svg>' },
+      { id: 'boxes', name: 'Moving Box (Med/Lg)', cuft: 4, iconSvg: '<svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>' }
+    ];
+
+    // Global State
+    let currentBranchKey = 'atlanta';
+    let currentService = 'local';
+    let currentTruck = 'small';
+    let currentJunkLoad = 'small';
+    let counts = { movers: 2, hours: 2, assembly: 0 };
+    let milesCount = { ld: 50, si: 15 };
+    let selectedAddons = new Set();
+    let inventoryQty = {};
+    let currentLang = 'en';
+
+    // Translations Dictionary
+    const T = {
+      en: {
+        calcTitle: "Interactive Moving Quote Estimator",
+        calcSubtitle: "Get a binding transparent quote instantly. Customize inventory, distance, and options.",
+        step1: "Service & Move Type",
+        step1Sub: "Select your relocation model",
+        step2: "Crew, Hours & Distance",
+        step3: "Add-Ons & Access Features",
+        step4: "Contact & Location Info",
+        svcLocal: "Local Move",
+        svcLong: "Long Distance",
+        svcSingle: "Single Heavy Item",
+        svcLabor: "Labor Only",
+        svcJunk: "Junk Removal",
+        numMovers: "Number of Movers",
+        estHours: "Estimated Hours",
+        minHours: "2 Hours Minimum",
+        truckSize: "Branded Truck Size",
+        truckSmall: "Medium Truck (16ft - 20ft)",
+        truckLarge: "Large Rig (24ft - 26ft)",
+        milesLabel: "Distance in Miles",
+        itemDesc: "Item Name / Description",
+        loadSize: "Junk Volume Size",
+        junkDesc: "Items List to Haul Away",
+        assemblyLabel: "Furniture Items to Assemble / Disassemble",
+        specialItems: "Specialty Items & Access Add-Ons",
+        clientName: "Full Name",
+        clientPhone: "Phone Number",
+        clientEmail: "Email Address",
+        clientDate: "Estimated Move Date",
+        originAddr: "Origin Address (Pick-up)",
+        destAddr: "Destination Address (Drop-off)",
+        homeSize: "Home / Property Size",
+        notes: "Special Access Notes / Instructions",
+        estTotal: "Instant Estimated Quote",
+        genQuote: "Generate Official PDF Quote"
+      },
+      es: {
+        calcTitle: "Calculadora Interactiva de Mudanzas",
+        calcSubtitle: "Obtén una cotización transparente al instante. Personaliza inventario, distancia y opciones.",
+        step1: "Servicio y Tipo de Mudanza",
+        step1Sub: "Selecciona tu modelo de traslado",
+        step2: "Equipo, Horas y Distancia",
+        step3: "Servicios Adicionales y Accesos",
+        step4: "Datos del Cliente y Ubicación",
+        svcLocal: "Mudanza Local",
+        svcLong: "Larga Distancia",
+        svcSingle: "Objeto Pesado Único",
+        svcLabor: "Solo Mano de Obra",
+        svcJunk: "Retiro de Escombros/Junk",
+        numMovers: "Número de Mudadores",
+        estHours: "Horas Estimadas",
+        minHours: "Mínimo 2 Horas",
+        truckSize: "Tamaño de Camión",
+        truckSmall: "Camión Mediano (16ft - 20ft)",
+        truckLarge: "Camión Grande (24ft - 26ft)",
+        milesLabel: "Distancia en Millas",
+        itemDesc: "Nombre / Descripción del Artículo",
+        loadSize: "Volumen de Escombros",
+        junkDesc: "Lista de Artículos a Retirar",
+        assemblyLabel: "Muebles a Armar / Desarmar",
+        specialItems: "Artículos Especiales y Accesos",
+        clientName: "Nombre Completo",
+        clientPhone: "Teléfono de Contacto",
+        clientEmail: "Correo Electrónico",
+        clientDate: "Fecha Estimada de Mudanza",
+        originAddr: "Dirección de Origen",
+        destAddr: "Dirección de Destino",
+        homeSize: "Tamaño de Inmueble",
+        notes: "Instrucciones de Acceso / Notas",
+        estTotal: "Presupuesto Estimado",
+        genQuote: "Generar Cotización PDF Oficial"
+      }
+    };
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAddons();
+      renderInventory();
+      calc();
+      checkURLParams();
+    });
+
+    function selectCompany(key) {
+      currentBranchKey = key;
+      const b = BRANCHES[key];
+      document.querySelectorAll('.company-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById(`card-${key}`)?.classList.add('selected');
+      document.getElementById('h-name').innerText = b.name;
+      document.getElementById('h-city').innerText = b.city;
+      document.getElementById('h-phone').innerText = b.phone;
+      document.getElementById('h-call').href = `tel:${b.phoneRaw}`;
+      document.getElementById('f-name').innerText = b.name;
+      document.getElementById('f-phone').innerText = b.phone;
+      document.getElementById('f-email').innerText = b.email;
+      document.getElementById('f-city').innerText = b.addr;
+      
+      document.getElementById('r-local').innerText = `$${b.rates.local}/hr/mover`;
+      document.getElementById('r-long').innerText = `$${b.rates.longdistance}/hr/mover`;
+      document.getElementById('r-single').innerText = `$${b.rates.singleitem} + $${b.rates.singleitemMile}/mi`;
+      document.getElementById('r-labor').innerText = `$${b.rates.laboronly}/hr/mover`;
+      document.getElementById('r-junk').innerText = `From $${b.rates.junkBase}`;
+      document.getElementById('tp-small').innerText = `+$${b.rates.truckSmall}`;
+      document.getElementById('tp-large').innerText = `+$${b.rates.truckLarge}`;
+      
+      document.getElementById('company-modal').style.display = 'none';
+      calc();
+    }
+
+    function showModal() { document.getElementById('company-modal').style.display = 'flex'; }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (T[lang][key]) el.innerText = T[lang][key];
+      });
+      calc();
+    }
+
+    function setService(svc) {
+      currentService = svc;
+      document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+      document.getElementById(`svc-${svc}`)?.classList.add('active');
+
+      document.getElementById('d-movers-hours').classList.toggle('hidden', svc === 'junk' || svc === 'singleitem');
+      document.getElementById('d-truck').classList.toggle('hidden', svc === 'laboronly' || svc === 'singleitem' || svc === 'junk');
+      document.getElementById('d-miles').classList.toggle('hidden', svc !== 'longdistance');
+      document.getElementById('d-singleitem').classList.toggle('hidden', svc !== 'singleitem');
+      document.getElementById('d-junk').classList.toggle('hidden', svc !== 'junk');
+
+      calc();
+    }
+
+    function setTruck(sz) {
+      currentTruck = sz;
+      document.querySelectorAll('#d-truck .truck-card').forEach(c => c.classList.remove('active'));
+      document.getElementById(`tk-${sz}`)?.classList.add('active');
+      calc();
+    }
+
+    function setLoad(sz) {
+      currentJunkLoad = sz;
+      document.querySelectorAll('#d-junk .truck-card').forEach(c => c.classList.remove('active'));
+      document.getElementById(`ld-${sz}`)?.classList.add('active');
+      calc();
+    }
+
+    function adj(field, val) {
+      counts[field] = Math.max(field === 'assembly' ? 0 : 2, counts[field] + val);
+      document.getElementById(`v-${field}`).innerText = counts[field];
+      calc();
+    }
+
+    function adjMiles(type, val) {
+      milesCount[type] = Math.max(0, milesCount[type] + val);
+      if (type === 'ld') document.getElementById('v-miles').value = milesCount['ld'];
+      if (type === 'si') document.getElementById('v-miles-si').value = milesCount['si'];
+      calc();
+    }
+
+    function renderAddons() {
+      const container = document.getElementById('addons-special');
+      container.innerHTML = ADDONS_DATA.map(a => `
+        <div class="addon-card ${selectedAddons.has(a.id)?'active':''}" onclick="toggleAddon('${a.id}')">
+          <div class="addon-check"></div>
+          <div class="addon-title">${a.iconSvg} ${a.name}</div>
+          <div class="addon-price">+$${a.price}</div>
+        </div>
+      `).join('');
+    }
+
+    function toggleAddon(id) {
+      if (selectedAddons.has(id)) selectedAddons.delete(id);
+      else selectedAddons.add(id);
+      renderAddons();
+      calc();
+    }
+
+    function renderInventory() {
+      const container = document.getElementById('inv-items-grid');
+      container.innerHTML = INVENTORY_DATA.map(item => {
+        const qty = inventoryQty[item.id] || 0;
+        return `
+          <div class="inv-item">
+            <div class="inv-info">
+              <span class="inv-name">${item.iconSvg} ${item.name}</span>
+              <span class="inv-cuft">${item.cuft} cu.ft</span>
+            </div>
+            <div class="inv-ctrl">
+              <button type="button" class="inv-btn" onclick="adjInv('${item.id}', -1)">-</button>
+              <span class="inv-qty">${qty}</span>
+              <button type="button" class="inv-btn" onclick="adjInv('${item.id}', 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function adjInv(id, delta) {
+      inventoryQty[id] = Math.max(0, (inventoryQty[id] || 0) + delta);
+      renderInventory();
+      autoAdjustCrewFromInventory();
+      calc();
+    }
+
+    function autoAdjustCrewFromInventory() {
+      let totalCuFt = 0;
+      INVENTORY_DATA.forEach(item => {
+        totalCuFt += (inventoryQty[item.id] || 0) * item.cuft;
+      });
+      document.getElementById('inv-cuft-badge').innerText = `${totalCuFt} Cu. Ft.`;
+
+      if (totalCuFt > 0) {
+        if (totalCuFt > 1200) { counts.movers = 4; counts.hours = Math.max(5, counts.hours); setTruck('large'); }
+        else if (totalCuFt > 600) { counts.movers = 3; counts.hours = Math.max(4, counts.hours); setTruck('large'); }
+        else { counts.movers = 2; counts.hours = Math.max(3, counts.hours); setTruck('small'); }
+        document.getElementById('v-movers').innerText = counts.movers;
+        document.getElementById('v-hours').innerText = counts.hours;
+      }
+    }
+
+    // Main Calculator Algorithm
+    function calc() {
+      const b = BRANCHES[currentBranchKey];
+      let total = 0;
+      let breakdown = [];
+
+      if (currentService === 'local' || currentService === 'laboronly' || currentService === 'longdistance') {
+        const ratePerHour = currentService === 'longdistance' ? b.rates.longdistance : b.rates.local;
+        const laborCost = counts.movers * counts.hours * ratePerHour;
+        total += laborCost;
+        breakdown.push({ label: `${counts.movers} Movers × ${counts.hours} Hrs (@$${ratePerHour}/hr)`, val: laborCost });
+
+        if (currentService !== 'laboronly') {
+          const truckCost = currentTruck === 'small' ? b.rates.truckSmall : b.rates.truckLarge;
+          total += truckCost;
+          breakdown.push({ label: `Branded Truck Fee (${currentTruck.toUpperCase()})`, val: truckCost });
+        }
+
+        if (currentService === 'longdistance') {
+          const miles = parseInt(document.getElementById('v-miles').value) || 0;
+          const milesCost = miles * 2.5;
+          total += milesCost;
+          breakdown.push({ label: `Interstate Travel (${miles} miles @$2.50/mi)`, val: milesCost });
+        }
+      } else if (currentService === 'singleitem') {
+        const miles = parseInt(document.getElementById('v-miles-si').value) || 0;
+        const baseCost = b.rates.singleitem;
+        const milesCost = miles * b.rates.singleitemMile;
+        total = baseCost + milesCost;
+        breakdown.push({ label: `Single Item Base Loading Fee`, val: baseCost });
+        if (miles > 0) breakdown.push({ label: `Distance (${miles} miles @$${b.rates.singleitemMile}/mi)`, val: milesCost });
+      } else if (currentService === 'junk') {
+        const junkPrices = { small: 150, medium: 250, large: 350, full: 450 };
+        total = junkPrices[currentJunkLoad];
+        breakdown.push({ label: `Junk Removal Volume (${currentJunkLoad.toUpperCase()})`, val: total });
+      }
+
+      // Add Assembly
+      if (counts.assembly > 0) {
+        const assyCost = counts.assembly * 50;
+        total += assyCost;
+        breakdown.push({ label: `Furniture Assembly (${counts.assembly} items @$50)`, val: assyCost });
+      }
+
+      // Add Special Addons
+      selectedAddons.forEach(id => {
+        const item = ADDONS_DATA.find(a => a.id === id);
+        if (item) {
+          total += item.price;
+          breakdown.push({ label: item.name, val: item.price });
+        }
+      });
+
+      // Update UI
+      document.getElementById('total-display').innerText = `$${total.toLocaleString()}`;
+      document.getElementById('range-display').innerText = `Estimated Range: $${Math.round(total * 0.95)} - $${Math.round(total * 1.1)}`;
+
+      const bdList = document.getElementById('breakdown-list');
+      bdList.innerHTML = breakdown.map(b => `
+        <div class="bd-row">
+          <span>${b.label}</span>
+          <span>$${b.val.toLocaleString()}</span>
+        </div>
+      `).join('') + `
+        <div class="bd-row total-row">
+          <span>Total Binding Estimate</span>
+          <span>$${total.toLocaleString()}</span>
+        </div>
+      `;
+    }
+
+    // Geocoding Haversine Distance Calculation
+    async function calcDistanceAPI() {
+      const orig = document.getElementById('c-origin').value;
+      const dest = document.getElementById('c-dest').value;
+
+      if (!orig || !dest) {
+        showToast('Please fill in Origin & Destination addresses in Step 4 first!');
+        return;
+      }
+
+      showToast('Geocoding addresses & computing route distance...');
+
+      try {
+        const res1 = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(orig)}`);
+        const data1 = await res1.json();
+        const res2 = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(dest)}`);
+        const data2 = await res2.json();
+
+        if (data1.length > 0 && data2.length > 0) {
+          const lat1 = parseFloat(data1[0].lat), lon1 = parseFloat(data1[0].lon);
+          const lat2 = parseFloat(data2[0].lat), lon2 = parseFloat(data2[0].lon);
+          
+          const R = 3958.8;
+          const dLat = (lat2 - lat1) * Math.PI / 180;
+          const dLon = (lon2 - lon1) * Math.PI / 180;
+          const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+          const calculatedMiles = Math.max(5, Math.round(R * c * 1.25));
+
+          milesCount.ld = calculatedMiles;
+          document.getElementById('v-miles').value = calculatedMiles;
+          showToast(`Calculated driving distance: ~${calculatedMiles} miles!`);
+          calc();
+        } else {
+          showToast('Could not pinpoint address coordinates. Please verify city/state.');
+        }
+      } catch (err) {
+        showToast('Distance lookup service unavailable. Please enter miles manually.');
+      }
+    }
+
+    // Generate Official Quote Document with Official Logo Image
+    function generateQuote() {
+      const b = BRANCHES[currentBranchKey];
+      const clientName = document.getElementById('c-name').value || 'Valued Customer';
+      const clientPhone = document.getElementById('c-phone').value || 'N/A';
+      const clientEmail = document.getElementById('c-email').value || 'N/A';
+      const clientDate = document.getElementById('c-date').value || 'TBD';
+      const origin = document.getElementById('c-origin').value || 'Atlanta, GA';
+      const dest = document.getElementById('c-dest').value || 'Destination City';
+      const homeSize = document.getElementById('c-homesize').value || 'Standard Residence';
+      const notes = document.getElementById('c-notes').value || 'None specified';
+      const quoteNum = 'TM-Q' + Math.floor(100000 + Math.random() * 900000);
+      const totalStr = document.getElementById('total-display').innerText;
+
+      const html = `
+        <div class="quote-doc" id="quote-printable">
+          <div class="q-header">
+            <div class="q-brand">
+              <img src="logo_transparent.png" alt="Top Movers Co. Official Logo" class="q-official-logo" />
+              <div>
+                <div class="q-company-name">${b.name}</div>
+                <div class="q-company-details">
+                  ${b.addr}<br>
+                  Tel: ${b.phone} · Email: ${b.email}<br>
+                  USDOT #394021 · Georgia PSC Licensed
+                </div>
+              </div>
+            </div>
+            <div class="q-meta">
+              <div class="q-doc-title">OFFICIAL MOVING QUOTE</div>
+              <div class="q-doc-num">ESTIMATE #${quoteNum}</div>
+              <div class="q-doc-date">Date: ${new Date().toLocaleDateString()}</div>
+            </div>
+          </div>
+
+          <div class="q-grid-2">
+            <div>
+              <div class="q-block-label">CUSTOMER DETAILS</div>
+              <div class="q-block-val">
+                <strong>Name:</strong> ${clientName}<br>
+                <strong>Phone:</strong> ${clientPhone}<br>
+                <strong>Email:</strong> ${clientEmail}<br>
+                <strong>Move Date:</strong> ${clientDate}
+              </div>
+            </div>
+            <div>
+              <div class="q-block-label">RELOCATION SUMMARY</div>
+              <div class="q-block-val">
+                <strong>Origin:</strong> ${origin}<br>
+                <strong>Destination:</strong> ${dest}<br>
+                <strong>Property Type:</strong> ${homeSize}<br>
+                <strong>Service:</strong> ${currentService.toUpperCase()}
+              </div>
+            </div>
+          </div>
+
+          <table class="q-table">
+            <thead>
+              <tr>
+                <th>Service Breakdown Item</th>
+                <th style="text-align:right;">Amount (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${document.querySelectorAll('.bd-row').length ? Array.from(document.querySelectorAll('.bd-row')).map(row => `
+                <tr class="${row.classList.contains('total-row') ? 'q-total-row' : ''}">
+                  <td>${row.children[0].innerText}</td>
+                  <td style="text-align:right;">${row.children[1].innerText}</td>
+                </tr>
+              `).join('') : `<tr><td>Move Estimate Total</td><td style="text-align:right;">${totalStr}</td></tr>`}
+            </tbody>
+          </table>
+
+          <div class="q-guarantee-box">
+            <div>
+              <div class="q-guarantee-title">
+                <svg class="svg-icon icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                100% Binding Rate Guarantee
+              </div>
+              <div class="q-guarantee-desc">No hidden fuel surcharges or surprise fees on move day. Full furniture pad wrapping included.</div>
+            </div>
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:1.4rem;color:white;">${totalStr}</div>
+          </div>
+
+          <div style="font-size:0.75rem;color:var(--gray-600);line-height:1.6;border-top:1px solid var(--gray-200);padding-top:1rem;">
+            <strong>Special Notes:</strong> ${notes}<br>
+            <em>Terms: Estimate valid for 30 days. Final bill reflects actual labor time if client requests additional services or inventory additions.</em>
+          </div>
+        </div>
+      `;
+
+      const previewDiv = document.getElementById('quote-preview-modal');
+      previewDiv.innerHTML = html;
+      previewDiv.style.display = 'block';
+      document.getElementById('action-buttons-group').classList.remove('hidden');
+      previewDiv.scrollIntoView({ behavior: 'smooth' });
+      showToast('Official PDF Quote Generated Below!');
+    }
+
+    // PDF Download
+    function downloadPDF() {
+      const element = document.getElementById('quote-printable');
+      if (!element) {
+        generateQuote();
+        return;
+      }
+      showToast('Generating Crisp PDF Document...');
+      const opt = {
+        margin:       [0.4, 0.4, 0.4, 0.4],
+        filename:     `TopMovers_Quote_${Date.now()}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+
+    // Share via WhatsApp
+    function shareWA() {
+      const b = BRANCHES[currentBranchKey];
+      const name = document.getElementById('c-name').value || 'Customer';
+      const origin = document.getElementById('c-origin').value || 'Origin';
+      const dest = document.getElementById('c-dest').value || 'Destination';
+      const total = document.getElementById('total-display').innerText;
+
+      const text = `Top Movers Co. Estimate Summary\n\n` +
+        `Client: ${name}\n` +
+        `From: ${origin}\n` +
+        `To: ${dest}\n` +
+        `Service: ${currentService.toUpperCase()}\n` +
+        `Estimated Total: ${total}\n\n` +
+        `Call us to lock rate: ${b.phone}`;
+
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // Share Link URL Hash
+    function copyShareLink() {
+      const params = new URLSearchParams({
+        branch: currentBranchKey,
+        svc: currentService,
+        movers: counts.movers,
+        hours: counts.hours,
+        truck: currentTruck,
+        miles: milesCount.ld
+      });
+      const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+      navigator.clipboard.writeText(url);
+      showToast('Quote Share Link Copied to Clipboard!');
+    }
+
+    function checkURLParams() {
+      const p = new URLSearchParams(window.location.search);
+      if (p.has('branch')) selectCompany(p.get('branch'));
+      if (p.has('svc')) setService(p.get('svc'));
+      if (p.has('movers')) { counts.movers = parseInt(p.get('movers')); document.getElementById('v-movers').innerText = counts.movers; }
+      if (p.has('hours')) { counts.hours = parseInt(p.get('hours')); document.getElementById('v-hours').innerText = counts.hours; }
+      calc();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+  </script>
+</body>
+</html>

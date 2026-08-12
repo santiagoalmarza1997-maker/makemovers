@@ -755,46 +755,34 @@
   <!-- ═══ LIVE ESTIMATOR ═══ -->
   <section class="estimator" id="estimator">
     <div class="container">
-      <div class="est-wrapper">
-        <div style="text-align:center;margin-bottom:36px;">
-          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Live Pricing Calculator</div>
-          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Calculate Your Move Budget</h2>
+      <div class="est-wrapper" style="text-align:center;">
+        <div style="margin-bottom:24px;">
+          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Advanced Interactive Calculator</div>
+          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Calculate Your Binding Move Quote</h2>
+          <p style="color:var(--gray-400);max-width:640px;margin:10px auto 0;font-size:0.95rem;">Select service types, inventory items, distance, trucks & special items. Generate an official PDF quote or send directly to WhatsApp!</p>
         </div>
 
-        <div class="est-steps">
-          <div class="est-step active"><div class="est-num">1</div><div><h4>Property Type</h4><p>Home / Office</p></div></div>
-          <div class="est-step active"><div class="est-num">2</div><div><h4>Add-On Services</h4><p>Packing & Storage</p></div></div>
-          <div class="est-step active"><div class="est-num">3</div><div><h4>Lock-In Rate</h4><p>Instant Estimate</p></div></div>
-        </div>
-
-        <div class="est-options" id="typeSelector">
-          <div class="est-opt selected" onclick="selectOpt(this,450)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <h4>1-2 Bed Apt</h4><p>Local or Interstate</p>
+        <div class="est-options" id="typeSelector" style="margin-bottom:28px;">
+          <div class="est-opt selected" onclick="window.location.href='calculator.html?svc=local'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <h4>Local Move</h4><p>Hourly Crew Rate</p>
           </div>
-          <div class="est-opt" onclick="selectOpt(this,850)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <h4>3-4 Bed House</h4><p>Full Family Home</p>
+          <div class="est-opt" onclick="window.location.href='calculator.html?svc=longdistance'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <h4>Long Distance</h4><p>Interstate Relocation</p>
           </div>
-          <div class="est-opt" onclick="selectOpt(this,1450)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/></svg>
-            <h4>Corporate Office</h4><p>Up to 25 Desks</p>
+          <div class="est-opt" onclick="window.location.href='calculator.html?svc=singleitem'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <h4>Single Heavy Item</h4><p>Piano, Safe, Hot Tub</p>
           </div>
-          <div class="est-opt" onclick="selectOpt(this,600)">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            <h4>Storage Vault</h4><p>Climate-Controlled</p>
+          <div class="est-opt" onclick="window.location.href='calculator.html?svc=junk'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <h4>Junk Removal</h4><p>Haul Away Service</p>
           </div>
         </div>
 
-        <div class="est-summary">
-          <div>
-            <h4 style="color:white;font-size:1.15rem;">Estimated Starting Rate:</h4>
-            <p style="color:var(--gray-400);font-size:.83rem;">Includes branded truck, 2 pro movers, furniture pads & shrink wrap.</p>
-          </div>
-          <div style="text-align:right;">
-            <div class="est-price" id="calcPrice">$450</div>
-            <button class="btn btn-orange" onclick="alert('Rate locked! Our team will confirm your date.')">Lock This Rate</button>
-          </div>
+        <div class="est-summary" style="justify-content:center;gap:20px;flex-wrap:wrap;">
+          <a href="calculator.html" class="btn btn-orange" style="padding:18px 36px;font-size:1.05rem;">🚀 Launch Full Interactive Calculator & PDF Generator</a>
         </div>
       </div>
     </div>
