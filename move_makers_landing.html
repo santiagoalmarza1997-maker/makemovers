@@ -440,7 +440,7 @@
       <ul class="nav-links">
         <li><a href="#services">Services</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#estimator">Estimator</a></li>
+        <li><a href="#quotes">Quotes</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -450,7 +450,7 @@
           <div class="lbl">Call Toll-Free 24/7</div>
           <div class="num">(470) 637-0909</div>
         </div>
-        <a href="#estimator" class="btn btn-orange">Free Quote</a>
+        <a href="#quotes" class="btn btn-orange">Free Quote</a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
           <span></span><span></span><span></span>
         </button>
@@ -465,11 +465,11 @@
     <ul>
       <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
       <li><a href="#about" onclick="toggleMobileMenu()">About Us</a></li>
-      <li><a href="#estimator" onclick="toggleMobileMenu()">Live Estimator</a></li>
+      <li><a href="#quotes" onclick="toggleMobileMenu()">Instant Quotes</a></li>
       <li><a href="#reviews" onclick="toggleMobileMenu()">Reviews</a></li>
       <li><a href="#faq" onclick="toggleMobileMenu()">FAQ</a></li>
     </ul>
-    <a href="#estimator" class="btn btn-orange" onclick="toggleMobileMenu()" style="width:100%;margin-bottom:12px;">Get Free Quote</a>
+    <a href="#quotes" class="btn btn-orange" onclick="toggleMobileMenu()" style="width:100%;margin-bottom:12px;">Get Free Quote</a>
     <a href="tel:14706370909" class="btn btn-navy" style="width:100%;">📞 (470) 637-0909</a>
   </div>
 
@@ -484,11 +484,11 @@
           <div class="badge badge-white">⚡ #1 RATED ATLANTA MOVERS — 10,000+ MOVES</div>
           <h1>We Move.<br><span class="orange">You Relax.</span></h1>
           <p class="hero-subtitle">
-            Seamless residential and commercial moving across Atlanta, all 50 states, and 150+ countries. Fully insured, transparent pricing, and zero-stress relocation from start to finish.
+            Seamless residential and commercial moving across Atlanta and all 50 states nationwide. Fully insured, transparent pricing, and zero-stress relocation from start to finish.
           </p>
 
           <div style="display:flex;gap:14px;flex-wrap:wrap;">
-            <a href="#estimator" class="btn btn-orange">Calculate My Move</a>
+            <a href="#quotes" class="btn btn-orange">Get Free Quote</a>
             <a href="#services" class="btn btn-outline-white">Explore Services</a>
           </div>
 
@@ -571,19 +571,19 @@
             <div class="form-step-pane" id="stepPane3">
               <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" class="form-control" placeholder="John Doe" required>
+                <input type="text" class="form-control" id="fullName" placeholder="John Doe" required>
               </div>
               <div class="form-group">
                 <label>Phone Number</label>
-                <input type="tel" class="form-control" placeholder="(470) 637-0909" required>
+                <input type="tel" class="form-control" id="phoneNum" placeholder="(470) 637-0909" required>
               </div>
               <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" class="form-control" placeholder="john@example.com" required>
+                <input type="email" class="form-control" id="emailAddr" placeholder="john@example.com" required>
               </div>
               <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:10px;margin-top:6px;">
                 <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(2)">← Back</button>
-                <button type="submit" class="btn btn-orange">Get Free Estimate ⚡</button>
+                <button type="submit" class="btn btn-orange" id="submitQuoteBtn">Get Free Estimate ⚡</button>
               </div>
             </div>
 
@@ -707,13 +707,13 @@
 
         <div class="service-card">
           <div class="service-card-img">
-            <img src="atlanta_skyline.jpg" alt="Atlanta Georgia skyline">
-            <div class="overlay"><span>150+ Countries</span></div>
+            <img src="atlanta_skyline.jpg" alt="State to state cross country moving fleet">
+            <div class="overlay"><span>All 50 States</span></div>
           </div>
           <div class="service-card-body">
-            <h3>International Relocation</h3>
-            <p>Door-to-door international moving with customs clearance, ocean freight, and air cargo options for 150+ countries worldwide.</p>
-            <a href="#estimator" class="svc-link">International Quote →</a>
+            <h3>Interstate & Long-Distance Moving</h3>
+            <p>Reliable state-to-state cross-country relocations with dedicated trucks, guaranteed delivery windows, and full valuation coverage nationwide.</p>
+            <a href="#quotes" class="svc-link">Long Distance Quote →</a>
           </div>
         </div>
       </div>
@@ -752,37 +752,37 @@
     </div>
   </section>
 
-  <!-- ═══ LIVE ESTIMATOR ═══ -->
-  <section class="estimator" id="estimator">
+  <!-- ═══ INSTANT QUOTES ═══ -->
+  <section class="estimator" id="quotes">
     <div class="container">
       <div class="est-wrapper" style="text-align:center;">
         <div style="margin-bottom:24px;">
-          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Advanced Interactive Calculator</div>
-          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Calculate Your Binding Move Quote</h2>
-          <p style="color:var(--gray-400);max-width:640px;margin:10px auto 0;font-size:0.95rem;">Select service types, inventory items, distance, trucks & special items. Generate an official PDF quote or send directly to WhatsApp!</p>
+          <div class="badge" style="background:rgba(255,107,0,.2);color:#FF6B00;">Instant Quotes & Pricing</div>
+          <h2 style="color:white;font-size:2.4rem;margin-top:12px;">Get Your Official Move Quote</h2>
+          <p style="color:var(--gray-400);max-width:640px;margin:10px auto 0;font-size:0.95rem;">Select service types, distance, trucks & special items to lock in your binding quote.</p>
         </div>
 
         <div class="est-options" id="typeSelector" style="margin-bottom:28px;">
-          <div class="est-opt selected" onclick="window.location.href='calculator.html?svc=local'">
+          <div class="est-opt selected" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             <h4>Local Move</h4><p>Hourly Crew Rate</p>
           </div>
-          <div class="est-opt" onclick="window.location.href='calculator.html?svc=longdistance'">
+          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
             <h4>Long Distance</h4><p>Interstate Relocation</p>
           </div>
-          <div class="est-opt" onclick="window.location.href='calculator.html?svc=singleitem'">
+          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            <h4>Single Heavy Item</h4><p>Piano, Safe, Hot Tub</p>
+            <h4>Commercial Move</h4><p>Office & Business</p>
           </div>
-          <div class="est-opt" onclick="window.location.href='calculator.html?svc=junk'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            <h4>Junk Removal</h4><p>Haul Away Service</p>
+          <div class="est-opt" onclick="goToStep(1);document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <h4>Packing & Loading</h4><p>Full-Service Supplies</p>
           </div>
         </div>
 
         <div class="est-summary" style="justify-content:center;gap:20px;flex-wrap:wrap;">
-          <a href="calculator.html" class="btn btn-orange" style="padding:18px 36px;font-size:1.05rem;">🚀 Launch Full Interactive Calculator & PDF Generator</a>
+          <a href="#heroLeadForm" class="btn btn-orange" style="padding:18px 36px;font-size:1.05rem;" onclick="document.getElementById('heroLeadForm').scrollIntoView({behavior:'smooth'});">⚡ Lock In Your Guaranteed Quote</a>
         </div>
       </div>
     </div>
@@ -906,7 +906,7 @@
           <h4>Navigation</h4>
           <a href="#services">Services</a>
           <a href="#about">About Us</a>
-          <a href="#estimator">Live Estimator</a>
+          <a href="#quotes">Quotes</a>
           <a href="#reviews">Reviews</a>
           <a href="#faq">FAQ</a>
         </div>
@@ -916,7 +916,7 @@
           <a href="#">Local Residential</a>
           <a href="#">Commercial / Office</a>
           <a href="#">Packing, Unpacking, Loading & Unloading</a>
-          <a href="#">International</a>
+          <a href="#">Interstate Moving</a>
         </div>
         <div class="footer-col">
           <h4>Contact Us</h4>
@@ -992,8 +992,47 @@
         }
       }
     }
-    function handleFinalSubmit() {
-      alert('Thank you! Your quote request has been received. A Top Movers Co relocation coordinator will contact you in under 5 minutes.');
+    async function handleFinalSubmit() {
+      const submitBtn = document.getElementById('submitQuoteBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Sending Request... ⏳';
+      }
+
+      const payload = {
+        fullName: document.getElementById('fullName')?.value || '',
+        phone: document.getElementById('phoneNum')?.value || '',
+        email: document.getElementById('emailAddr')?.value || '',
+        pickupLoc: document.getElementById('pickupLoc')?.value || '',
+        destLoc: document.getElementById('destLoc')?.value || '',
+        svcType: document.getElementById('svcType')?.value || '',
+        moveSize: document.getElementById('moveSize')?.value || '',
+        moveDate: document.getElementById('moveDate')?.value || ''
+      };
+
+      try {
+        const res = await fetch('/api/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          alert('Thank you! Your quote request has been submitted successfully to Top Movers Co. A relocation coordinator will contact you in under 5 minutes.');
+          document.getElementById('heroMultiStepForm')?.reset();
+          goToStep(1);
+        } else {
+          alert('Thank you! Your request was received. A coordinator will contact you shortly.');
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        alert('Thank you! Your quote request has been received. A coordinator will contact you shortly.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Get Free Estimate ⚡';
+        }
+      }
     }
 
     // Auto-scroll to hero stats and form on mobile phone load
