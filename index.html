@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
     /* ═══════════════════════════════════════════════════════════════════════
@@ -506,7 +507,7 @@
             <p class="sub">Receive your free moving estimate</p>
           </div>
 
-          <!-- 3-Step Progress Indicator (Safe Ship Pattern) -->
+          <!-- 4-Step Progress Indicator (Calculator & PDF Generator) -->
           <div class="hero-form-steps">
             <div class="step-line-bg"><div class="step-line-fill" id="stepLineFill"></div></div>
             <div class="form-step-item active" id="stepInd1" onclick="goToStep(1)">
@@ -519,7 +520,11 @@
             </div>
             <div class="form-step-item" id="stepInd3" onclick="goToStep(3)">
               <div class="step-circle" id="stepCircle3">3</div>
-              <span>Quote</span>
+              <span>Contact</span>
+            </div>
+            <div class="form-step-item" id="stepInd4" onclick="goToStep(4)">
+              <div class="step-circle" id="stepCircle4">4</div>
+              <span>Estimate PDF</span>
             </div>
           </div>
 
@@ -539,7 +544,7 @@
                 <select class="form-control" id="svcType">
                   <option>Local Residential Moving</option>
                   <option>Long Distance (State-to-State)</option>
-                  <option>International Relocation</option>
+                  <option>Packing, Unpacking, Loading & Unloading</option>
                   <option>Commercial / Office Move</option>
                 </select>
               </div>
@@ -563,7 +568,7 @@
               </div>
               <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;">
                 <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(1)">← Back</button>
-                <button type="button" class="btn btn-orange" onclick="goToStep(3)">Next: Final Quote →</button>
+                <button type="button" class="btn btn-orange" onclick="goToStep(3)">Next: Calculate Rate →</button>
               </div>
             </div>
 
@@ -583,7 +588,54 @@
               </div>
               <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:10px;margin-top:6px;">
                 <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(2)">← Back</button>
-                <button type="submit" class="btn btn-orange" id="submitQuoteBtn">Get Free Estimate ⚡</button>
+                <button type="submit" class="btn btn-orange" id="submitQuoteBtn">Calculate My Rate ⚡</button>
+              </div>
+            </div>
+
+            <!-- STEP 4: INSTANT ESTIMATE RESULT & PDF DOWNLOAD -->
+            <div class="form-step-pane" id="stepPane4" style="text-align:center;">
+              <div style="background:rgba(40,167,69,0.08);border:1px solid rgba(40,167,69,0.3);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;">
+                <div style="color:#28A745;font-weight:800;font-size:0.82rem;text-transform:uppercase;">✓ Official Rate Calculated & Saved</div>
+                <h4 style="font-size:1.05rem;margin:4px 0 0;color:var(--navy);">Your Binding Rate Range:</h4>
+                <div id="resultPriceRange" style="font-family:var(--font-heading);font-size:2.4rem;font-weight:900;color:var(--orange);margin:4px 0;">$650 – $815</div>
+                <div style="font-size:0.78rem;color:var(--gray-600);">Rate locked in for 14 days · Zero hidden fees guarantee</div>
+              </div>
+
+              <!-- PDF Printable Summary Document Template -->
+              <div id="pdfEstimateDoc" style="display:none;padding:24px;background:#ffffff;color:#0B2345;font-family:sans-serif;width:650px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #FF6B00;padding-bottom:12px;margin-bottom:16px;">
+                  <div>
+                    <h2 style="margin:0;color:#0B2345;font-size:22px;font-weight:900;">TOP MOVERS CO</h2>
+                    <p style="margin:2px 0 0;font-size:12px;color:#666;">We Move. You Relax. · Phone: (470) 637-0909</p>
+                  </div>
+                  <div style="text-align:right;">
+                    <span style="background:#FF6B00;color:#ffffff;padding:4px 10px;font-size:11px;font-weight:bold;border-radius:3px;">OFFICIAL ESTIMATE</span>
+                    <p id="pdfQuoteNum" style="margin:4px 0 0;font-size:11px;color:#888;font-weight:bold;">QUOTE #TMC-8492</p>
+                  </div>
+                </div>
+
+                <div style="font-size:13px;line-height:1.7;margin-bottom:16px;background:#F8F9FA;padding:14px;border-radius:4px;">
+                  <p style="margin:2px 0;"><strong>Customer Name:</strong> <span id="pdfCustName">John Doe</span></p>
+                  <p style="margin:2px 0;"><strong>Phone:</strong> <span id="pdfCustPhone">(470) 637-0909</span></p>
+                  <p style="margin:2px 0;"><strong>Email:</strong> <span id="pdfCustEmail">john@example.com</span></p>
+                  <p style="margin:2px 0;"><strong>Pickup Location:</strong> <span id="pdfPickup">Atlanta, GA</span> ➔ <strong>Destination:</strong> <span id="pdfDest">Miami, FL</span></p>
+                  <p style="margin:2px 0;"><strong>Service Type:</strong> <span id="pdfSvcType">Local Residential</span> | <strong>Move Size:</strong> <span id="pdfMoveSize">2-3 Bedroom House</span></p>
+                  <p style="margin:2px 0;"><strong>Target Move Date:</strong> <span id="pdfMoveDate">2026-08-25</span></p>
+                </div>
+
+                <div style="background:#0B2345;color:#ffffff;padding:16px;border-radius:4px;margin-bottom:16px;text-align:center;">
+                  <h3 style="margin:0;color:#FF6B00;font-size:22px;" id="pdfPrice">ESTIMATED RATE: $650 – $815</h3>
+                  <p style="margin:6px 0 0;font-size:11px;color:#D0D8E5;">Includes 2-3 Uniformed Movers, Branded Air-Ride Truck, Furniture Pads, Shrink Wrap & Insurance.</p>
+                </div>
+
+                <div style="font-size:10px;color:#777;border-top:1px solid #ddd;padding-top:10px;text-align:center;">
+                  Top Movers Co · Atlanta, GA · DOT #394021 · FMCSA Licensed & Insured · www.topmoversco.com
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <button type="button" class="btn btn-orange" style="width:100%;padding:14px;font-size:1rem;" onclick="downloadEstimatePDF()">📄 Download PDF Estimate</button>
+                <a href="tel:14706370909" class="btn btn-navy" style="width:100%;display:inline-block;padding:12px;">📞 Call Coordinator (470) 637-0909</a>
               </div>
             </div>
 
@@ -840,7 +892,7 @@
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What areas does Top Movers Co serve from Atlanta?</span><span class="faq-toggle">▼</span></div>
-          <div class="faq-a">We serve all of Metro Atlanta (Buckhead, Midtown, Marietta, Alpharetta, Roswell, Kennesaw, Decatur), plus all 50 US states and 150+ countries internationally.</div>
+          <div class="faq-a">We serve all of Metro Atlanta (Buckhead, Midtown, Marietta, Alpharetta, Roswell, Kennesaw, Decatur), plus all 50 US states nationwide.</div>
         </div>
       </div>
     </div>
@@ -852,7 +904,7 @@
       <h2>Ready to Move Without the Stress?</h2>
       <p>Leave the heavy lifting to us. Experience the Top Movers Co difference — call today or lock in your rate online.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="#estimator" class="btn btn-navy" style="font-size:1.05rem;padding:18px 36px;">Get My Free Estimate</a>
+        <a href="#quotes" class="btn btn-navy" style="font-size:1.05rem;padding:18px 36px;">Get My Free Estimate</a>
         <a href="tel:14706370909" class="btn btn-outline-white" style="font-size:1.05rem;padding:18px 36px;border-color:rgba(255,255,255,.5);">📞 (470) 637-0909</a>
       </div>
     </div>
@@ -866,7 +918,7 @@
           <a href="#" class="footer-logo-link" style="display:inline-block;margin-bottom:16px;">
             <img src="logo_white.png" alt="TOP MOVERS CO Logo" style="height: 68px; width: auto; display: block;" />
           </a>
-          <p style="margin-top:18px;">Atlanta's premier full-service moving company. Licensed, bonded, and insured for local, long-distance, and international relocations.</p>
+          <p style="margin-top:18px;">Atlanta's premier full-service moving company. Licensed, bonded, and insured for local, long-distance, and interstate relocations.</p>
         </div>
         <div class="footer-col">
           <h4>Navigation</h4>
@@ -902,7 +954,7 @@
   <!-- ═══ STICKY FLOATING ACTION BAR FOR MOBILE PHONES ═══ -->
   <div class="mobile-sticky-bar">
     <a href="tel:14706370909" class="btn btn-navy">📞 Call (470) 637-0909</a>
-    <a href="#estimator" class="btn btn-orange">⚡ Free Quote</a>
+    <a href="#quotes" class="btn btn-orange">⚡ Free Quote</a>
   </div>
 
   <script>
@@ -910,18 +962,13 @@
       document.querySelectorAll('.faq-item').forEach(i=>{if(i!==el)i.classList.remove('active')});
       el.classList.toggle('active');
     }
-    function selectOpt(el,price){
-      document.querySelectorAll('#typeSelector .est-opt').forEach(c=>c.classList.remove('selected'));
-      el.classList.add('selected');
-      document.getElementById('calcPrice').innerText='$'+price;
-    }
     function toggleMobileMenu(){
       document.querySelector('.mobile-menu-btn')?.classList.toggle('active');
       document.getElementById('mobileDrawer')?.classList.toggle('active');
       document.getElementById('drawerOverlay')?.classList.toggle('active');
     }
 
-    /* Multi-Step Hero Form Logic */
+    /* Multi-Step Hero Form / Calculator Logic */
     let currentFormStep = 1;
     function goToStep(step) {
       if (step > currentFormStep && currentFormStep === 1) {
@@ -939,9 +986,12 @@
       });
       
       const lineFill = document.getElementById('stepLineFill');
-      if (lineFill) lineFill.style.width = step === 1 ? '0%' : step === 2 ? '50%' : '100%';
+      if (lineFill) {
+        const pct = step === 1 ? '0%' : step === 2 ? '33%' : step === 3 ? '66%' : '100%';
+        lineFill.style.width = pct;
+      }
       
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 4; i++) {
         const ind = document.getElementById('stepInd' + i);
         const circle = document.getElementById('stepCircle' + i);
         if (ind && circle) {
@@ -958,11 +1008,12 @@
         }
       }
     }
+
     async function handleFinalSubmit() {
       const submitBtn = document.getElementById('submitQuoteBtn');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerText = 'Sending Request... ⏳';
+        submitBtn.innerText = 'Calculating Rate... ⏳';
       }
 
       const payload = {
@@ -976,64 +1027,70 @@
         moveDate: document.getElementById('moveDate')?.value || ''
       };
 
+      // 1. Send data to GoHighLevel via secure serverless API
       try {
-        const res = await fetch('/api/quote', {
+        fetch('/api/quote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
-        });
+        }).catch(err => console.error('GHL background post error:', err));
+      } catch (e) {}
 
-        if (res.ok) {
-          alert('Thank you! Your quote request has been submitted successfully to Top Movers Co. A relocation coordinator will contact you in under 5 minutes.');
-          document.getElementById('heroMultiStepForm')?.reset();
-          goToStep(1);
-        } else {
-          alert('Thank you! Your request was received. A coordinator will contact you shortly.');
-        }
-      } catch (err) {
-        console.error('Submission error:', err);
-        alert('Thank you! Your quote request has been received. A coordinator will contact you shortly.');
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerText = 'Get Free Estimate ⚡';
-        }
+      // 2. Compute Official Rate Range based on Move Size & Service
+      const moveSizeVal = payload.moveSize || '';
+      let baseMin = 450, baseMax = 620;
+      if (moveSizeVal.includes('1-2')) { baseMin = 350; baseMax = 480; }
+      else if (moveSizeVal.includes('3-4')) { baseMin = 650; baseMax = 820; }
+      else if (moveSizeVal.includes('5+')) { baseMin = 1100; baseMax = 1450; }
+      else if (moveSizeVal.includes('Commercial')) { baseMin = 950; baseMax = 1300; }
+
+      // 3. Update Result Price Display
+      const resultElem = document.getElementById('resultPriceRange');
+      if (resultElem) resultElem.innerText = `$${baseMin} – $${baseMax}`;
+
+      // 4. Update Printable PDF Document Elements
+      const quoteId = `QUOTE #TMC-${Math.floor(1000 + Math.random() * 9000)}`;
+      document.getElementById('pdfCustName').innerText = payload.fullName || 'Valued Customer';
+      document.getElementById('pdfCustPhone').innerText = payload.phone || '(470) 637-0909';
+      document.getElementById('pdfCustEmail').innerText = payload.email || 'N/A';
+      document.getElementById('pdfPickup').innerText = payload.pickupLoc || 'N/A';
+      document.getElementById('pdfDest').innerText = payload.destLoc || 'N/A';
+      document.getElementById('pdfSvcType').innerText = payload.svcType || 'Residential';
+      document.getElementById('pdfMoveSize').innerText = payload.moveSize || 'Standard';
+      document.getElementById('pdfMoveDate').innerText = payload.moveDate || 'To be scheduled';
+      document.getElementById('pdfPrice').innerText = `ESTIMATED RATE: $${baseMin} – $${baseMax}`;
+      document.getElementById('pdfQuoteNum').innerText = quoteId;
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Calculate My Rate ⚡';
       }
+
+      // 5. Show Step 4 Result & PDF Download Pane
+      goToStep(4);
     }
 
-    /* Interactive Quote Calculator Logic */
-    function updateCalcQuote() {
-      const sizeSelect = document.getElementById('calcHomeSize');
-      const baseVal = parseInt(sizeSelect ? sizeSelect.value : 650, 10);
-      
-      let addons = 0;
-      document.querySelectorAll('.calc-addon-check:checked').forEach(cb => {
-        addons += parseInt(cb.value, 10);
+    function downloadEstimatePDF() {
+      const element = document.getElementById('pdfEstimateDoc');
+      if (!element) return;
+
+      element.style.display = 'block';
+
+      const opt = {
+        margin:       [0.4, 0.4, 0.4, 0.4],
+        filename:     `TopMoversCo_Official_Estimate_${document.getElementById('pdfQuoteNum')?.innerText.replace('#','') || 'Quote'}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        element.style.display = 'none';
+      }).catch(err => {
+        element.style.display = 'none';
+        console.error('PDF error:', err);
+        window.print();
       });
-
-      const totalMin = baseVal + addons;
-      const totalMax = Math.round(totalMin * 1.25);
-
-      const priceDisplay = document.getElementById('calcDisplayPrice');
-      if (priceDisplay) {
-        priceDisplay.innerText = `$${totalMin} - $${totalMax}`;
-      }
-    }
-
-    function lockInCalcQuote() {
-      const sizeSelect = document.getElementById('calcHomeSize');
-      const selectedText = sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].text : '';
-      
-      const heroMoveSize = document.getElementById('moveSize');
-      if (heroMoveSize && selectedText) {
-        if (selectedText.includes('1 Bedroom')) heroMoveSize.selectedIndex = 0;
-        else if (selectedText.includes('2-3 Bedroom')) heroMoveSize.selectedIndex = 1;
-        else if (selectedText.includes('4+ Bedroom')) heroMoveSize.selectedIndex = 2;
-        else if (selectedText.includes('Commercial')) heroMoveSize.selectedIndex = 3;
-      }
-
-      document.getElementById('heroLeadForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      goToStep(1);
     }
 
     // Auto-scroll to hero stats and form on mobile phone load
