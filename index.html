@@ -1124,25 +1124,49 @@
         moveNotes: moveNotesVal
       };
 
-      // 1. Calculate Movers, Hours, Labor, Truck & Add-ons (Itemized Breakdown)
-      const moveSizeVal = payload.moveSize || '';
+      // 1. Calculate Movers, Hours, Labor & Truck (Synced 1:1 with reference movingquote.netlify.app)
+      const svcTypeVal = payload.svcType || 'Local Residential Moving';
+      const moveSizeVal = payload.moveSize || '1-2 Bedroom Apartment';
+
       let numMovers = 2;
       let estHours = 2.5;
+      let hourlyRate = 60; // Default Local rate: $60/hr/mover
       let truckCost = 150;
       let truckDesc = 'Truck (Small – under 20ft)';
 
-      if (moveSizeVal.includes('1-2')) {
-        numMovers = 2; estHours = 2.5; truckCost = 150; truckDesc = 'Truck (Small – under 20ft)';
-      } else if (moveSizeVal.includes('3-4')) {
-        numMovers = 3; estHours = 4.0; truckCost = 240; truckDesc = 'Truck (Large Air-Ride – 26ft)';
-      } else if (moveSizeVal.includes('5+')) {
-        numMovers = 4; estHours = 6.0; truckCost = 280; truckDesc = 'Truck Fleet (2× Air-Ride 26ft)';
-      } else if (moveSizeVal.includes('Commercial')) {
-        numMovers = 4; estHours = 5.0; truckCost = 250; truckDesc = 'Commercial Fleet Truck (26ft)';
+      // Service rate rules from reference app
+      if (svcTypeVal.includes('Long Distance')) {
+        hourlyRate = 75; // Long distance: $75/hr/mover
+        truckCost = 200;
+        truckDesc = 'Truck (Large Air-Ride – 20ft+)';
+      } else if (svcTypeVal.includes('Packing') || svcTypeVal.includes('Loading')) {
+        hourlyRate = 60; // Labor only: $60/hr/mover
+        truckCost = 0;
+        truckDesc = 'Labor Only (No Truck Required)';
+      } else if (svcTypeVal.includes('Commercial')) {
+        hourlyRate = 75; // Commercial: $75/hr/mover
+        truckCost = 250;
+        truckDesc = 'Commercial Fleet Truck (26ft)';
       }
 
-      const hourlyRate = 60; // $60 per hour per mover
-      const laborTotal = numMovers * estHours * hourlyRate; // e.g. 2 x 2.5 x 60 = $300
+      // Move Size Movers & Hours ratios
+      if (moveSizeVal.includes('1-2')) {
+        numMovers = 2; estHours = 2.5;
+        if (truckCost > 0 && !svcTypeVal.includes('Long Distance') && !svcTypeVal.includes('Commercial')) {
+          truckCost = 150; truckDesc = 'Truck (Small – under 20ft)';
+        }
+      } else if (moveSizeVal.includes('3-4')) {
+        numMovers = 3; estHours = 4.0;
+        if (truckCost > 0) { truckCost = 200; truckDesc = 'Truck (Large Air-Ride – 20ft+)'; }
+      } else if (moveSizeVal.includes('5+')) {
+        numMovers = 4; estHours = 6.0;
+        if (truckCost > 0) { truckCost = 250; truckDesc = 'Truck Fleet (2× Air-Ride 26ft)'; }
+      } else if (moveSizeVal.includes('Commercial')) {
+        numMovers = 4; estHours = 5.0;
+        if (truckCost > 0) { truckCost = 250; truckDesc = 'Commercial Fleet Truck (26ft)'; }
+      }
+
+      const laborTotal = numMovers * estHours * hourlyRate; // e.g. 2 movers x 2.5 hrs x $60 = $300
 
       // Specialty Add-ons Calculation
       let addonsTotal = 0;
