@@ -614,14 +614,19 @@
                 <label>Email Address</label>
                 <input type="email" class="form-control" id="emailAddr" placeholder="john@example.com" required>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:10px;margin-top:6px;">
-                <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(2)">← Back</button>
-                <button type="submit" class="btn btn-orange" id="submitQuoteBtn">Calculate My Rate ⚡</button>
+              <!-- Mandatory Twilio A2P 10DLC & TCPA SMS Consent Checkbox -->
+              <div style="font-size:0.75rem;color:var(--navy);margin-top:12px;line-height:1.4;text-align:left;background:#F8FAFC;padding:10px 12px;border-radius:6px;border:1px solid #CBD5E1;">
+                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-weight:400;color:var(--navy);margin:0;">
+                  <input type="checkbox" id="a2pConsent" required style="width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--orange);">
+                  <span>
+                    I agree to receive SMS text messages and calls from Top Movers Co regarding my estimate, scheduling, and service updates. Message frequency varies. Message and data rates may apply. Reply STOP to cancel at any time, or HELP for help. Consent is not a condition of purchase. View our <a href="/privacy" target="_blank" style="color:var(--orange);text-decoration:underline;font-weight:700;">Privacy Policy</a> &amp; <a href="/terms" target="_blank" style="color:var(--orange);text-decoration:underline;font-weight:700;">Terms of Use</a>.
+                  </span>
+                </label>
               </div>
 
-              <!-- Mandatory Twilio A2P 10DLC & TCPA SMS Consent Disclaimer -->
-              <div style="font-size:0.73rem;color:var(--gray-600);margin-top:12px;line-height:1.4;text-align:left;background:rgba(255,255,255,0.7);padding:8px 10px;border-radius:4px;border:1px solid #E2E8F0;">
-                🔒 By submitting, you consent to receive text messages (SMS) & calls from Top Movers Co regarding your estimate. Msg & data rates may apply. Reply STOP to cancel or HELP for help. View our <a href="privacy" target="_blank" style="color:var(--orange);text-decoration:underline;font-weight:600;">Privacy Policy</a> & <a href="terms" target="_blank" style="color:var(--orange);text-decoration:underline;font-weight:600;">Terms of Use</a>.
+              <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:10px;margin-top:10px;">
+                <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(2)">← Back</button>
+                <button type="submit" class="btn btn-orange" id="submitQuoteBtn">Calculate My Rate ⚡</button>
               </div>
             </div>
 
@@ -1039,7 +1044,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>&copy; 2026 TOP MOVERS CO. All rights reserved. | <a href="privacy" style="color:rgba(255,255,255,0.7);text-decoration:underline;">Privacy Policy</a> | <a href="terms" style="color:rgba(255,255,255,0.7);text-decoration:underline;">Terms of Use</a></div>
+        <div>&copy; 2026 TOP MOVERS CO. All rights reserved. | <a href="/privacy" style="color:rgba(255,255,255,0.7);text-decoration:underline;">Privacy Policy</a> | <a href="/terms" style="color:rgba(255,255,255,0.7);text-decoration:underline;">Terms of Use</a></div>
         <div style="font-weight:800;color:var(--orange);letter-spacing:1px;">A TCE GROUP COMPANY</div>
       </div>
     </div>
@@ -1104,6 +1109,13 @@
     }
 
     async function handleFinalSubmit() {
+      const consentCheckbox = document.getElementById('a2pConsent');
+      if (consentCheckbox && !consentCheckbox.checked) {
+        alert('Please check the SMS consent box to receive your quote estimate.');
+        consentCheckbox.reportValidity();
+        return;
+      }
+
       const submitBtn = document.getElementById('submitQuoteBtn');
       if (submitBtn) {
         submitBtn.disabled = true;
