@@ -574,16 +574,16 @@
                 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.8rem;color:var(--navy);">
                   <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
-                    <input type="checkbox" id="addonPiano" value="150"> 🎹 Piano Move (+$150)
+                    <input type="checkbox" id="addonPiano" value="200"> 🎹 Piano Move (+$200)
                   </label>
                   <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
-                    <input type="checkbox" id="addonSafe" value="120"> 🛡️ Heavy Safe (+$120)
+                    <input type="checkbox" id="addonSafe" value="150"> 🛡️ Heavy Safe (+$150)
                   </label>
                   <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
-                    <input type="checkbox" id="addonPoolTable" value="150"> 🎱 Pool Table (+$150)
+                    <input type="checkbox" id="addonPoolTable" value="200"> 🎱 Pool Table (+$200)
                   </label>
                   <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
-                    <input type="checkbox" id="addonAssembly" value="100"> 🛠️ Assembly (+$100)
+                    <input type="checkbox" id="addonAssembly" value="75"> 🛠️ Assembly (+$75)
                   </label>
                 </div>
               </div>
@@ -1168,25 +1168,25 @@
 
       const laborTotal = numMovers * estHours * hourlyRate; // e.g. 2 movers x 2.5 hrs x $60 = $300
 
-      // Specialty Add-ons Calculation
+      // Specialty Add-ons Calculation (User Official Parameters)
       let addonsTotal = 0;
       const addonRows = [];
 
       if (document.getElementById('addonPiano')?.checked) {
-        addonsTotal += 150;
-        addonRows.push({ desc: 'Piano Moving (Upright/Grand)', qty: 1, unit: 150, total: 150 });
+        addonsTotal += 200;
+        addonRows.push({ desc: 'Piano Moving (Upright/Grand)', qty: 1, unit: 200, total: 200 });
       }
       if (document.getElementById('addonSafe')?.checked) {
-        addonsTotal += 120;
-        addonRows.push({ desc: 'Heavy Safe / Gun Safe Handling', qty: 1, unit: 120, total: 120 });
+        addonsTotal += 150;
+        addonRows.push({ desc: 'Heavy Safe / Gun Safe Handling', qty: 1, unit: 150, total: 150 });
       }
       if (document.getElementById('addonPoolTable')?.checked) {
-        addonsTotal += 150;
-        addonRows.push({ desc: 'Pool Table Assembly & Relocation', qty: 1, unit: 150, total: 150 });
+        addonsTotal += 200;
+        addonRows.push({ desc: 'Pool Table Assembly & Relocation', qty: 1, unit: 200, total: 200 });
       }
       if (document.getElementById('addonAssembly')?.checked) {
-        addonsTotal += 100;
-        addonRows.push({ desc: 'Assembly / Disassembly (2 items × $50)', qty: 1, unit: 100, total: 100 });
+        addonsTotal += 75;
+        addonRows.push({ desc: 'Assembly / Disassembly Service', qty: 1, unit: 75, total: 75 });
       }
 
       const estimatedTotal = laborTotal + truckCost + addonsTotal;
