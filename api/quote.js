@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { fullName, phone, email, pickupLoc, destLoc, svcType, moveSize, moveDate } = body;
+    const { fullName, phone, email, pickupLoc, destLoc, svcType, moveSize, moveDate, monetaryValue, moveNotes } = body;
 
     if (!fullName || !phone) {
       return res.status(400).json({ error: 'Name and phone are required' });
@@ -23,15 +23,25 @@ module.exports = async (req, res) => {
     // Secure server-side GHL credentials
     const token = process.env.GHL_TOKEN || 'pit-5ec543a1-1d1b-4f5e-bb4a-aa495fa61096';
     const locationId = 'HjbOI2dRDzCa7UDvD8Ip';
-    const pipelineId = 'ZQKBG4nphdYwcmPArzWa'; // Atlanta Pipeline
+    const pipelineId = 'ZQKBG4nphdYwcmPArzWa'; // Atlanta Pipeline (Top Movers Co)
     const stageId = '05b142f0-4463-42c3-a9a6-1e01437469bd'; // Nuevo Lead Stage
 
     const nameParts = fullName.trim().split(' ');
     const firstName = nameParts[0] || fullName;
     const lastName = nameParts.slice(1).join(' ') || '';
 
-    // 1. Create / Upsert Contact in GHL
-    const contactRes = await fetch('https://services.leadconnectorhq.com/contacts/', {
+    // Format phone number cleanly to E.164 (+1XXXXXXXXXX)
+    let cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length === 10) {
+      cleanPhone = `+1${cleanPhone}`;
+    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) {
+      cleanPhone = `+${cleanPhone}`;
+    } else if (cleanPhone.length > 0 && !cleanPhone.startsWith('+')) {
+      cleanPhone = `+${cleanPhone}`;
+    }
+
+    // 1. Upsert Contact in GHL (Using /contacts/upsert)
+    const contactRes = await fetch('https://services.leadconnectorhq.com/contacts/upsert', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -43,18 +53,30 @@ module.exports = async (req, res) => {
         firstName: firstName,
         lastName: lastName,
         name: fullName,
-        email: email || '',
-        phone: phone,
+        email: email || undefined,
+        phone: cleanPhone,
         tags: ['Website Quote Lead', 'Top Movers Co']
       })
     });
 
     const contactData = await contactRes.json();
-    const contactId = contactData?.contact?.id;
+    let contactId = contactData?.contact?.id || contactData?.id;
 
-    // 2. Create Opportunity in Atlanta Pipeline under 'Nuevo Lead' stage
+    // 2. Create Opportunity in Atlanta Pipeline under 'Nuevo Lead' stage with monetaryValue
     let oppData = null;
+    const calculatedValue = parseFloat(monetaryValue) || 490;
+
     if (contactId) {
+      const oppPayload = {
+        pipelineId: pipelineId,
+        locationId: locationId,
+        name: `${fullName} - ${svcType || 'Move Quote'} ($${calculatedValue})`,
+        pipelineStageId: stageId,
+        status: 'open',
+        monetaryValue: calculatedValue,
+        contactId: contactId
+      };
+
       const oppRes = await fetch('https://services.leadconnectorhq.com/opportunities/', {
         method: 'POST',
         headers: {
@@ -62,14 +84,7 @@ module.exports = async (req, res) => {
           'Version': '2021-07-28',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          pipelineId: pipelineId,
-          locationId: locationId,
-          name: `${fullName} - ${svcType || 'Move Quote'}`,
-          pipelineStageId: stageId,
-          status: 'open',
-          contactId: contactId
-        })
+        body: JSON.stringify(oppPayload)
       });
       oppData = await oppRes.json();
     }
@@ -78,7 +93,8 @@ module.exports = async (req, res) => {
       success: true,
       message: 'Quote request processed successfully',
       contactId: contactId,
-      opportunityId: oppData?.opportunity?.id
+      opportunityId: oppData?.opportunity?.id,
+      monetaryValue: calculatedValue
     });
   } catch (err) {
     console.error('API Quote error:', err);

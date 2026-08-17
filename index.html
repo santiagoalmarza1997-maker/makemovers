@@ -551,22 +551,50 @@
               <button type="button" class="btn btn-orange" style="width:100%;margin-top:6px;" onclick="goToStep(2)">Next: Move Details →</button>
             </div>
 
-            <!-- STEP 2: DETAILS -->
+            <!-- STEP 2: DETAILS, SPECIALTY ITEMS & NOTES -->
             <div class="form-step-pane" id="stepPane2">
               <div class="form-group">
                 <label>Move Size</label>
                 <select class="form-control" id="moveSize">
-                  <option>1-2 Bedroom Apartment</option>
-                  <option>3-4 Bedroom House</option>
-                  <option>5+ Bedroom Executive Home</option>
-                  <option>Commercial Office</option>
+                  <option>1-2 Bedroom Apartment (2 Movers · ~2.5 hrs)</option>
+                  <option>3-4 Bedroom House (3 Movers · ~4 hrs)</option>
+                  <option>5+ Bedroom Executive Home (4 Movers · ~6 hrs)</option>
+                  <option>Commercial Office (4 Movers · ~5 hrs)</option>
                 </select>
               </div>
+
               <div class="form-group">
                 <label>Target Move Date</label>
                 <input type="date" class="form-control" id="moveDate" required>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;">
+
+              <!-- Specialty Items / Add-ons -->
+              <div class="form-group" style="margin-top:12px;">
+                <label style="font-weight:700;font-size:0.82rem;color:var(--orange);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">Specialty Items & Services (Optional)</label>
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.8rem;color:var(--navy);">
+                  <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
+                    <input type="checkbox" id="addonPiano" value="150"> 🎹 Piano Move (+$150)
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
+                    <input type="checkbox" id="addonSafe" value="120"> 🛡️ Heavy Safe (+$120)
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
+                    <input type="checkbox" id="addonPoolTable" value="150"> 🎱 Pool Table (+$150)
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;background:#F8FAFC;padding:8px 10px;border-radius:4px;border:1px solid #CBD5E1;cursor:pointer;">
+                    <input type="checkbox" id="addonAssembly" value="100"> 🛠️ Assembly (+$100)
+                  </label>
+                </div>
+              </div>
+
+              <!-- Customer Inventory Notes -->
+              <div class="form-group" style="margin-top:10px;">
+                <label style="font-weight:700;font-size:0.82rem;color:var(--navy);display:block;margin-bottom:4px;">Special Furniture / Inventory Notes</label>
+                <textarea id="moveNotes" class="form-control" rows="2" style="font-size:0.82rem;padding:8px;" placeholder="List heavy items (e.g. sectional sofa, marble table, stairs at pickup...)"></textarea>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:10px;">
                 <button type="button" class="btn btn-navy" style="padding:12px 14px;" onclick="goToStep(1)">← Back</button>
                 <button type="button" class="btn btn-orange" onclick="goToStep(3)">Next: Calculate Rate →</button>
               </div>
@@ -597,44 +625,103 @@
               </div>
             </div>
 
-            <!-- STEP 4: INSTANT ESTIMATE RESULT & PDF DOWNLOAD -->
+            <!-- STEP 4: INSTANT ESTIMATE RESULT & OFFICIAL PDF INVOICE -->
             <div class="form-step-pane" id="stepPane4" style="text-align:center;">
               <div style="background:rgba(40,167,69,0.08);border:1px solid rgba(40,167,69,0.3);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;">
-                <div style="color:#28A745;font-weight:800;font-size:0.82rem;text-transform:uppercase;">✓ Official Rate Calculated & Saved</div>
-                <h4 style="font-size:1.05rem;margin:4px 0 0;color:var(--navy);">Your Binding Rate Range:</h4>
-                <div id="resultPriceRange" style="font-family:var(--font-heading);font-size:2.4rem;font-weight:900;color:var(--orange);margin:4px 0;">$650 – $815</div>
-                <div style="font-size:0.78rem;color:var(--gray-600);">Rate locked in for 14 days · Zero hidden fees guarantee</div>
+                <div style="color:#28A745;font-weight:800;font-size:0.82rem;text-transform:uppercase;">✓ Official Estimate Calculated & Saved</div>
+                <h4 style="font-size:1.05rem;margin:4px 0 0;color:var(--navy);">Your Estimated Total:</h4>
+                <div id="resultPriceRange" style="font-family:var(--font-heading);font-size:2.6rem;font-weight:900;color:var(--orange);margin:4px 0;">$490</div>
+                <div id="resultMoversHours" style="font-size:0.85rem;color:var(--navy);font-weight:700;">2 Movers × 2.5 Hours ($60/hr) + Truck</div>
               </div>
 
-              <!-- PDF Printable Summary Document Template -->
-              <div id="pdfEstimateDoc" style="display:none;padding:24px;background:#ffffff;color:#0B2345;font-family:sans-serif;width:650px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #FF6B00;padding-bottom:12px;margin-bottom:16px;">
-                  <div>
-                    <h2 style="margin:0;color:#0B2345;font-size:22px;font-weight:900;">TOP MOVERS CO</h2>
-                    <p style="margin:2px 0 0;font-size:12px;color:#666;">We Move. You Relax. · Phone: (470) 637-0909</p>
+              <!-- PDF Printable Summary Document Template (1:1 Port City Reference Design) -->
+              <div id="pdfEstimateDoc" style="display:none;padding:32px;background:#ffffff;color:#0B2345;font-family:'Plus Jakarta Sans',sans-serif;width:750px;margin:0 auto;text-align:left;">
+                
+                <!-- Header with Official Logo -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:3px solid #0B2345;margin-bottom:24px;">
+                  <div style="display:flex;align-items:center;gap:16px;">
+                    <img src="logo_transparent.png" style="height:65px;width:auto;object-fit:contain;" alt="TOP MOVERS CO Logo">
+                    <div>
+                      <h2 style="margin:0;color:#0B2345;font-size:22px;font-weight:900;letter-spacing:-0.5px;">Top Movers Co.</h2>
+                      <p style="margin:3px 0 0;font-size:12px;color:#555;">📞 (470) 637-0909</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#555;">✉ info@movemakers.com</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#555;">📍 Atlanta, GA — Nationwide Service</p>
+                    </div>
                   </div>
                   <div style="text-align:right;">
-                    <span style="background:#FF6B00;color:#ffffff;padding:4px 10px;font-size:11px;font-weight:bold;border-radius:3px;">OFFICIAL ESTIMATE</span>
-                    <p id="pdfQuoteNum" style="margin:4px 0 0;font-size:11px;color:#888;font-weight:bold;">QUOTE #TMC-8492</p>
+                    <h2 style="margin:0;color:#0B2345;font-size:24px;font-weight:900;letter-spacing:1px;">ESTIMATE</h2>
+                    <p id="pdfQuoteNum" style="margin:4px 0 0;font-size:13px;color:#666;font-weight:700;"># TMC-064220</p>
+                    <p id="pdfQuoteDate" style="margin:2px 0 0;font-size:12px;color:#888;">August 17, 2026</p>
                   </div>
                 </div>
 
-                <div style="font-size:13px;line-height:1.7;margin-bottom:16px;background:#F8F9FA;padding:14px;border-radius:4px;">
-                  <p style="margin:2px 0;"><strong>Customer Name:</strong> <span id="pdfCustName">John Doe</span></p>
-                  <p style="margin:2px 0;"><strong>Phone:</strong> <span id="pdfCustPhone">(470) 637-0909</span></p>
-                  <p style="margin:2px 0;"><strong>Email:</strong> <span id="pdfCustEmail">john@example.com</span></p>
-                  <p style="margin:2px 0;"><strong>Pickup Location:</strong> <span id="pdfPickup">Atlanta, GA</span> ➔ <strong>Destination:</strong> <span id="pdfDest">Miami, FL</span></p>
-                  <p style="margin:2px 0;"><strong>Service Type:</strong> <span id="pdfSvcType">Local Residential</span> | <strong>Move Size:</strong> <span id="pdfMoveSize">2-3 Bedroom House</span></p>
-                  <p style="margin:2px 0;"><strong>Target Move Date:</strong> <span id="pdfMoveDate">2026-08-25</span></p>
+                <!-- Client & Move Details Grid -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;background:#F8FAFC;padding:16px;border-radius:6px;">
+                  <div>
+                    <div style="font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">CLIENT</div>
+                    <p style="margin:0;font-size:15px;font-weight:800;color:#0B2345;" id="pdfCustName">Santiago Araujo</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#444;" id="pdfCustPhone">(470) 637-0909</p>
+                    <p style="margin:2px 0 0;font-size:13px;color:#444;" id="pdfCustEmail">santiago@gmail.com</p>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">MOVE DETAILS</div>
+                    <p style="margin:0;font-size:13px;color:#333;"><strong>Service:</strong> <span id="pdfSvcType">Local Move</span></p>
+                    <p style="margin:3px 0 0;font-size:13px;color:#333;"><strong>Date:</strong> <span id="pdfMoveDate">2026-08-19</span></p>
+                    <p style="margin:3px 0 0;font-size:13px;color:#333;"><strong>Home Size:</strong> <span id="pdfMoveSize">2 Bedrooms</span></p>
+                    <p style="margin:3px 0 0;font-size:13px;color:#333;"><strong>From:</strong> <span id="pdfPickup">Marietta, GA</span></p>
+                    <p style="margin:3px 0 0;font-size:13px;color:#333;"><strong>To:</strong> <span id="pdfDest">Forest Park, GA</span></p>
+                  </div>
                 </div>
 
-                <div style="background:#0B2345;color:#ffffff;padding:16px;border-radius:4px;margin-bottom:16px;text-align:center;">
-                  <h3 style="margin:0;color:#FF6B00;font-size:22px;" id="pdfPrice">ESTIMATED RATE: $650 – $815</h3>
-                  <p style="margin:6px 0 0;font-size:11px;color:#D0D8E5;">Includes 2-3 Uniformed Movers, Branded Air-Ride Truck, Furniture Pads, Shrink Wrap & Insurance.</p>
+                <!-- Itemized Description Table -->
+                <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+                  <thead>
+                    <tr style="background:#0B2345;color:#ffffff;font-size:11px;text-transform:uppercase;letter-spacing:1px;">
+                      <th style="padding:10px 14px;text-align:left;">DESCRIPTION</th>
+                      <th style="padding:10px 14px;text-align:center;">QTY</th>
+                      <th style="padding:10px 14px;text-align:right;">UNIT PRICE</th>
+                      <th style="padding:10px 14px;text-align:right;">TOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pdfTableBody" style="font-size:13px;color:#333;">
+                    <!-- Dynamic Rows inserted via JS -->
+                  </tbody>
+                </table>
+
+                <!-- Estimated Total Bar -->
+                <div style="background:#F0F4FA;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #0B2345;margin-bottom:20px;">
+                  <span style="font-size:14px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;">ESTIMATED TOTAL</span>
+                  <span style="font-size:24px;font-weight:900;color:#0B2345;" id="pdfTotalAmount">$490</span>
                 </div>
 
-                <div style="font-size:10px;color:#777;border-top:1px solid #ddd;padding-top:10px;text-align:center;">
-                  Top Movers Co · Atlanta, GA · DOT #394021 · FMCSA Licensed & Insured · www.topmoversco.com
+                <!-- Customer Inventory Notes Section (If provided) -->
+                <div id="pdfNotesContainer" style="background:#FFF9F5;border:1px solid #FFE0CC;padding:12px 16px;border-radius:4px;margin-bottom:20px;display:none;">
+                  <div style="font-size:11px;font-weight:800;color:#FF6B00;text-transform:uppercase;letter-spacing:0.5px;">CUSTOMER INVENTORY NOTES</div>
+                  <p id="pdfNotesText" style="margin:4px 0 0;font-size:12px;color:#444;white-space:pre-wrap;"></p>
+                </div>
+
+                <!-- Includes & Payment Methods Boxes -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#F8FAFC;padding:16px;border-radius:6px;margin-bottom:20px;font-size:12px;line-height:1.8;">
+                  <div>
+                    <div style="font-size:11px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">INCLUDES</div>
+                    <div>✓ Basic cargo valuation insurance</div>
+                    <div>✓ Protection materials & furniture pads</div>
+                    <div>✓ Professional uniformed crew</div>
+                    <div>✓ Top Movers Co. guaranteed service</div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">PAYMENT METHODS</div>
+                    <div>✓ Cash / Cashier's Check</div>
+                    <div>✓ Zelle / Venmo / Bank Transfer</div>
+                    <div>✓ Credit / Debit Card</div>
+                    <div>✓ Due upon completion</div>
+                  </div>
+                </div>
+
+                <!-- Fine Print Disclaimers -->
+                <div style="font-size:10px;color:#777;line-height:1.5;border-top:1px solid #E2E8F0;padding-top:10px;">
+                  <p style="margin:0 0 4px;"><strong>Minimum charge:</strong> 2 hours labor. <strong>Overtime Policy:</strong> After the first 15 minutes into the next hour, a full additional hour is charged. Estimated hours may adjust on service day based on actual volume.</p>
+                  <p style="margin:0;">This estimate is not a binding contract. Final price may vary based on actual hours, distance, and additional services requested on the day of the move. Licensed & Insured · DOT #394021 · FMCSA Certified.</p>
                 </div>
               </div>
 
@@ -1023,6 +1110,8 @@
         submitBtn.innerText = 'Calculating Rate... ⏳';
       }
 
+      const moveNotesVal = document.getElementById('moveNotes')?.value || '';
+
       const payload = {
         fullName: document.getElementById('fullName')?.value || '',
         phone: document.getElementById('phoneNum')?.value || '',
@@ -1031,10 +1120,55 @@
         destLoc: document.getElementById('destLoc')?.value || '',
         svcType: document.getElementById('svcType')?.value || '',
         moveSize: document.getElementById('moveSize')?.value || '',
-        moveDate: document.getElementById('moveDate')?.value || ''
+        moveDate: document.getElementById('moveDate')?.value || '',
+        moveNotes: moveNotesVal
       };
 
-      // 1. Send data to GoHighLevel via secure serverless API
+      // 1. Calculate Movers, Hours, Labor, Truck & Add-ons (Itemized Breakdown)
+      const moveSizeVal = payload.moveSize || '';
+      let numMovers = 2;
+      let estHours = 2.5;
+      let truckCost = 150;
+      let truckDesc = 'Truck (Small – under 20ft)';
+
+      if (moveSizeVal.includes('1-2')) {
+        numMovers = 2; estHours = 2.5; truckCost = 150; truckDesc = 'Truck (Small – under 20ft)';
+      } else if (moveSizeVal.includes('3-4')) {
+        numMovers = 3; estHours = 4.0; truckCost = 240; truckDesc = 'Truck (Large Air-Ride – 26ft)';
+      } else if (moveSizeVal.includes('5+')) {
+        numMovers = 4; estHours = 6.0; truckCost = 280; truckDesc = 'Truck Fleet (2× Air-Ride 26ft)';
+      } else if (moveSizeVal.includes('Commercial')) {
+        numMovers = 4; estHours = 5.0; truckCost = 250; truckDesc = 'Commercial Fleet Truck (26ft)';
+      }
+
+      const hourlyRate = 60; // $60 per hour per mover
+      const laborTotal = numMovers * estHours * hourlyRate; // e.g. 2 x 2.5 x 60 = $300
+
+      // Specialty Add-ons Calculation
+      let addonsTotal = 0;
+      const addonRows = [];
+
+      if (document.getElementById('addonPiano')?.checked) {
+        addonsTotal += 150;
+        addonRows.push({ desc: 'Piano Moving (Upright/Grand)', qty: 1, unit: 150, total: 150 });
+      }
+      if (document.getElementById('addonSafe')?.checked) {
+        addonsTotal += 120;
+        addonRows.push({ desc: 'Heavy Safe / Gun Safe Handling', qty: 1, unit: 120, total: 120 });
+      }
+      if (document.getElementById('addonPoolTable')?.checked) {
+        addonsTotal += 150;
+        addonRows.push({ desc: 'Pool Table Assembly & Relocation', qty: 1, unit: 150, total: 150 });
+      }
+      if (document.getElementById('addonAssembly')?.checked) {
+        addonsTotal += 100;
+        addonRows.push({ desc: 'Assembly / Disassembly (2 items × $50)', qty: 1, unit: 100, total: 100 });
+      }
+
+      const estimatedTotal = laborTotal + truckCost + addonsTotal;
+      payload.monetaryValue = estimatedTotal;
+
+      // 2. Send data to GoHighLevel via secure serverless API (Pass monetaryValue for GHL pipeline value)
       try {
         fetch('/api/quote', {
           method: 'POST',
@@ -1043,30 +1177,69 @@
         }).catch(err => console.error('GHL background post error:', err));
       } catch (e) {}
 
-      // 2. Compute Official Rate Range based on Move Size & Service
-      const moveSizeVal = payload.moveSize || '';
-      let baseMin = 450, baseMax = 620;
-      if (moveSizeVal.includes('1-2')) { baseMin = 350; baseMax = 480; }
-      else if (moveSizeVal.includes('3-4')) { baseMin = 650; baseMax = 820; }
-      else if (moveSizeVal.includes('5+')) { baseMin = 1100; baseMax = 1450; }
-      else if (moveSizeVal.includes('Commercial')) { baseMin = 950; baseMax = 1300; }
-
-      // 3. Update Result Price Display
+      // 3. Update Result Price & Movers/Hours Display in Form
       const resultElem = document.getElementById('resultPriceRange');
-      if (resultElem) resultElem.innerText = `$${baseMin} – $${baseMax}`;
+      if (resultElem) resultElem.innerText = `$${estimatedTotal}`;
 
-      // 4. Update Printable PDF Document Elements
-      const quoteId = `QUOTE #TMC-${Math.floor(1000 + Math.random() * 9000)}`;
+      const moversHoursElem = document.getElementById('resultMoversHours');
+      if (moversHoursElem) moversHoursElem.innerText = `${numMovers} Movers × ${estHours} Hours ($${hourlyRate}/hr) + ${truckDesc}`;
+
+      // 4. Update Printable PDF Document Elements & Itemized Table
+      const quoteId = `QUOTE # TMC-${Math.floor(100000 + Math.random() * 900000)}`;
+      const todayStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
       document.getElementById('pdfCustName').innerText = payload.fullName || 'Valued Customer';
       document.getElementById('pdfCustPhone').innerText = payload.phone || '(470) 637-0909';
       document.getElementById('pdfCustEmail').innerText = payload.email || 'N/A';
       document.getElementById('pdfPickup').innerText = payload.pickupLoc || 'N/A';
       document.getElementById('pdfDest').innerText = payload.destLoc || 'N/A';
-      document.getElementById('pdfSvcType').innerText = payload.svcType || 'Residential';
+      document.getElementById('pdfSvcType').innerText = payload.svcType || 'Local Move';
       document.getElementById('pdfMoveSize').innerText = payload.moveSize || 'Standard';
       document.getElementById('pdfMoveDate').innerText = payload.moveDate || 'To be scheduled';
-      document.getElementById('pdfPrice').innerText = `ESTIMATED RATE: $${baseMin} – $${baseMax}`;
-      document.getElementById('pdfQuoteNum').innerText = quoteId;
+      document.getElementById('pdfQuoteNum').innerText = `# ${quoteId}`;
+      document.getElementById('pdfQuoteDate').innerText = todayStr;
+
+      // Build Itemized Table Rows (Exact Port City reference style)
+      let tableHtml = `
+        <tr style="border-bottom:1px solid #E2E8F0;">
+          <td style="padding:10px 14px;font-weight:600;">${numMovers} movers × ${estHours} hrs × $${hourlyRate}/hr</td>
+          <td style="padding:10px 14px;text-align:center;">1</td>
+          <td style="padding:10px 14px;text-align:right;">$${laborTotal}</td>
+          <td style="padding:10px 14px;text-align:right;font-weight:700;">$${laborTotal}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+          <td style="padding:10px 14px;font-weight:600;">${truckDesc}</td>
+          <td style="padding:10px 14px;text-align:center;">1</td>
+          <td style="padding:10px 14px;text-align:right;">$${truckCost}</td>
+          <td style="padding:10px 14px;text-align:right;font-weight:700;">$${truckCost}</td>
+        </tr>
+      `;
+
+      addonRows.forEach(row => {
+        tableHtml += `
+          <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:10px 14px;font-weight:600;">${row.desc}</td>
+            <td style="padding:10px 14px;text-align:center;">${row.qty}</td>
+            <td style="padding:10px 14px;text-align:right;">$${row.unit}</td>
+            <td style="padding:10px 14px;text-align:right;font-weight:700;">$${row.total}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('pdfTableBody').innerHTML = tableHtml;
+      document.getElementById('pdfTotalAmount').innerText = `$${estimatedTotal}`;
+
+      // Notes Container in PDF
+      const notesContainer = document.getElementById('pdfNotesContainer');
+      const notesText = document.getElementById('pdfNotesText');
+      if (notesContainer && notesText) {
+        if (moveNotesVal.trim().length > 0) {
+          notesText.innerText = moveNotesVal;
+          notesContainer.style.display = 'block';
+        } else {
+          notesContainer.style.display = 'none';
+        }
+      }
 
       if (submitBtn) {
         submitBtn.disabled = false;
