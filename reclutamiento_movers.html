@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabaja con Nosotros | Top Movers Co — Reclutamiento Atlanta</title>
+  <meta name="description" content="Formulario oficial de reclutamiento para cargadores, choferes y auxiliares de mudanza en Atlanta GA con Top Movers Co.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0B2345;
+      --navy-dark: #06152B;
+      --orange: #FF6B00;
+      --orange-hover: #E05E00;
+      --orange-light: #FFF0E5;
+      --gray-100: #F4F6F9;
+      --gray-200: #E2E8F0;
+      --gray-600: #475569;
+      --gray-800: #1E293B;
+      --white: #FFFFFF;
+      --green: #25D366;
+      --green-dark: #128C7E;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(11, 35, 69, 0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--gray-100); color: var(--gray-800); min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+
+    .header-logo { margin-bottom: 24px; text-align: center; }
+    .header-logo h1 { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: var(--navy); text-transform: uppercase; letter-spacing: -0.5px; }
+    .header-logo h1 span { color: var(--orange); }
+
+    .card { background: var(--white); width: 100%; max-width: 520px; border-radius: var(--radius); padding: 32px 28px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
+    
+    .badge { display: inline-block; background: var(--orange-light); color: var(--orange); font-size: 12px; font-weight: 700; text-transform: uppercase; padding: 6px 12px; border-radius: 50px; margin-bottom: 12px; }
+
+    .title { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1.25; margin-bottom: 8px; }
+    .subtitle { font-size: 14px; color: var(--gray-600); margin-bottom: 24px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    
+    .form-control { width: 100%; padding: 13px 16px; font-size: 15px; font-family: inherit; color: var(--gray-800); background: var(--gray-100); border: 1.5px solid var(--gray-200); border-radius: 10px; transition: all 0.2s ease; }
+    .form-control:focus { outline: none; border-color: var(--orange); background: var(--white); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); }
+
+    select.form-control { cursor: pointer; }
+
+    .btn-submit { width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); background: var(--orange); border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3); margin-top: 8px; }
+    .btn-submit:hover { background: var(--orange-hover); transform: translateY(-1px); }
+
+    /* Modal de Éxito / WhatsApp Directo */
+    .success-container { display: none; text-align: center; padding: 10px 0; }
+    .success-icon { font-size: 48px; margin-bottom: 12px; }
+    .success-title { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .success-text { font-size: 14px; color: var(--gray-600); margin-bottom: 24px; line-height: 1.5; }
+
+    .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); background: var(--green); border: none; border-radius: 10px; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: all 0.2s ease; }
+    .btn-whatsapp:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--gray-600); margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="header-logo">
+    <h1>TOP MOVERS <span>CO</span></h1>
+  </div>
+
+  <div class="card">
+    <!-- FORMULARIO DE RECLUTAMIENTO -->
+    <div id="formContainer">
+      <span class="badge">🚛 Reclutamiento Atlanta GA</span>
+      <h2 class="title">Únete al Equipo de Mudanzas</h2>
+      <p class="subtitle">Buscamos choferes, cargadores y auxiliares con o sin experiencia. Pago competitivo semanal + propinas.</p>
+
+      <form id="recruitmentForm">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo *</label>
+          <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: Keiver Parra" required>
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Teléfono / WhatsApp *</label>
+          <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="Ej: (404) 555-0199" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ciudad">Ciudad en Georgia donde vives *</label>
+          <input type="text" id="ciudad" name="ciudad" class="form-control" placeholder="Ej: Atlanta, Marietta, Norcross, Decatur" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo_rol">Rol de tu Interés *</label>
+          <select id="tipo_rol" name="tipo_rol" class="form-control" required>
+            <option value="Cargador / Auxiliar (Helper)">Cargador / Auxiliar (Helper)</option>
+            <option value="Conductor de Camión (Driver)">Conductor de Camión (Driver)</option>
+            <option value="Ambos (Conductor y Cargador)">Ambos (Conductor y Cargador)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="disponibilidad">Disponibilidad de Horario *</label>
+          <select id="disponibilidad" name="disponibilidad" class="form-control" required>
+            <option value="Fines de Semana">Fines de Semana (Días Pico)</option>
+            <option value="Tiempo Completo">Tiempo Completo</option>
+            <option value="Por Llamadas / On-Call">Por Llamadas / On-Call</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">ENVIAR SOLICITUD AHORA 🚀</button>
+      </form>
+    </div>
+
+    <!-- PANTALLA DE ÉXITO Y BOTÓN DE WHATSAPP DIRECTO -->
+    <div id="successContainer" class="success-container">
+      <div class="success-icon">✅</div>
+      <h2 class="success-title">¡Solicitud Recibida!</h2>
+      <p class="success-text">Tu información fue registrada exitosamente en nuestro sistema de operaciones de Top Movers Co.</p>
+      
+      <p class="success-text" style="font-weight: 600; color: var(--navy);">Haz clic abajo para enviar tu mensaje directo por WhatsApp a la gerencia:</p>
+
+      <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">
+        💬 ENVIAR WHATSAPP AHORA
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Top Movers Co · Atlanta, GA · Licencia PSC & DOT #394021
+  </div>
+
+  <script>
+    const WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/HjbOI2dRDzCa7UDvD8Ip/webhook-trigger/a57b2039-c209-492c-b983-81782ffc353f";
+    const WA_PHONE = "14706370909";
+
+    document.getElementById("recruitmentForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById("btnSubmit");
+      btn.innerText = "ENVIANDO A CRM...";
+      btn.disabled = true;
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+      const ciudad = document.getElementById("ciudad").value.trim();
+      const tipo_rol = document.getElementById("tipo_rol").value;
+      const disponibilidad = document.getElementById("disponibilidad").value;
+
+      const payload = {
+        "nombre": nombre,
+        "email": `mover_${Date.now()}@topmoversco.com`,
+        "telefono": telefono,
+        "ciudad": ciudad,
+        "resumen": `Candidato a Mover: ${tipo_rol} en ${ciudad}. Disponibilidad: ${disponibilidad}.`,
+        "necesidad": `Solicitud de Empleo Mover: ${tipo_rol} (${disponibilidad})`,
+        "interes": "Alto",
+        "etiqueta": "candidato:mover_real",
+        "tipo": "mover_recruitment"
+      };
+
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.log("Payload despachado:", payload);
+      }
+
+      // Preparar enlace de WhatsApp personalizado
+      const msgWA = encodeURIComponent(`Hola Top Movers Co! Mi nombre es ${nombre}, acabo de enviar mi solicitud para trabajar como ${tipo_rol} en ${ciudad}. Mi disponibilidad es ${disponibilidad}.`);
+      document.getElementById("whatsappLink").href = `https://wa.me/${WA_PHONE}?text=${msgWA}`;
+
+      // Mostrar pantalla de éxito
+      document.getElementById("formContainer").style.display = "none";
+      document.getElementById("successContainer").style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
