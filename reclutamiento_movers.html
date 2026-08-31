@@ -50,16 +50,16 @@
 
     select.form-control { cursor: pointer; }
 
-    .btn-submit { width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); background: var(--orange); border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3); margin-top: 8px; }
+    .btn-submit { width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; color: var(--white); background: var(--orange); border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3); margin-top: 8px; }
     .btn-submit:hover { background: var(--orange-hover); transform: translateY(-1px); }
 
     /* Modal de Éxito / WhatsApp Directo */
     .success-container { display: none; text-align: center; padding: 10px 0; }
-    .success-icon { font-size: 48px; margin-bottom: 12px; }
+    .success-icon { font-size: 44px; margin-bottom: 12px; }
     .success-title { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
     .success-text { font-size: 14px; color: var(--gray-600); margin-bottom: 24px; line-height: 1.5; }
 
-    .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); background: var(--green); border: none; border-radius: 10px; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: all 0.2s ease; }
+    .btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; color: var(--white); background: var(--green); border: none; border-radius: 10px; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: all 0.2s ease; }
     .btn-whatsapp:hover { background: var(--green-dark); transform: translateY(-1px); }
 
     .footer-note { text-align: center; font-size: 12px; color: var(--gray-600); margin-top: 20px; }
@@ -72,11 +72,11 @@
   </div>
 
   <div class="card">
-    <!-- FORMULARIO DE RECLUTAMIENTO -->
+    <!-- FORMULARIO SOBRIO DE RECLUTAMIENTO -->
     <div id="formContainer">
       <span class="badge">🚛 Reclutamiento Atlanta GA</span>
-      <h2 class="title">Únete al Equipo de Mudanzas</h2>
-      <p class="subtitle">Buscamos choferes, cargadores y auxiliares con o sin experiencia. Pago competitivo semanal + propinas.</p>
+      <h2 class="title">Únete a Nuestro Equipo</h2>
+      <p class="subtitle">Buscamos choferes, cargadores y auxiliares de mudanza. Completa tus datos para ponernos en contacto.</p>
 
       <form id="recruitmentForm">
         <div class="form-group">
@@ -90,15 +90,15 @@
         </div>
 
         <div class="form-group">
-          <label for="ciudad">Ciudad en Georgia donde vives *</label>
+          <label for="ciudad">Ciudad donde resides *</label>
           <input type="text" id="ciudad" name="ciudad" class="form-control" placeholder="Ej: Atlanta, Marietta, Norcross, Decatur" required>
         </div>
 
         <div class="form-group">
           <label for="tipo_rol">Rol de tu Interés *</label>
           <select id="tipo_rol" name="tipo_rol" class="form-control" required>
-            <option value="Cargador / Auxiliar (Helper)">Cargador / Auxiliar (Helper)</option>
-            <option value="Conductor de Camión (Driver)">Conductor de Camión (Driver)</option>
+            <option value="Cargador / Auxiliar">Cargador / Auxiliar (Helper)</option>
+            <option value="Conductor de Camión">Conductor de Camión (Driver)</option>
             <option value="Ambos (Conductor y Cargador)">Ambos (Conductor y Cargador)</option>
           </select>
         </div>
@@ -106,26 +106,26 @@
         <div class="form-group">
           <label for="disponibilidad">Disponibilidad de Horario *</label>
           <select id="disponibilidad" name="disponibilidad" class="form-control" required>
-            <option value="Fines de Semana">Fines de Semana (Días Pico)</option>
+            <option value="Fines de Semana">Fines de Semana</option>
             <option value="Tiempo Completo">Tiempo Completo</option>
             <option value="Por Llamadas / On-Call">Por Llamadas / On-Call</option>
           </select>
         </div>
 
-        <button type="submit" class="btn-submit" id="btnSubmit">ENVIAR SOLICITUD AHORA 🚀</button>
+        <button type="submit" class="btn-submit" id="btnSubmit">ENVIAR SOLICITUD</button>
       </form>
     </div>
 
-    <!-- PANTALLA DE ÉXITO Y BOTÓN DE WHATSAPP DIRECTO -->
+    <!-- CONFIRMACIÓN SOBRIA Y WHATSAPP DIRECTO -->
     <div id="successContainer" class="success-container">
       <div class="success-icon">✅</div>
       <h2 class="success-title">¡Solicitud Recibida!</h2>
-      <p class="success-text">Tu información fue registrada exitosamente en nuestro sistema de operaciones de Top Movers Co.</p>
+      <p class="success-text">Gracias por tu interés en unirte a Top Movers Co. Hemos recibido tus datos correctamente.</p>
       
-      <p class="success-text" style="font-weight: 600; color: var(--navy);">Haz clic abajo para enviar tu mensaje directo por WhatsApp a la gerencia:</p>
+      <p class="success-text" style="font-weight: 600; color: var(--navy);">Si deseas agilizar tu postulación, puedes contactar a la gerencia por WhatsApp:</p>
 
       <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">
-        💬 ENVIAR WHATSAPP AHORA
+        💬 CONTACTAR POR WHATSAPP
       </a>
     </div>
   </div>
@@ -142,7 +142,7 @@
       e.preventDefault();
       
       const btn = document.getElementById("btnSubmit");
-      btn.innerText = "ENVIANDO A CRM...";
+      btn.innerText = "PROCESANDO SOLICITUD...";
       btn.disabled = true;
 
       const nombre = document.getElementById("nombre").value.trim();
@@ -159,7 +159,7 @@
         "resumen": `Candidato a Mover: ${tipo_rol} en ${ciudad}. Disponibilidad: ${disponibilidad}.`,
         "necesidad": `Solicitud de Empleo Mover: ${tipo_rol} (${disponibilidad})`,
         "interes": "Alto",
-        "etiqueta": "candidato:mover_real",
+        "etiqueta": "mover",
         "tipo": "mover_recruitment"
       };
 
@@ -170,14 +170,12 @@
           body: JSON.stringify(payload)
         });
       } catch (err) {
-        console.log("Payload despachado:", payload);
+        console.log("Payload enviado:", payload);
       }
 
-      // Preparar enlace de WhatsApp personalizado
-      const msgWA = encodeURIComponent(`Hola Top Movers Co! Mi nombre es ${nombre}, acabo de enviar mi solicitud para trabajar como ${tipo_rol} en ${ciudad}. Mi disponibilidad es ${disponibilidad}.`);
+      const msgWA = encodeURIComponent(`Hola Top Movers Co! Mi nombre es ${nombre}, envié mi solicitud para trabajar como ${tipo_rol} en ${ciudad}. Quedo atento a su respuesta.`);
       document.getElementById("whatsappLink").href = `https://wa.me/${WA_PHONE}?text=${msgWA}`;
 
-      // Mostrar pantalla de éxito
       document.getElementById("formContainer").style.display = "none";
       document.getElementById("successContainer").style.display = "block";
     });
