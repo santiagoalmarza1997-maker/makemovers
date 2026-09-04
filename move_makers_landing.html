@@ -1625,7 +1625,7 @@
       }
     });
 
-    // ═══ SMART SCROLL FLOATING GOOGLE BADGE & GHL CHAT WIDGET POSITIONING ═══
+    // ═══ SMART SCROLL FLOATING GOOGLE BADGE & AGGRESSIVE GHL CHAT ELEVATION ═══
     function positionMobileWidgets() {
       const isMobile = window.innerWidth <= 768;
       
@@ -1633,7 +1633,6 @@
       const gBadge = document.querySelector('.floating-google-badge');
       if (gBadge) {
         if (isMobile) {
-          // Appear smoothly only when user scrolls down past the hero form (> 360px)
           if (window.scrollY > 360) {
             gBadge.classList.add('is-visible-scroll');
           } else {
@@ -1644,18 +1643,22 @@
         }
       }
 
-      // 2. GoHighLevel Chat Widget elevation on mobile (so it NEVER overlaps the sticky bar buttons)
-      const chatSelectors = [
+      // 2. GoHighLevel Chat Widget aggressive elevation on mobile (so it NEVER overlaps sticky bar buttons)
+      const selectors = [
         'chat-widget',
         '#chat-widget-container',
         '.chat-widget-container',
-        'iframe[src*="leadconnectorhq"]',
+        'iframe[src*="leadconnector"]',
+        'iframe[src*="chat"]',
         'iframe[id*="chat"]',
-        'div[id*="chat-widget"]',
-        '.lc_chat_widget'
+        'div[id*="chat"]',
+        'div[class*="chat-widget"]',
+        '.lc_chat_widget',
+        '.chat-widget-button',
+        '.chat-button'
       ];
-      
-      chatSelectors.forEach(sel => {
+
+      selectors.forEach(sel => {
         document.querySelectorAll(sel).forEach(el => {
           if (isMobile) {
             el.style.setProperty('bottom', '82px', 'important');
@@ -1665,14 +1668,39 @@
             el.style.removeProperty('bottom');
             el.style.removeProperty('right');
           }
-          if (el.shadowRoot) {
-            const shadowBtn = el.shadowRoot.querySelector('#chat-widget-container, .chat-widget-container, .chat-button, button, div');
-            if (shadowBtn && isMobile) {
-              shadowBtn.style.setProperty('bottom', '82px', 'important');
-              shadowBtn.style.setProperty('right', '14px', 'important');
-            }
-          }
         });
+      });
+
+      // Penetrate ShadowRoot in custom elements
+      document.querySelectorAll('chat-widget').forEach(widget => {
+        if (widget.shadowRoot) {
+          widget.shadowRoot.querySelectorAll('*').forEach(child => {
+            if (isMobile) {
+              child.style.setProperty('bottom', '82px', 'important');
+              child.style.setProperty('right', '14px', 'important');
+            } else {
+              child.style.removeProperty('bottom');
+              child.style.removeProperty('right');
+            }
+          });
+          let styleTag = widget.shadowRoot.getElementById('ghl-shadow-override');
+          if (!styleTag) {
+            styleTag = document.createElement('style');
+            styleTag.id = 'ghl-shadow-override';
+            widget.shadowRoot.appendChild(styleTag);
+          }
+          if (isMobile) {
+            styleTag.textContent = `
+              :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
+                bottom: 82px !important;
+                right: 14px !important;
+                z-index: 998 !important;
+              }
+            `;
+          } else {
+            styleTag.textContent = '';
+          }
+        }
       });
     }
 
@@ -1680,7 +1708,7 @@
     window.addEventListener('resize', positionMobileWidgets);
     window.addEventListener('DOMContentLoaded', () => {
       positionMobileWidgets();
-      setInterval(positionMobileWidgets, 500);
+      setInterval(positionMobileWidgets, 300);
     });
 
     // Auto-scroll to hero stats and form on mobile phone load
@@ -1722,7 +1750,7 @@
   </a>
 
   <!-- ═══ GOHIGHLEVEL CONVERSATIONS WEBCHAT WIDGET (OPTION 1: SILENT & NON-INTRUSIVE) ═══ -->
-  <chat-widget location-id="HjbOI2dRDzCa7UDvD8Ip"></chat-widget>
+  <chat-widget location-id="HjbOI2dRDzCa7UDvD8Ip" style="position: fixed; bottom: 82px; right: 14px; z-index: 998;"></chat-widget>
   <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-prefix="https://widgets.leadconnectorhq.com" data-location-id="HjbOI2dRDzCa7UDvD8Ip" async></script>
 </body>
 </html>
