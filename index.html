@@ -343,7 +343,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       FLOATING GOOGLE REVIEWS MINI-WIDGET (SCROLL-TRIGGERED REVEAL)
+       FLOATING GOOGLE REVIEWS & CHAT WIDGET SWAP ON SCROLL
        ═══════════════════════════════════════════════════════════════════════ */
     .floating-google-badge {
       position: fixed;
@@ -363,14 +363,14 @@
       font-family: var(--font-body);
       opacity: 0;
       pointer-events: none;
-      transform: translateY(24px) scale(0.96);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform: translateY(24px) scale(0.95);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.25s ease;
       cursor: pointer;
       backdrop-filter: blur(8px);
     }
-    .floating-google-badge.is-visible-scroll {
+    body.scrolled-down .floating-google-badge {
       opacity: 1 !important;
       pointer-events: auto !important;
       transform: translateY(0) scale(1) !important;
@@ -379,6 +379,23 @@
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 12px 32px rgba(11, 35, 69, 0.22);
       border-color: #4285F4;
+    }
+
+    /* Chat Widget smooth CSS transition (visible on top, fades out on scroll) */
+    chat-widget,
+    #chat-widget-container,
+    .chat-widget-container,
+    .lc_chat_widget {
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    body.scrolled-down chat-widget,
+    body.scrolled-down #chat-widget-container,
+    body.scrolled-down .chat-widget-container,
+    body.scrolled-down .lc_chat_widget {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(24px) scale(0.95) !important;
     }
     .fgb-icon-wrapper {
       display: flex;
@@ -1621,100 +1638,25 @@
       }
     });
 
-    // ═══ SMART SCROLL FLOATING WIDGETS (MOBILE & DESKTOP HARMONIZATION) ═══
-    // ═══ DYNAMIC SCROLL SWAP: CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL ═══
-    function handleScrollWidgetSwap() {
-      const isMobile = window.innerWidth <= 768;
-      const isScrolledDown = window.scrollY > 300;
-      const gBadge = document.querySelector('.floating-google-badge');
-
-      // 1. Google Reviews Badge Toggle (Appears with smooth slide-up animation on scroll)
-      if (gBadge) {
-        if (isScrolledDown) {
-          gBadge.classList.add('is-visible-scroll');
-        } else {
-          gBadge.classList.remove('is-visible-scroll');
-        }
+    // ═══ SMOOTH SCROLL SWAP (CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL) ═══
+    let isScrolledDown = false;
+    function checkScrollSwap() {
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Hysteresis dead-band: prevents boundary flickering
+      if (!isScrolledDown && scrollY > 320) {
+        isScrolledDown = true;
+        document.body.classList.add('scrolled-down');
+      } else if (isScrolledDown && scrollY < 180) {
+        isScrolledDown = false;
+        document.body.classList.remove('scrolled-down');
       }
-
-      // 2. Chat Widget Toggle (Visible upon entering the page, smoothly fades out on scroll down)
-      const chatSelectors = [
-        'chat-widget',
-        '#chat-widget-container',
-        '.chat-widget-container',
-        'iframe[src*="leadconnector"]',
-        'iframe[src*="chat"]',
-        'iframe[id*="chat"]',
-        'div[id*="chat-widget"]',
-        'div[class*="chat-widget"]',
-        '.lc_chat_widget',
-        '.chat-widget-button',
-        '.chat-button'
-      ];
-
-      chatSelectors.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => {
-          el.style.setProperty('transition', 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)', 'important');
-          if (isMobile) {
-            el.style.setProperty('bottom', '78px', 'important');
-            el.style.setProperty('right', '14px', 'important');
-            el.style.setProperty('z-index', '998', 'important');
-          }
-          if (isScrolledDown) {
-            // Hide chat on scroll down
-            el.style.setProperty('opacity', '0', 'important');
-            el.style.setProperty('pointer-events', 'none', 'important');
-            el.style.setProperty('transform', 'translateY(24px) scale(0.95)', 'important');
-          } else {
-            // Show chat at top of page
-            el.style.setProperty('opacity', '1', 'important');
-            el.style.setProperty('pointer-events', 'auto', 'important');
-            el.style.setProperty('transform', 'translateY(0) scale(1)', 'important');
-          }
-        });
-      });
-
-      // Penetrate ShadowRoot in custom elements for Chat Widget
-      document.querySelectorAll('chat-widget').forEach(widget => {
-        if (widget.shadowRoot) {
-          let styleTag = widget.shadowRoot.getElementById('ghl-swap-override');
-          if (!styleTag) {
-            styleTag = document.createElement('style');
-            styleTag.id = 'ghl-swap-override';
-            widget.shadowRoot.appendChild(styleTag);
-          }
-          if (isScrolledDown) {
-            styleTag.textContent = `
-              :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
-                opacity: 0 !important;
-                pointer-events: none !important;
-                transform: translateY(24px) scale(0.95) !important;
-                transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-              }
-            `;
-          } else {
-            const bottomPos = isMobile ? '78px' : '20px';
-            const rightPos = isMobile ? '14px' : '20px';
-            styleTag.textContent = `
-              :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
-                ${isMobile ? `bottom: ${bottomPos} !important; right: ${rightPos} !important;` : ''}
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                transform: translateY(0) scale(1) !important;
-                transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-              }
-            `;
-          }
-        }
-      });
     }
 
-    window.addEventListener('scroll', handleScrollWidgetSwap, { passive: true });
-    window.addEventListener('resize', handleScrollWidgetSwap);
-    window.addEventListener('DOMContentLoaded', () => {
-      handleScrollWidgetSwap();
-      setInterval(handleScrollWidgetSwap, 300);
-    });
+    window.addEventListener('scroll', checkScrollSwap, { passive: true });
+    window.addEventListener('resize', checkScrollSwap);
+    document.addEventListener('DOMContentLoaded', checkScrollSwap);
+    window.addEventListener('load', checkScrollSwap);
   </script>
 
   <!-- ═══ FLOATING GOOGLE REVIEWS MINI-WIDGET (BOTTOM-LEFT FIXED ON ALL SCROLLING) ═══ -->
