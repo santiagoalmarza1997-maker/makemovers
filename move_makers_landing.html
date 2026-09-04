@@ -663,7 +663,7 @@
       .footer-grid { grid-template-columns: 1fr; gap: 24px; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
 
-      /* GHL Chat Widget Harmonization on Mobile: Sit gracefully above sticky bar */
+      /* GHL Chat Widget on Mobile */
       chat-widget,
       #chat-widget-container,
       .chat-widget-container,
@@ -671,15 +671,77 @@
       iframe[id*="chat"],
       div[id*="chat-widget"],
       .lc_chat_widget {
-        bottom: 78px !important;
-        right: 14px !important;
+        bottom: 20px !important;
+        right: 16px !important;
         z-index: 998 !important;
-        transition: opacity 0.3s ease, transform 0.3s ease !important;
+        transition: opacity 0.35s ease, transform 0.35s ease !important;
       }
 
-      /* Mobile Floating Sticky Bar */
-      .mobile-sticky-bar { display: grid !important; position: fixed; bottom: 0; left: 0; right: 0; z-index: 995; background: rgba(11,35,69,0.98); backdrop-filter: blur(12px); padding: 8px 12px; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 2px solid var(--orange); box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
-      .mobile-sticky-bar .btn { padding: 11px 8px; font-size: .74rem; border-radius: var(--radius-sm); width: 100%; display: inline-flex !important; }
+      /* Mobile Floating Sticky Bar — Hidden on Hero Form, Slides in on Scroll with Google Reviews */
+      .mobile-sticky-bar {
+        display: grid !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9990;
+        background: rgba(11, 35, 69, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 9px 14px;
+        padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px));
+        grid-template-columns: 1fr 1.15fr;
+        gap: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.28);
+        transform: translateY(115%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      }
+
+      body.scrolled-down .mobile-sticky-bar {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .mobile-bar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 12px 14px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 0.82rem;
+        letter-spacing: 0.2px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+      }
+
+      .mobile-bar-call {
+        background: rgba(255, 255, 255, 0.12);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+      }
+      .mobile-bar-call:active {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(0.97);
+      }
+
+      .mobile-bar-quote {
+        background: linear-gradient(135deg, #FF6B00 0%, #FF8C38 100%);
+        color: #FFFFFF;
+        box-shadow: 0 4px 14px rgba(255, 107, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+      }
+      .mobile-bar-quote:active {
+        transform: scale(0.97);
+        filter: brightness(1.1);
+      }
     }
 
   </style>
@@ -1356,10 +1418,16 @@
     </div>
   </footer>
 
-  <!-- ═══ STICKY FLOATING ACTION BAR FOR MOBILE PHONES ═══ -->
+  <!-- ═══ STICKY FLOATING ACTION BAR FOR MOBILE PHONES (SLIDES IN ON SCROLL WITH GOOGLE REVIEWS) ═══ -->
   <div class="mobile-sticky-bar">
-    <a href="tel:14706370909" class="btn btn-navy">📞 Call (470) 637-0909</a>
-    <a href="#quotes" class="btn btn-orange">⚡ Free Quote</a>
+    <a href="tel:14706370909" class="mobile-bar-btn mobile-bar-call">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      <span>(470) 637-0909</span>
+    </a>
+    <a href="#quotes" class="mobile-bar-btn mobile-bar-quote">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span>Free Quote</span>
+    </a>
   </div>
 
   <script>
@@ -1646,19 +1714,14 @@
 
     function enforceMobileChatPosition() {
       const isMobile = window.innerWidth <= 768;
-      const targetBottom = isMobile ? '80px' : '20px';
-      const targetRight = isMobile ? '14px' : '20px';
+      const targetBottom = '20px';
+      const targetRight = isMobile ? '16px' : '20px';
 
       const widgets = document.querySelectorAll('chat-widget, #chat-widget-container, .chat-widget-container, iframe[src*="leadconnector"]');
       widgets.forEach(w => {
-        if (isMobile) {
-          w.style.setProperty('bottom', '80px', 'important');
-          w.style.setProperty('right', '14px', 'important');
-          w.style.setProperty('z-index', '998', 'important');
-        } else {
-          w.style.setProperty('bottom', '20px', 'important');
-          w.style.setProperty('right', '20px', 'important');
-        }
+        w.style.setProperty('bottom', targetBottom, 'important');
+        w.style.setProperty('right', targetRight, 'important');
+        w.style.setProperty('z-index', '998', 'important');
 
         if (w.shadowRoot) {
           let styleTag = w.shadowRoot.getElementById('ghl-position-fix');
