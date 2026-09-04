@@ -80,6 +80,37 @@
     .section-header p { font-size: 1.1rem; color: var(--gray-600); }
 
     /* ═══════════════════════════════════════════════════════════════════════
+       SMOOTH SCROLL REVEAL ANIMATIONS (INTERSECTION OBSERVER ENGINE)
+       ═══════════════════════════════════════════════════════════════════════ */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-on-scroll.reveal-left {
+      transform: translateX(-36px);
+    }
+    .reveal-on-scroll.reveal-right {
+      transform: translateX(36px);
+    }
+    .reveal-on-scroll.reveal-scale {
+      transform: scale(0.95);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+    }
+
+    /* Staggered transition delays for card grids */
+    .delay-100 { transition-delay: 0.1s !important; }
+    .delay-200 { transition-delay: 0.2s !important; }
+    .delay-300 { transition-delay: 0.3s !important; }
+    .delay-400 { transition-delay: 0.4s !important; }
+    .delay-500 { transition-delay: 0.5s !important; }
+
+    /* ═══════════════════════════════════════════════════════════════════════
        TOP PROMO BAR
        ═══════════════════════════════════════════════════════════════════════ */
     .top-bar { background: var(--navy-dark); color: var(--gray-100); padding: 9px 0; font-size: .83rem; border-bottom: 1px solid rgba(255,255,255,.06); }
@@ -963,14 +994,14 @@
   <!-- ═══ SERVICES — IMAGE CARD GRID ═══ -->
   <section class="services" id="services">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal-on-scroll">
         <div class="badge badge-orange">Full-Service Solutions</div>
         <h2>Moving Services That Go Beyond</h2>
         <p>From your first box to the last piece of furniture placed — we handle every detail.</p>
       </div>
 
       <div class="services-grid">
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-100">
           <div class="service-card-img">
             <img src="hero_bg.jpg" alt="Residential moving team loading furniture">
             <div class="overlay"><span>Most Popular</span></div>
@@ -982,7 +1013,7 @@
           </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-200">
           <div class="service-card-img">
             <img src="office_relocation.jpg" alt="Corporate office move in progress">
             <div class="overlay"><span>Commercial</span></div>
@@ -994,7 +1025,7 @@
           </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-300">
           <div class="service-card-img">
             <img src="packing_service.jpg" alt="Packing, Unpacking, Loading & Unloading">
             <div class="overlay"><span>Full-Service</span></div>
@@ -1006,7 +1037,7 @@
           </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-400">
           <div class="service-card-img">
             <img src="fleet_transport.jpg" alt="Top Movers Co branded boxes and packing materials">
             <div class="overlay"><span>GPS Tracked Fleet</span></div>
@@ -1018,7 +1049,7 @@
           </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-500">
           <div class="service-card-img">
             <img src="happy_customers.jpg" alt="Happy family in their new home">
             <div class="overlay"><span>Local Favorite</span></div>
@@ -1030,7 +1061,7 @@
           </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card reveal-on-scroll delay-100">
           <div class="service-card-img">
             <img src="atlanta_skyline.jpg" alt="State to state cross country moving fleet">
             <div class="overlay"><span>All 50 States</span></div>
@@ -1049,7 +1080,7 @@
   <section class="about-section" id="about">
     <div class="container">
       <div class="about-grid">
-        <div class="about-img-wrapper">
+        <div class="about-img-wrapper reveal-on-scroll reveal-left">
           <img src="hero_bg.jpg" alt="Top Movers Co professional crew">
           <div class="about-img-badge">
             10K+
@@ -1057,7 +1088,7 @@
           </div>
         </div>
 
-        <div class="about-text">
+        <div class="about-text reveal-on-scroll reveal-right">
           <div class="badge badge-orange">The Top Movers Co Difference</div>
           <h2>Atlanta's Highest-Rated Moving Company</h2>
           <p>Unlike brokers who outsource your move to random subcontractors, Top Movers Co owns our fleet, employs our movers full-time, and manages every detail from the first call to the last box placed.</p>
@@ -1082,14 +1113,14 @@
   <!-- ═══ REVIEWS ═══ -->
   <section class="reviews" id="reviews">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal-on-scroll">
         <div class="badge badge-orange">Verified Social Proof</div>
         <h2>What Atlanta Says About Us</h2>
         <p>Real stories from families and businesses moved by Top Movers Co.</p>
       </div>
 
       <!-- ═══ GOOGLE REVIEWS OFFICIAL SLOT & ACTION CARD ═══ -->
-      <div class="google-review-slot">
+      <div class="google-review-slot reveal-on-scroll reveal-scale">
         <div class="google-badge-left">
           <svg class="google-icon-svg" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -1119,13 +1150,13 @@
       </div>
 
       <!-- ═══ GOHIGHLEVEL LIVE REPUTATION REVIEW WIDGET ═══ -->
-      <div class="ghl-review-widget-container" style="margin-bottom: 38px; border-radius: var(--radius-md); overflow: hidden; background: #ffffff; padding: 12px; box-shadow: 0 4px 20px rgba(11, 35, 69, 0.06); border: 1.5px solid #E2E8F0;">
+      <div class="ghl-review-widget-container reveal-on-scroll" style="margin-bottom: 38px; border-radius: var(--radius-md); overflow: hidden; background: #ffffff; padding: 12px; box-shadow: 0 4px 20px rgba(11, 35, 69, 0.06); border: 1.5px solid #E2E8F0;">
         <script type='text/javascript' src='https://reputationhub.site/reputation/assets/review-widget.js'></script>
         <iframe class='lc_reviews_widget' src='https://reputationhub.site/reputation/widgets/review_widget/HjbOI2dRDzCa7UDvD8Ip' frameborder='0' scrolling='no' style='min-width: 100%; width: 100%; min-height: 250px; border: none;'></iframe>
       </div>
 
       <div class="reviews-grid">
-        <div class="review-card">
+        <div class="review-card reveal-on-scroll delay-100">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
               <div class="review-stars" style="margin-bottom:0;">★★★★★</div>
@@ -1143,7 +1174,7 @@
           </div>
         </div>
 
-        <div class="review-card">
+        <div class="review-card reveal-on-scroll delay-200">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
               <div class="review-stars" style="margin-bottom:0;">★★★★★</div>
@@ -1161,7 +1192,7 @@
           </div>
         </div>
 
-        <div class="review-card">
+        <div class="review-card reveal-on-scroll delay-300">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
               <div class="review-stars" style="margin-bottom:0;">★★★★★</div>
@@ -1184,11 +1215,11 @@
 
   <!-- ═══ HAPPY CLIENTS GALLERY (CHARLIE'S ANGELS PATTERN) ═══ -->
   <section class="gallery-section">
-    <div class="container">
+    <div class="container reveal-on-scroll">
       <h2>Happy Moves, Happy Families</h2>
       <p>Real moments captured on move day across Greater Atlanta.</p>
     </div>
-    <div class="gallery-strip" style="justify-content:center;padding:0 28px;">
+    <div class="gallery-strip reveal-on-scroll delay-200" style="justify-content:center;padding:0 28px;">
       <img src="happy_customers.jpg" alt="Happy couple in new home after move">
       <img src="branded_truck.jpg" alt="Top Movers Co branded truck at residence">
       <img src="packing_service.jpg" alt="Professional packing service in action">
@@ -1200,24 +1231,24 @@
   <!-- ═══ FAQ ═══ -->
   <section class="faq" id="faq">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal-on-scroll">
         <div class="badge badge-orange">Got Questions?</div>
         <h2>Frequently Asked Questions</h2>
       </div>
       <div class="faq-list">
-        <div class="faq-item active" onclick="toggleFaq(this)">
+        <div class="faq-item active reveal-on-scroll delay-100" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How much does a move with Top Movers Co cost?</span><span class="faq-toggle">▼</span></div>
           <div class="faq-a">Pricing depends on distance, volume, and services chosen. Fill out our hero form or call (470) 637-0909 for a free, guaranteed binding quote with zero hidden fees.</div>
         </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-item reveal-on-scroll delay-200" onclick="toggleFaq(this)">
           <div class="faq-q"><span>Is Top Movers Co licensed and insured?</span><span class="faq-toggle">▼</span></div>
           <div class="faq-a">Absolutely. Top Movers Co is fully licensed by the FMCSA, DOT (#394021), and Georgia PSC. We carry full valuation insurance on every single move.</div>
         </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-item reveal-on-scroll delay-300" onclick="toggleFaq(this)">
           <div class="faq-q"><span>Do you use subcontractors or day laborers?</span><span class="faq-toggle">▼</span></div>
           <div class="faq-a">Never. Every Top Movers Co mover is a background-checked, full-time employee. We own our fleet and manage every aspect of your move in-house.</div>
         </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-item reveal-on-scroll delay-400" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What areas does Top Movers Co serve from Atlanta?</span><span class="faq-toggle">▼</span></div>
           <div class="faq-a">We serve all of Metro Atlanta (Buckhead, Midtown, Marietta, Alpharetta, Roswell, Kennesaw, Decatur), plus all 50 US states nationwide.</div>
         </div>
@@ -1227,7 +1258,7 @@
 
   <!-- ═══ CTA BANNER ═══ -->
   <section class="cta-banner">
-    <div class="container">
+    <div class="container reveal-on-scroll reveal-scale">
       <h2>Ready to Move Without the Stress?</h2>
       <p>Leave the heavy lifting to us. Experience the Top Movers Co difference — call today or lock in your rate online.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
@@ -1539,6 +1570,31 @@
         window.print();
       });
     }
+
+    // ═══ HIGH-PERFORMANCE SMOOTH SCROLL REVEAL OBSERVER ═══
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+      
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          root: null,
+          threshold: 0.12,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+      } else {
+        // Fallback for older browsers
+        revealElements.forEach(el => el.classList.add('is-visible'));
+      }
+    });
 
     // Auto-scroll to hero stats and form on mobile phone load
     window.addEventListener('DOMContentLoaded', () => {
