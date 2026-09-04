@@ -1640,9 +1640,42 @@
       }
     });
 
-    // ═══ SMOOTH SCROLL SWAP (CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL) ═══
+    // ═══ GHL CHAT ELEVATION ON MOBILE & SMOOTH SCROLL SWAP ═══
     let isScrolledDown = false;
     let isInsideReviewsSection = false;
+
+    function enforceMobileChatPosition() {
+      const isMobile = window.innerWidth <= 768;
+      const targetBottom = isMobile ? '80px' : '20px';
+      const targetRight = isMobile ? '14px' : '20px';
+
+      const widgets = document.querySelectorAll('chat-widget, #chat-widget-container, .chat-widget-container, iframe[src*="leadconnector"]');
+      widgets.forEach(w => {
+        if (isMobile) {
+          w.style.setProperty('bottom', '80px', 'important');
+          w.style.setProperty('right', '14px', 'important');
+          w.style.setProperty('z-index', '998', 'important');
+        } else {
+          w.style.setProperty('bottom', '20px', 'important');
+          w.style.setProperty('right', '20px', 'important');
+        }
+
+        if (w.shadowRoot) {
+          let styleTag = w.shadowRoot.getElementById('ghl-position-fix');
+          if (!styleTag) {
+            styleTag = document.createElement('style');
+            styleTag.id = 'ghl-position-fix';
+            w.shadowRoot.appendChild(styleTag);
+          }
+          styleTag.textContent = `
+            :host, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
+              bottom: ${targetBottom} !important;
+              right: ${targetRight} !important;
+            }
+          `;
+        }
+      });
+    }
 
     function checkScrollSwap() {
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
@@ -1656,12 +1689,11 @@
         document.body.classList.remove('scrolled-down');
       }
 
-      // 2. Hide floating badge seamlessly when user reaches and views the #reviews section
+      // 2. Hide floating badge when inside reviews section
       const reviewsSection = document.getElementById('reviews');
       if (reviewsSection) {
         const rect = reviewsSection.getBoundingClientRect();
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        // Check if reviews section is in the viewport
         if (rect.top < windowHeight - 100 && rect.bottom > 140) {
           if (!isInsideReviewsSection) {
             isInsideReviewsSection = true;
@@ -1676,10 +1708,28 @@
       }
     }
 
+    // Initialize position and listeners
     window.addEventListener('scroll', checkScrollSwap, { passive: true });
-    window.addEventListener('resize', checkScrollSwap);
-    document.addEventListener('DOMContentLoaded', checkScrollSwap);
-    window.addEventListener('load', checkScrollSwap);
+    window.addEventListener('resize', () => {
+      enforceMobileChatPosition();
+      checkScrollSwap();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      enforceMobileChatPosition();
+      checkScrollSwap();
+    });
+
+    window.addEventListener('load', () => {
+      enforceMobileChatPosition();
+      checkScrollSwap();
+    });
+
+    // MutationObserver to enforce position immediately when GHL elements mount in DOM
+    const ghlObserver = new MutationObserver(() => {
+      enforceMobileChatPosition();
+    });
+    ghlObserver.observe(document.body, { childList: true, subtree: true });
   </script>
 
   <!-- ═══ FLOATING GOOGLE REVIEWS MINI-WIDGET (BOTTOM-LEFT FIXED ON ALL SCROLLING) ═══ -->
