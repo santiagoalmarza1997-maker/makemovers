@@ -343,7 +343,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       FLOATING GOOGLE REVIEWS MINI-WIDGET (SMART SCROLL ON MOBILE)
+       FLOATING GOOGLE REVIEWS MINI-WIDGET (SCROLL-TRIGGERED REVEAL)
        ═══════════════════════════════════════════════════════════════════════ */
     .floating-google-badge {
       position: fixed;
@@ -361,21 +361,24 @@
       text-decoration: none;
       color: #0B2345;
       font-family: var(--font-body);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(24px) scale(0.96);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.25s ease;
       cursor: pointer;
       backdrop-filter: blur(8px);
-      animation: floatBadgeFadeIn 0.6s ease-out;
+    }
+    .floating-google-badge.is-visible-scroll {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
     }
     .floating-google-badge:hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 12px 32px rgba(11, 35, 69, 0.22);
       border-color: #4285F4;
-    }
-    @keyframes floatBadgeFadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
     .fgb-icon-wrapper {
       display: flex;
@@ -434,18 +437,10 @@
     }
     @media (max-width: 768px) {
       .floating-google-badge {
-        bottom: 82px;
+        bottom: 78px;
         left: 12px;
         padding: 6px 12px 6px 8px;
         gap: 7px;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(20px);
-      }
-      .floating-google-badge.is-visible-scroll {
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0);
       }
       .fgb-google-icon { width: 20px !important; height: 20px !important; }
       .fgb-score { font-size: 0.85rem; }
@@ -1627,35 +1622,22 @@
     });
 
     // ═══ SMART SCROLL FLOATING WIDGETS (MOBILE & DESKTOP HARMONIZATION) ═══
-    function positionMobileWidgets() {
+    // ═══ DYNAMIC SCROLL SWAP: CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL ═══
+    function handleScrollWidgetSwap() {
       const isMobile = window.innerWidth <= 768;
+      const isScrolledDown = window.scrollY > 220;
       const gBadge = document.querySelector('.floating-google-badge');
 
-      // ═══ DESKTOP (PC / MAC): KEEP 100% NATIVE, NEVER MUTATE DESKTOP STYLES ═══
-      if (!isMobile) {
-        if (gBadge) {
-          gBadge.classList.remove('is-visible-scroll');
-          gBadge.style.opacity = '1';
-          gBadge.style.pointerEvents = 'auto';
-          gBadge.style.transform = 'translateY(0)';
-        }
-        return;
-      }
-
-      // ═══ MOBILE PHONES (<= 768px): SMART SCROLL VISIBILITY ═══
-      // Show floating widgets ONLY when user scrolls down past the hero form (> 280px)
-      const hasScrolledPastForm = window.scrollY > 280;
-
-      // 1. Google Reviews floating badge
+      // 1. Google Reviews Badge Toggle (Appears with smooth slide-up animation on scroll)
       if (gBadge) {
-        if (hasScrolledPastForm) {
+        if (isScrolledDown) {
           gBadge.classList.add('is-visible-scroll');
         } else {
           gBadge.classList.remove('is-visible-scroll');
         }
       }
 
-      // 2. GoHighLevel Chat Widget on Mobile: Hide while at top/form, show when scrolling
+      // 2. Chat Widget Toggle (Visible upon entering the page, smoothly fades out on scroll down)
       const chatSelectors = [
         'chat-widget',
         '#chat-widget-container',
@@ -1663,7 +1645,7 @@
         'iframe[src*="leadconnector"]',
         'iframe[src*="chat"]',
         'iframe[id*="chat"]',
-        'div[id*="chat"]',
+        'div[id*="chat-widget"]',
         'div[class*="chat-widget"]',
         '.lc_chat_widget',
         '.chat-widget-button',
@@ -1672,51 +1654,54 @@
 
       chatSelectors.forEach(sel => {
         document.querySelectorAll(sel).forEach(el => {
-          el.style.setProperty('bottom', '78px', 'important');
-          el.style.setProperty('right', '14px', 'important');
-          el.style.setProperty('z-index', '998', 'important');
-          el.style.setProperty('transition', 'opacity 0.3s ease, transform 0.3s ease', 'important');
-          if (hasScrolledPastForm) {
-            el.style.setProperty('opacity', '1', 'important');
-            el.style.setProperty('pointer-events', 'auto', 'important');
-            el.style.setProperty('transform', 'translateY(0)', 'important');
-          } else {
+          el.style.setProperty('transition', 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)', 'important');
+          if (isMobile) {
+            el.style.setProperty('bottom', '78px', 'important');
+            el.style.setProperty('right', '14px', 'important');
+            el.style.setProperty('z-index', '998', 'important');
+          }
+          if (isScrolledDown) {
+            // Hide chat on scroll down
             el.style.setProperty('opacity', '0', 'important');
             el.style.setProperty('pointer-events', 'none', 'important');
-            el.style.setProperty('transform', 'translateY(20px)', 'important');
+            el.style.setProperty('transform', 'translateY(24px) scale(0.95)', 'important');
+          } else {
+            // Show chat at top of page
+            el.style.setProperty('opacity', '1', 'important');
+            el.style.setProperty('pointer-events', 'auto', 'important');
+            el.style.setProperty('transform', 'translateY(0) scale(1)', 'important');
           }
         });
       });
 
-      // Penetrate ShadowRoot in custom elements on mobile
+      // Penetrate ShadowRoot in custom elements for Chat Widget
       document.querySelectorAll('chat-widget').forEach(widget => {
         if (widget.shadowRoot) {
-          let styleTag = widget.shadowRoot.getElementById('ghl-shadow-override');
+          let styleTag = widget.shadowRoot.getElementById('ghl-swap-override');
           if (!styleTag) {
             styleTag = document.createElement('style');
-            styleTag.id = 'ghl-shadow-override';
+            styleTag.id = 'ghl-swap-override';
             widget.shadowRoot.appendChild(styleTag);
           }
-          if (hasScrolledPastForm) {
+          if (isScrolledDown) {
             styleTag.textContent = `
               :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
-                bottom: 78px !important;
-                right: 14px !important;
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                z-index: 998 !important;
-                transition: opacity 0.3s ease, transform 0.3s ease !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                transform: translateY(24px) scale(0.95) !important;
+                transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
               }
             `;
           } else {
+            const bottomPos = isMobile ? '78px' : '20px';
+            const rightPos = isMobile ? '14px' : '20px';
             styleTag.textContent = `
               :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
-                bottom: 78px !important;
-                right: 14px !important;
-                opacity: 0 !important;
-                pointer-events: none !important;
-                transform: translateY(20px) !important;
-                transition: opacity 0.3s ease, transform 0.3s ease !important;
+                ${isMobile ? `bottom: ${bottomPos} !important; right: ${rightPos} !important;` : ''}
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: translateY(0) scale(1) !important;
+                transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
               }
             `;
           }
@@ -1724,11 +1709,11 @@
       });
     }
 
-    window.addEventListener('scroll', positionMobileWidgets, { passive: true });
-    window.addEventListener('resize', positionMobileWidgets);
+    window.addEventListener('scroll', handleScrollWidgetSwap, { passive: true });
+    window.addEventListener('resize', handleScrollWidgetSwap);
     window.addEventListener('DOMContentLoaded', () => {
-      positionMobileWidgets();
-      setInterval(positionMobileWidgets, 300);
+      handleScrollWidgetSwap();
+      setInterval(handleScrollWidgetSwap, 300);
     });
 
     // Auto-scroll to hero stats and form on mobile phone load
