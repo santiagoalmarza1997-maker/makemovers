@@ -343,7 +343,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       FLOATING GOOGLE REVIEWS MINI-WIDGET (BOTTOM-LEFT FIXED ON SCROLL)
+       FLOATING GOOGLE REVIEWS MINI-WIDGET (SMART SCROLL ON MOBILE)
        ═══════════════════════════════════════════════════════════════════════ */
     .floating-google-badge {
       position: fixed;
@@ -360,8 +360,10 @@
       border: 1.5px solid #E2E8F0;
       text-decoration: none;
       color: #0B2345;
-      font-family: var(--font-sans);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--font-body);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s ease;
       cursor: pointer;
       backdrop-filter: blur(8px);
       animation: floatBadgeFadeIn 0.6s ease-out;
@@ -432,8 +434,24 @@
     }
     @media (max-width: 768px) {
       .floating-google-badge {
-        display: none !important;
+        bottom: 82px;
+        left: 12px;
+        padding: 6px 12px 6px 8px;
+        gap: 7px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
       }
+      .floating-google-badge.is-visible-scroll {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .fgb-google-icon { width: 20px !important; height: 20px !important; }
+      .fgb-score { font-size: 0.85rem; }
+      .fgb-stars { font-size: 0.75rem; }
+      .fgb-bottom { font-size: 0.65rem; }
+      .fgb-arrow { display: none; }
     }
     .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
     .review-card { background: var(--gray-100); border-radius: var(--radius-md); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: all .3s var(--ease); border: 1px solid transparent; }
@@ -628,17 +646,20 @@
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
 
       /* GHL Chat Widget Harmonization on Mobile: Sit gracefully above sticky bar */
-      chat-widget {
-        bottom: 74px !important;
-        right: 12px !important;
+      chat-widget,
+      #chat-widget-container,
+      .chat-widget-container,
+      iframe[src*="leadconnectorhq"],
+      iframe[id*="chat"],
+      div[id*="chat-widget"],
+      .lc_chat_widget {
+        bottom: 82px !important;
+        right: 14px !important;
         z-index: 998 !important;
-      }
-      iframe[id*="chat"], .chat-widget-container, .lc_chat_widget {
-        bottom: 74px !important;
       }
 
       /* Mobile Floating Sticky Bar */
-      .mobile-sticky-bar { display: grid !important; position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; background: rgba(11,35,69,0.98); backdrop-filter: blur(12px); padding: 8px 12px; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 2px solid var(--orange); box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
+      .mobile-sticky-bar { display: grid !important; position: fixed; bottom: 0; left: 0; right: 0; z-index: 995; background: rgba(11,35,69,0.98); backdrop-filter: blur(12px); padding: 8px 12px; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 2px solid var(--orange); box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
       .mobile-sticky-bar .btn { padding: 11px 8px; font-size: .74rem; border-radius: var(--radius-sm); width: 100%; display: inline-flex !important; }
     }
 
@@ -1602,6 +1623,64 @@
         // Fallback for older browsers
         revealElements.forEach(el => el.classList.add('is-visible'));
       }
+    });
+
+    // ═══ SMART SCROLL FLOATING GOOGLE BADGE & GHL CHAT WIDGET POSITIONING ═══
+    function positionMobileWidgets() {
+      const isMobile = window.innerWidth <= 768;
+      
+      // 1. Google Reviews floating badge smart scroll on mobile
+      const gBadge = document.querySelector('.floating-google-badge');
+      if (gBadge) {
+        if (isMobile) {
+          // Appear smoothly only when user scrolls down past the hero form (> 360px)
+          if (window.scrollY > 360) {
+            gBadge.classList.add('is-visible-scroll');
+          } else {
+            gBadge.classList.remove('is-visible-scroll');
+          }
+        } else {
+          gBadge.classList.remove('is-visible-scroll');
+        }
+      }
+
+      // 2. GoHighLevel Chat Widget elevation on mobile (so it NEVER overlaps the sticky bar buttons)
+      const chatSelectors = [
+        'chat-widget',
+        '#chat-widget-container',
+        '.chat-widget-container',
+        'iframe[src*="leadconnectorhq"]',
+        'iframe[id*="chat"]',
+        'div[id*="chat-widget"]',
+        '.lc_chat_widget'
+      ];
+      
+      chatSelectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+          if (isMobile) {
+            el.style.setProperty('bottom', '82px', 'important');
+            el.style.setProperty('right', '14px', 'important');
+            el.style.setProperty('z-index', '998', 'important');
+          } else {
+            el.style.removeProperty('bottom');
+            el.style.removeProperty('right');
+          }
+          if (el.shadowRoot) {
+            const shadowBtn = el.shadowRoot.querySelector('#chat-widget-container, .chat-widget-container, .chat-button, button, div');
+            if (shadowBtn && isMobile) {
+              shadowBtn.style.setProperty('bottom', '82px', 'important');
+              shadowBtn.style.setProperty('right', '14px', 'important');
+            }
+          }
+        });
+      });
+    }
+
+    window.addEventListener('scroll', positionMobileWidgets, { passive: true });
+    window.addEventListener('resize', positionMobileWidgets);
+    window.addEventListener('DOMContentLoaded', () => {
+      positionMobileWidgets();
+      setInterval(positionMobileWidgets, 500);
     });
 
     // Auto-scroll to hero stats and form on mobile phone load
