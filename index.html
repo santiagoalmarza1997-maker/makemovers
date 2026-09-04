@@ -375,6 +375,12 @@
       pointer-events: auto !important;
       transform: translateY(0) scale(1) !important;
     }
+    /* Hide floating badge seamlessly when user is inside the actual #reviews section */
+    body.inside-reviews-section .floating-google-badge {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(24px) scale(0.95) !important;
+    }
     .floating-google-badge:hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 12px 32px rgba(11, 35, 69, 0.22);
@@ -1640,16 +1646,37 @@
 
     // ═══ SMOOTH SCROLL SWAP (CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL) ═══
     let isScrolledDown = false;
+    let isInsideReviewsSection = false;
+
     function checkScrollSwap() {
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       
-      // Hysteresis dead-band: prevents boundary flickering
+      // 1. Hysteresis dead-band: prevents boundary flickering
       if (!isScrolledDown && scrollY > 320) {
         isScrolledDown = true;
         document.body.classList.add('scrolled-down');
       } else if (isScrolledDown && scrollY < 180) {
         isScrolledDown = false;
         document.body.classList.remove('scrolled-down');
+      }
+
+      // 2. Hide floating badge seamlessly when user reaches and views the #reviews section
+      const reviewsSection = document.getElementById('reviews');
+      if (reviewsSection) {
+        const rect = reviewsSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        // Check if reviews section is in the viewport
+        if (rect.top < windowHeight - 100 && rect.bottom > 140) {
+          if (!isInsideReviewsSection) {
+            isInsideReviewsSection = true;
+            document.body.classList.add('inside-reviews-section');
+          }
+        } else {
+          if (isInsideReviewsSection) {
+            isInsideReviewsSection = false;
+            document.body.classList.remove('inside-reviews-section');
+          }
+        }
       }
     }
 
