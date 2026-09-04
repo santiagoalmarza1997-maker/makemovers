@@ -1625,7 +1625,7 @@
     // ═══ DYNAMIC SCROLL SWAP: CHAT ON TOP -> GOOGLE REVIEWS ON SCROLL ═══
     function handleScrollWidgetSwap() {
       const isMobile = window.innerWidth <= 768;
-      const isScrolledDown = window.scrollY > 220;
+      const isScrolledDown = window.scrollY > 300;
       const gBadge = document.querySelector('.floating-google-badge');
 
       // 1. Google Reviews Badge Toggle (Appears with smooth slide-up animation on scroll)
@@ -1714,18 +1714,6 @@
     window.addEventListener('DOMContentLoaded', () => {
       handleScrollWidgetSwap();
       setInterval(handleScrollWidgetSwap, 300);
-    });
-
-    // Auto-scroll to hero stats and form on mobile phone load
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          const stats = document.querySelector('.hero-stats');
-          if (stats) {
-            stats.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 200);
-      }
     });
   </script>
 
