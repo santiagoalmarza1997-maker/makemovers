@@ -653,9 +653,10 @@
       iframe[id*="chat"],
       div[id*="chat-widget"],
       .lc_chat_widget {
-        bottom: 82px !important;
+        bottom: 78px !important;
         right: 14px !important;
         z-index: 998 !important;
+        transition: opacity 0.3s ease, transform 0.3s ease !important;
       }
 
       /* Mobile Floating Sticky Bar */
@@ -1625,26 +1626,37 @@
       }
     });
 
-    // ═══ SMART SCROLL FLOATING GOOGLE BADGE & AGGRESSIVE GHL CHAT ELEVATION ═══
+    // ═══ SMART SCROLL FLOATING WIDGETS (MOBILE & DESKTOP HARMONIZATION) ═══
     function positionMobileWidgets() {
       const isMobile = window.innerWidth <= 768;
-      
-      // 1. Google Reviews floating badge smart scroll on mobile
       const gBadge = document.querySelector('.floating-google-badge');
+
+      // ═══ DESKTOP (PC / MAC): KEEP 100% NATIVE, NEVER MUTATE DESKTOP STYLES ═══
+      if (!isMobile) {
+        if (gBadge) {
+          gBadge.classList.remove('is-visible-scroll');
+          gBadge.style.opacity = '1';
+          gBadge.style.pointerEvents = 'auto';
+          gBadge.style.transform = 'translateY(0)';
+        }
+        return;
+      }
+
+      // ═══ MOBILE PHONES (<= 768px): SMART SCROLL VISIBILITY ═══
+      // Show floating widgets ONLY when user scrolls down past the hero form (> 280px)
+      const hasScrolledPastForm = window.scrollY > 280;
+
+      // 1. Google Reviews floating badge
       if (gBadge) {
-        if (isMobile) {
-          if (window.scrollY > 360) {
-            gBadge.classList.add('is-visible-scroll');
-          } else {
-            gBadge.classList.remove('is-visible-scroll');
-          }
+        if (hasScrolledPastForm) {
+          gBadge.classList.add('is-visible-scroll');
         } else {
           gBadge.classList.remove('is-visible-scroll');
         }
       }
 
-      // 2. GoHighLevel Chat Widget aggressive elevation on mobile (so it NEVER overlaps sticky bar buttons)
-      const selectors = [
+      // 2. GoHighLevel Chat Widget on Mobile: Hide while at top/form, show when scrolling
+      const chatSelectors = [
         'chat-widget',
         '#chat-widget-container',
         '.chat-widget-container',
@@ -1658,47 +1670,55 @@
         '.chat-button'
       ];
 
-      selectors.forEach(sel => {
+      chatSelectors.forEach(sel => {
         document.querySelectorAll(sel).forEach(el => {
-          if (isMobile) {
-            el.style.setProperty('bottom', '82px', 'important');
-            el.style.setProperty('right', '14px', 'important');
-            el.style.setProperty('z-index', '998', 'important');
+          el.style.setProperty('bottom', '78px', 'important');
+          el.style.setProperty('right', '14px', 'important');
+          el.style.setProperty('z-index', '998', 'important');
+          el.style.setProperty('transition', 'opacity 0.3s ease, transform 0.3s ease', 'important');
+          if (hasScrolledPastForm) {
+            el.style.setProperty('opacity', '1', 'important');
+            el.style.setProperty('pointer-events', 'auto', 'important');
+            el.style.setProperty('transform', 'translateY(0)', 'important');
           } else {
-            el.style.removeProperty('bottom');
-            el.style.removeProperty('right');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+            el.style.setProperty('transform', 'translateY(20px)', 'important');
           }
         });
       });
 
-      // Penetrate ShadowRoot in custom elements
+      // Penetrate ShadowRoot in custom elements on mobile
       document.querySelectorAll('chat-widget').forEach(widget => {
         if (widget.shadowRoot) {
-          widget.shadowRoot.querySelectorAll('*').forEach(child => {
-            if (isMobile) {
-              child.style.setProperty('bottom', '82px', 'important');
-              child.style.setProperty('right', '14px', 'important');
-            } else {
-              child.style.removeProperty('bottom');
-              child.style.removeProperty('right');
-            }
-          });
           let styleTag = widget.shadowRoot.getElementById('ghl-shadow-override');
           if (!styleTag) {
             styleTag = document.createElement('style');
             styleTag.id = 'ghl-shadow-override';
             widget.shadowRoot.appendChild(styleTag);
           }
-          if (isMobile) {
+          if (hasScrolledPastForm) {
             styleTag.textContent = `
               :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
-                bottom: 82px !important;
+                bottom: 78px !important;
                 right: 14px !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
                 z-index: 998 !important;
+                transition: opacity 0.3s ease, transform 0.3s ease !important;
               }
             `;
           } else {
-            styleTag.textContent = '';
+            styleTag.textContent = `
+              :host, :host > div, #chat-widget-container, .chat-widget-container, button, .chat-button, div[class*="chat"], div[id*="chat"] {
+                bottom: 78px !important;
+                right: 14px !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                transform: translateY(20px) !important;
+                transition: opacity 0.3s ease, transform 0.3s ease !important;
+              }
+            `;
           }
         }
       });
@@ -1750,7 +1770,7 @@
   </a>
 
   <!-- ═══ GOHIGHLEVEL CONVERSATIONS WEBCHAT WIDGET (OPTION 1: SILENT & NON-INTRUSIVE) ═══ -->
-  <chat-widget location-id="HjbOI2dRDzCa7UDvD8Ip" style="position: fixed; bottom: 82px; right: 14px; z-index: 998;"></chat-widget>
+  <chat-widget location-id="HjbOI2dRDzCa7UDvD8Ip"></chat-widget>
   <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-prefix="https://widgets.leadconnectorhq.com" data-location-id="HjbOI2dRDzCa7UDvD8Ip" async></script>
 </body>
 </html>
