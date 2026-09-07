@@ -137,14 +137,13 @@
   </div>
 
   <script>
-    const WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/HjbOI2dRDzCa7UDvD8Ip/webhook-trigger/a57b2039-c209-492c-b983-81782ffc353f";
     const WA_PHONE = "14706370909";
 
     document.getElementById("recruitmentForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       
       const btn = document.getElementById("btnSubmit");
-      btn.innerText = "PROCESANDO SOLICITUD...";
+      btn.innerText = "REGISTRANDO POSTULACIÓN...";
       btn.disabled = true;
 
       const nombre = document.getElementById("nombre").value.trim();
@@ -155,24 +154,21 @@
 
       const payload = {
         "nombre": nombre,
-        "email": `mover_${Date.now()}@topmoversco.com`,
         "telefono": telefono,
         "ciudad": ciudad,
-        "resumen": `Candidato a Mover: ${tipo_rol} en ${ciudad}. Disponibilidad: ${disponibilidad}.`,
-        "necesidad": `Solicitud de Empleo Mover: ${tipo_rol} (${disponibilidad})`,
-        "interes": "Alto",
-        "etiqueta": "mover",
-        "tipo": "mover_recruitment"
+        "tipo_rol": tipo_rol,
+        "disponibilidad": disponibilidad,
+        "email": `mover_${Date.now()}@topmoversco.com`
       };
 
       try {
-        await fetch(WEBHOOK_URL, {
+        await fetch("/api/recruit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
       } catch (err) {
-        console.log("Payload enviado:", payload);
+        console.error("Error al registrar:", err);
       }
 
       const msgWA = encodeURIComponent(`Hola Top Movers Co! Mi nombre es ${nombre}, envié mi solicitud para trabajar como ${tipo_rol} en ${ciudad}. Quedo atento a su respuesta.`);
