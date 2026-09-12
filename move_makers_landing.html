@@ -129,11 +129,35 @@
     /* ═══ IMPROVED SVG LOGO ═══ */
     .logo-svg { display: block; }
 
-    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
     .nav-links a { font-family: var(--font-heading); font-weight: 700; font-size: .85rem; color: var(--navy); text-transform: uppercase; letter-spacing: .6px; position: relative; transition: color .2s; }
     .nav-links a:hover { color: var(--orange); }
     .nav-links a::after { content:''; position: absolute; bottom: -5px; left:0; width:0; height:3px; background: var(--orange); border-radius: 2px; transition: width .25s var(--ease); }
     .nav-links a:hover::after { width: 100%; }
+
+    .nav-calc-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      padding: 7px 15px !important;
+      border-radius: 20px !important;
+      background: #F1F5F9 !important;
+      color: var(--navy) !important;
+      border: 1px solid #E2E8F0 !important;
+      font-size: .80rem !important;
+      font-weight: 700 !important;
+      letter-spacing: .4px !important;
+      text-transform: uppercase !important;
+      transition: all .25s var(--ease) !important;
+    }
+    .nav-calc-btn::after { display: none !important; }
+    .nav-calc-btn:hover {
+      background: var(--navy) !important;
+      color: var(--white) !important;
+      border-color: var(--navy) !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 12px rgba(11, 35, 69, 0.12) !important;
+    }
 
     .nav-cta { display: flex; align-items: center; gap: 18px; }
     .nav-phone { text-align: right; }
@@ -761,7 +785,12 @@
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="/calculator" style="color:var(--orange);font-weight:700;border:1.5px solid var(--orange);padding:6px 14px;border-radius:6px;transition:all .2s ease;">Calculadora Avanzada</a></li>
+        <li>
+          <a href="/calculator" class="nav-calc-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.75;"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+            Moving Calculator
+          </a>
+        </li>
       </ul>
 
       <div class="nav-cta">
@@ -785,7 +814,7 @@
       <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
       <li><a href="#about" onclick="toggleMobileMenu()">About Us</a></li>
       <li><a href="#quotes" onclick="toggleMobileMenu()">Instant Quotes</a></li>
-      <li><a href="/calculator" onclick="toggleMobileMenu()" style="color:var(--orange);font-weight:700;">🧮 Calculadora Avanzada</a></li>
+      <li><a href="/calculator" onclick="toggleMobileMenu()">Moving Calculator</a></li>
       <li><a href="#reviews" onclick="toggleMobileMenu()">Reviews</a></li>
       <li><a href="#faq" onclick="toggleMobileMenu()">FAQ</a></li>
     </ul>
