@@ -744,6 +744,594 @@
       }
     }
 
+    /* ═══════════════════════════════════════════════════════════════════════
+       ADVANCED MOVING CALCULATOR STYLES (1:1 movingquote.netlify.app)
+       ═══════════════════════════════════════════════════════════════════════ */
+    .adv-calc-section {
+      background: linear-gradient(180deg, #06152B 0%, #0A1E3C 50%, #06152B 100%);
+      color: #E2E8F0;
+      padding: 90px 0;
+      position: relative;
+      border-top: 1px solid rgba(255, 107, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 107, 0, 0.2);
+    }
+    .adv-calc-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .adv-calc-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .adv-calc-header h2 {
+      color: #FFFFFF;
+      font-size: 2.5rem;
+      margin-top: 14px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+    .adv-calc-header p {
+      color: #94A3B8;
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .adv-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      background: rgba(15, 31, 56, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .adv-company-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .adv-pill-img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #FFFFFF;
+      padding: 3px;
+    }
+    .adv-pill-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #FFFFFF;
+      font-family: var(--font-heading);
+    }
+    .adv-pill-sub {
+      font-size: 0.72rem;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .adv-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .adv-lang-toggle {
+      display: flex;
+      background: #06152B;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .adv-lang-btn {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      font-family: var(--font-heading);
+    }
+    .adv-lang-btn.active {
+      background: var(--orange);
+      color: #FFFFFF;
+    }
+
+    /* STEP CARDS IN ADVANCED CALCULATOR */
+    .adv-step-card {
+      background: #0A1E3C;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s ease;
+    }
+    .adv-step-card:hover {
+      border-color: rgba(255, 107, 0, 0.3);
+    }
+    .adv-card-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--orange);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+    }
+    .adv-card-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 14px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+    .adv-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 18px 0;
+    }
+
+    /* STEP 1: SERVICE GRID */
+    .adv-service-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 768px) {
+      .adv-service-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .adv-service-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .adv-service-card {
+      background: #0F274E;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      user-select: none;
+    }
+    .adv-service-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .adv-service-card.active {
+      border-color: var(--orange);
+      background: rgba(255, 107, 0, 0.12);
+      box-shadow: 0 0 0 2px var(--orange-glow);
+    }
+    .adv-s-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .adv-s-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #FFFFFF;
+      font-family: var(--font-heading);
+      line-height: 1.25;
+    }
+    .adv-s-rate {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    /* STEP 2: DETAILS GRID & INPUTS */
+    .adv-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 600px) {
+      .adv-details-grid { grid-template-columns: 1fr; }
+    }
+    .adv-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .adv-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-family: var(--font-heading);
+    }
+    .adv-input, .adv-select, .adv-textarea {
+      background: #0F274E;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      transition: all 0.2s ease;
+      width: 100%;
+      font-family: var(--font-body);
+    }
+    .adv-input:focus, .adv-select:focus, .adv-textarea:focus {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px var(--orange-glow);
+      background: #143261;
+    }
+    .adv-select option {
+      background: #0B2345;
+      color: #FFFFFF;
+    }
+
+    /* COUNTERS */
+    .adv-counter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .adv-counter-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #0F274E;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .adv-counter-btn:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      transform: scale(1.05);
+    }
+    .adv-counter-btn:active {
+      transform: scale(0.95);
+    }
+    .adv-counter-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      min-width: 2.4rem;
+      text-align: center;
+      color: #FFFFFF;
+      font-family: var(--font-heading);
+    }
+    .adv-min-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 107, 0, 0.15);
+      border: 1px solid rgba(255, 107, 0, 0.35);
+      color: var(--orange);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+      width: fit-content;
+      font-family: var(--font-heading);
+    }
+
+    /* TRUCK SELECTION CARDS */
+    .adv-truck-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 480px) {
+      .adv-truck-options { grid-template-columns: 1fr; }
+    }
+    .adv-truck-card {
+      background: #0F274E;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      user-select: none;
+    }
+    .adv-truck-card:hover {
+      border-color: var(--orange);
+    }
+    .adv-truck-card.active {
+      border-color: var(--orange);
+      background: rgba(255, 107, 0, 0.12);
+      box-shadow: 0 0 0 2px var(--orange-glow);
+    }
+    .adv-t-icon { font-size: 1.6rem; margin-bottom: 4px; }
+    .adv-t-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; color: #FFFFFF; font-family: var(--font-heading); }
+    .adv-t-price { font-size: 0.82rem; color: #FFD166; font-weight: 700; }
+
+    /* MILES SELECTION */
+    .adv-miles-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .adv-miles-btn {
+      background: #0F274E;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      font-family: var(--font-heading);
+    }
+    .adv-miles-btn:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #FFFFFF;
+    }
+    .adv-miles-input {
+      width: 90px !important;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem !important;
+    }
+    .adv-btn-distance {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 107, 0, 0.08);
+      border: 1px dashed rgba(255, 107, 0, 0.4);
+      color: var(--orange);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-heading);
+      margin-top: 8px;
+      width: fit-content;
+    }
+    .adv-btn-distance:hover {
+      border-color: var(--orange);
+      background: rgba(255, 107, 0, 0.18);
+      color: #FFFFFF;
+    }
+    .adv-btn-distance:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* JUNK LOAD GRID */
+    .adv-load-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 768px) {
+      .adv-load-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .adv-load-card {
+      background: #0F274E;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      user-select: none;
+    }
+    .adv-load-card:hover {
+      border-color: var(--orange);
+    }
+    .adv-load-card.active {
+      border-color: var(--orange);
+      background: rgba(255, 107, 0, 0.12);
+      box-shadow: 0 0 0 2px var(--orange-glow);
+    }
+    .adv-l-icon { font-size: 1.5rem; margin-bottom: 4px; }
+    .adv-l-name { font-size: 0.82rem; font-weight: 700; color: #FFFFFF; margin-bottom: 2px; }
+    .adv-l-price { font-size: 0.88rem; color: #FFD166; font-weight: 800; }
+    .adv-l-size { font-size: 0.7rem; color: #94A3B8; margin-top: 2px; }
+
+    /* STEP 3: ADDONS GRID */
+    .adv-addons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 10px;
+    }
+    .adv-addon-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0F274E;
+      border: 1.5px solid rgba(255, 255, 255, 0.09);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .adv-addon-item:hover {
+      border-color: var(--orange);
+    }
+    .adv-addon-item.active {
+      border-color: var(--orange);
+      background: rgba(255, 107, 0, 0.12);
+    }
+    .adv-addon-check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 5px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 900;
+      transition: all 0.2s ease;
+    }
+    .adv-addon-item.active .adv-addon-check {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #FFFFFF;
+    }
+    .adv-addon-item.active .adv-addon-check::after {
+      content: '✓';
+    }
+    .adv-addon-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      flex: 1;
+    }
+    .adv-addon-price {
+      font-size: 0.82rem;
+      color: #FFD166;
+      font-weight: 800;
+    }
+
+    /* STEP 4: CLIENT GRID */
+    .adv-client-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 600px) {
+      .adv-client-grid { grid-template-columns: 1fr; }
+    }
+    .adv-full-w {
+      grid-column: 1 / -1;
+    }
+
+    /* STEP 5: SUMMARY & BREAKDOWN */
+    .adv-summary-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .adv-summary-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94A3B8;
+      font-family: var(--font-heading);
+    }
+    .adv-summary-note {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      margin-top: 3px;
+    }
+    .adv-summary-amount {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--orange);
+      font-family: var(--font-heading);
+      line-height: 1;
+    }
+    .adv-breakdown-list {
+      margin-bottom: 20px;
+    }
+    .adv-bd-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      padding: 6px 0;
+      color: #CBD5E1;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+    .adv-bd-item.total-row {
+      border-top: 2px solid rgba(255, 107, 0, 0.4);
+      border-bottom: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 1.05rem;
+      font-family: var(--font-heading);
+    }
+
+    /* ACTION BUTTONS */
+    .adv-action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 540px) {
+      .adv-action-row { grid-template-columns: 1fr; }
+    }
+    .adv-btn-wa {
+      background: #25D366;
+      color: #FFFFFF;
+    }
+    .adv-btn-wa:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+    }
+    .adv-btn-pdf {
+      background: linear-gradient(135deg, #FF6B00 0%, #FF8C38 100%);
+      color: #FFFFFF;
+    }
+    .adv-btn-pdf:hover {
+      background: linear-gradient(135deg, #E05E00 0%, #FF7B1A 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 107, 0, 0.4);
+    }
+
+    /* TOAST NOTIFICATION */
+    .adv-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(140px);
+      background: #0B2345;
+      color: #FFFFFF;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      z-index: 99999;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1.5px solid var(--orange);
+      font-family: var(--font-heading);
+    }
+    .adv-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .adv-hidden {
+      display: none !important;
+    }
+
   </style>
 </head>
 <body>
@@ -759,6 +1347,7 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#quotes">Quotes</a></li>
+        <li><a href="#advanced-calculator" style="color:var(--orange);font-weight:700;">🧮 Calculator</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -784,6 +1373,7 @@
       <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
       <li><a href="#about" onclick="toggleMobileMenu()">About Us</a></li>
       <li><a href="#quotes" onclick="toggleMobileMenu()">Instant Quotes</a></li>
+      <li><a href="#advanced-calculator" onclick="toggleMobileMenu()" style="color:var(--orange);font-weight:700;">🧮 Advanced Calculator</a></li>
       <li><a href="#reviews" onclick="toggleMobileMenu()">Reviews</a></li>
       <li><a href="#faq" onclick="toggleMobileMenu()">FAQ</a></li>
     </ul>
@@ -822,6 +1412,11 @@
           <div style="text-align:center;">
             <h3 id="quotes">Get Instant Quote</h3>
             <p class="sub">Receive your free moving estimate</p>
+            <div style="margin: 10px 0 14px; text-align: center;">
+              <a href="#advanced-calculator" class="btn-adv-trigger" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px 12px;background:rgba(255,107,0,0.1);border:1.5px dashed var(--orange);border-radius:var(--radius-sm);color:var(--orange);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;transition:all .2s ease;text-decoration:none;">
+                <span>🧮 Itemized Breakdown? Open Advanced Calculator ↓</span>
+              </a>
+            </div>
           </div>
 
           <!-- 4-Step Progress Indicator (Calculator & PDF Generator) -->
@@ -1185,6 +1780,313 @@
       </div>
     </div>
   </section>
+
+  <!-- ═══ ADVANCED MOVING CALCULATOR SECTION (1:1 movingquote.netlify.app) ═══ -->
+  <section class="adv-calc-section" id="advanced-calculator">
+    <div class="adv-calc-container">
+      <div class="adv-calc-header">
+        <div class="badge badge-orange" style="margin-bottom:12px;">⚡ REAL-TIME ITEMIZATION · 100% TRANSPARENT RATES</div>
+        <h2 data-adv-t="calcTitle">ADVANCED MOVING <span class="orange">CALCULATOR</span></h2>
+        <p data-adv-t="calcSubtitle">Configure every variable of your relocation with real-time transparent pricing — crew size, hours, truck capacity, mileage, assembly, and specialty items.</p>
+      </div>
+
+      <!-- Top Bar with Company Info and EN/ES Toggle -->
+      <div class="adv-top-bar">
+        <div class="adv-company-pill">
+          <img src="logo_transparent.png" alt="Top Movers Co" class="adv-pill-img">
+          <div>
+            <div class="adv-pill-title">Top Movers Co.</div>
+            <div class="adv-pill-sub">Atlanta, GA & Nationwide · DOT #394021</div>
+          </div>
+        </div>
+        <div class="adv-controls-right">
+          <a href="tel:14706370909" class="btn btn-navy" style="padding:7px 14px;font-size:0.8rem;">📞 (470) 637-0909</a>
+          <div class="adv-lang-toggle">
+            <button class="adv-lang-btn active" id="adv-lang-en" onclick="setAdvLang('en')">EN</button>
+            <button class="adv-lang-btn" id="adv-lang-es" onclick="setAdvLang('es')">ES</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: SERVICE TYPE -->
+      <div class="adv-step-card">
+        <div class="adv-card-title" data-adv-t="step1">1 · Service Type</div>
+        <div class="adv-service-grid">
+          <div class="adv-service-card active" onclick="setAdvService('local')" id="adv-svc-local">
+            <span class="adv-s-icon">🏠</span>
+            <div class="adv-s-name" data-adv-t="svcLocal">Local Move</div>
+            <div class="adv-s-rate">$60/hr per mover</div>
+          </div>
+          <div class="adv-service-card" onclick="setAdvService('longdistance')" id="adv-svc-longdistance">
+            <span class="adv-s-icon">🛣️</span>
+            <div class="adv-s-name" data-adv-t="svcLong">Long Distance</div>
+            <div class="adv-s-rate">$75/hr per mover</div>
+          </div>
+          <div class="adv-service-card" onclick="setAdvService('singleitem')" id="adv-svc-singleitem">
+            <span class="adv-s-icon">📦</span>
+            <div class="adv-s-name" data-adv-t="svcSingle">Single Item</div>
+            <div class="adv-s-rate">$150 + $3/mi</div>
+          </div>
+          <div class="adv-service-card" onclick="setAdvService('laboronly')" id="adv-svc-laboronly">
+            <span class="adv-s-icon">💪</span>
+            <div class="adv-s-name" data-adv-t="svcLabor">Labor Only</div>
+            <div class="adv-s-rate">$60/hr per mover</div>
+          </div>
+          <div class="adv-service-card" onclick="setAdvService('junk')" id="adv-svc-junk">
+            <span class="adv-s-icon">🗑️</span>
+            <div class="adv-s-name" data-adv-t="svcJunk">Junk Removal</div>
+            <div class="adv-s-rate">From $150</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: SERVICE DETAILS -->
+      <div class="adv-step-card">
+        <div class="adv-card-title" data-adv-t="step2">2 · Service Details</div>
+
+        <!-- Movers & Hours (For Local, Long Distance, Labor Only) -->
+        <div id="adv-d-movers-hours">
+          <div class="adv-details-grid">
+            <div class="adv-field-group">
+              <label class="adv-label" data-adv-t="numMovers">Number of Movers</label>
+              <div class="adv-counter">
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('movers', -1)">−</button>
+                <span class="adv-counter-val" id="adv-v-movers">2</span>
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('movers', 1)">+</button>
+              </div>
+            </div>
+            <div class="adv-field-group">
+              <label class="adv-label" data-adv-t="estHours">Estimated Hours</label>
+              <div class="adv-counter">
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('hours', -1)">−</button>
+                <span class="adv-counter-val" id="adv-v-hours">2</span>
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('hours', 1)">+</button>
+              </div>
+              <span class="adv-min-badge">⏱ <span data-adv-t="minHours">2 hour minimum</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Truck Selection (For Local & Long Distance) -->
+        <div id="adv-d-truck">
+          <hr class="adv-divider">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="truckSize">Truck Size</label>
+            <div class="adv-truck-options">
+              <div class="adv-truck-card active" onclick="setAdvTruck('small')" id="adv-tk-small">
+                <div class="adv-t-icon">🚚</div>
+                <div class="adv-t-name" data-adv-t="truckSmall">Small (under 20ft)</div>
+                <div class="adv-t-price">+$150</div>
+              </div>
+              <div class="adv-truck-card" onclick="setAdvTruck('large')" id="adv-tk-large">
+                <div class="adv-t-icon">🚛</div>
+                <div class="adv-t-name" data-adv-t="truckLarge">Large (20ft or more)</div>
+                <div class="adv-t-price">+$200</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mileage for Long Distance -->
+        <div id="adv-d-miles" class="adv-hidden">
+          <hr class="adv-divider">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="milesLabel">Miles Distance</label>
+            <div class="adv-miles-row">
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('ld', -10)">−10</button>
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('ld', -5)">−5</button>
+              <input type="number" id="adv-v-miles" value="50" min="0" class="adv-input adv-miles-input" oninput="calcAdv()">
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('ld', 5)">+5</button>
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('ld', 10)">+10</button>
+            </div>
+            <small style="font-size:0.72rem;color:#94A3B8;margin-top:4px;" data-adv-t="milesHint">Enter driving miles or auto-calculate based on addresses in Step 4</small>
+            <button type="button" class="adv-btn-distance" onclick="calcAdvDistanceAPI('ld')" id="adv-dist-btn-ld">📍 Auto-Calculate Distance from Addresses</button>
+          </div>
+        </div>
+
+        <!-- Single Item Panel -->
+        <div id="adv-d-singleitem" class="adv-hidden">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="itemDesc">Item Description</label>
+            <input type="text" id="adv-single-desc" class="adv-input" placeholder="e.g., Grand Piano, Sub-Zero Refrigerator, Sectional..." oninput="calcAdv()">
+          </div>
+          <hr class="adv-divider">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="milesLabel">Miles Distance</label>
+            <div class="adv-miles-row">
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('si', -10)">−10</button>
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('si', -5)">−5</button>
+              <input type="number" id="adv-v-miles-si" value="15" min="0" class="adv-input adv-miles-input" oninput="calcAdv()">
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('si', 5)">+5</button>
+              <button type="button" class="adv-miles-btn" onclick="adjAdvMiles('si', 10)">+10</button>
+            </div>
+            <button type="button" class="adv-btn-distance" onclick="calcAdvDistanceAPI('si')" id="adv-dist-btn-si">📍 Auto-Calculate Distance from Addresses</button>
+          </div>
+        </div>
+
+        <!-- Junk Removal Panel -->
+        <div id="adv-d-junk" class="adv-hidden">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="loadSize">Volume to Remove</label>
+            <div class="adv-load-grid">
+              <div class="adv-load-card active" onclick="setAdvLoad('small')" id="adv-ld-small">
+                <div class="adv-l-icon">🪣</div>
+                <div class="adv-l-name" data-adv-t="loadSmall">Small Load</div>
+                <div class="adv-l-price">$150</div>
+                <div class="adv-l-size">1/4 truck</div>
+              </div>
+              <div class="adv-load-card" onclick="setAdvLoad('medium')" id="adv-ld-medium">
+                <div class="adv-l-icon">📦</div>
+                <div class="adv-l-name" data-adv-t="loadMedium">Medium Load</div>
+                <div class="adv-l-price">$250</div>
+                <div class="adv-l-size">1/2 truck</div>
+              </div>
+              <div class="adv-load-card" onclick="setAdvLoad('large')" id="adv-ld-large">
+                <div class="adv-l-icon">🚛</div>
+                <div class="adv-l-name" data-adv-t="loadLarge">Large Load</div>
+                <div class="adv-l-price">$350</div>
+                <div class="adv-l-size">3/4 truck</div>
+              </div>
+              <div class="adv-load-card" onclick="setAdvLoad('full')" id="adv-ld-full">
+                <div class="adv-l-icon">🚜</div>
+                <div class="adv-l-name" data-adv-t="loadFull">Full Truck</div>
+                <div class="adv-l-price">$450</div>
+                <div class="adv-l-size">Full load</div>
+              </div>
+            </div>
+          </div>
+          <hr class="adv-divider">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="junkDesc">Items to Remove</label>
+            <textarea id="adv-junk-desc" rows="2" class="adv-textarea" placeholder="e.g., Old sectional sofa, mattress, broken refrigerator, yard debris..." oninput="calcAdv()"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: ADDITIONAL SERVICES & SPECIAL ITEMS -->
+      <div class="adv-step-card">
+        <div class="adv-card-title" data-adv-t="step3">3 · Additional Services</div>
+
+        <div id="adv-d-assembly">
+          <div class="adv-field-group" style="margin-bottom:14px;">
+            <label class="adv-label" data-adv-t="assemblyLabel">Items to Assemble / Disassemble</label>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="adv-counter">
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('assembly', -1)">−</button>
+                <span class="adv-counter-val" id="adv-v-assembly">0</span>
+                <button type="button" class="adv-counter-btn" onclick="adjAdv('assembly', 1)">+</button>
+              </div>
+              <span style="font-size:0.85rem;color:#FFD166;font-weight:700;">$50 each</span>
+            </div>
+          </div>
+          <hr class="adv-divider">
+        </div>
+
+        <div>
+          <label class="adv-label" style="display:block;margin-bottom:10px;" data-adv-t="specialItems">Special Items</label>
+          <div class="adv-addons-grid" id="adv-addons-special"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: CLIENT INFORMATION -->
+      <div class="adv-step-card">
+        <div class="adv-card-title">
+          <span data-adv-t="step4">4 · Client Information</span>
+          <span style="font-size:0.7rem;color:#94A3B8;font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;" data-adv-t="optional">(Optional / Required for PDF & Sync)</span>
+        </div>
+        <div class="adv-client-grid">
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="clientName">Full Name</label>
+            <input type="text" id="adv-c-name" class="adv-input" placeholder="John Smith">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="clientPhone">Phone Number</label>
+            <input type="tel" id="adv-c-phone" class="adv-input" placeholder="(470) 637-0909">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="clientEmail">Email Address</label>
+            <input type="email" id="adv-c-email" class="adv-input" placeholder="john@example.com">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="clientDate">Estimated Move Date</label>
+            <input type="date" id="adv-c-date" class="adv-input">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="originAddr">Origin Address</label>
+            <input type="text" id="adv-c-origin" class="adv-input" placeholder="123 Main St, Atlanta, GA">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="destAddr">Destination Address</label>
+            <input type="text" id="adv-c-dest" class="adv-input" placeholder="456 Oak Ave, Alpharetta, GA">
+          </div>
+          <div class="adv-field-group">
+            <label class="adv-label" data-adv-t="homeSize">Home Size</label>
+            <select id="adv-c-homesize" class="adv-select">
+              <option value="">-- Select Size --</option>
+              <option>Studio</option>
+              <option>1 Bedroom</option>
+              <option>2 Bedrooms</option>
+              <option>3 Bedrooms</option>
+              <option>4+ Bedrooms</option>
+              <option>Office / Commercial Space</option>
+            </select>
+          </div>
+          <div class="adv-field-group adv-full-w">
+            <label class="adv-label" data-adv-t="notes">Additional Inventory & Logistics Notes</label>
+            <textarea id="adv-c-notes" rows="2" class="adv-textarea" placeholder="Stairs, elevator access, parking limitations, fragile antiques, packing needed..."></textarea>
+          </div>
+        </div>
+
+        <!-- SMS / TCPA Consent Notice -->
+        <div style="font-size:0.75rem;color:#94A3B8;margin-top:14px;background:rgba(6,21,43,0.6);padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);line-height:1.45;">
+          🔒 By submitting your details, you agree to receive moving estimates and customer updates from Top Movers Co via call or SMS. Reply STOP to cancel at any time.
+        </div>
+      </div>
+
+      <!-- STEP 5: LIVE SUMMARY & REAL-TIME BREAKDOWN -->
+      <div class="adv-step-card" style="border: 1.5px solid rgba(255,107,0,0.4);">
+        <div class="adv-summary-top">
+          <div>
+            <div class="adv-summary-label" data-adv-t="estTotal">Estimated Total</div>
+            <div class="adv-summary-note" data-adv-t="estNote">*Transparent itemized pricing — subject to adjustments on service day</div>
+          </div>
+          <div class="adv-summary-amount" id="adv-total-display">$490</div>
+        </div>
+
+        <!-- Reactive Itemized List -->
+        <div class="adv-breakdown-list" id="adv-breakdown-list"></div>
+
+        <!-- Primary Actions -->
+        <button type="button" class="btn btn-orange" style="width:100%;font-size:1.05rem;padding:16px;" onclick="generateAdvQuote()">
+          📄 <span data-adv-t="genQuote">Generate Official Quote</span>
+        </button>
+
+        <div class="adv-action-row">
+          <button type="button" class="btn adv-btn-pdf" onclick="generateAdvQuoteAndDownload()">
+            ⬇ <span>Download Quote (PDF)</span>
+          </button>
+          <button type="button" class="btn adv-btn-wa" onclick="shareAdvWA()">
+            💬 WhatsApp (470) 637-0909
+          </button>
+        </div>
+
+        <div class="adv-action-row" style="margin-top:8px;">
+          <button type="button" class="btn btn-navy" style="font-size:0.85rem;padding:10px;" onclick="shareAdvEmail()">
+            📧 <span data-adv-t="btnEmail">Email Estimate</span>
+          </button>
+          <button type="button" class="btn btn-navy" style="font-size:0.85rem;padding:10px;" onclick="copyAdvShareLink()">
+            🔗 <span data-adv-t="btnLink">Copy Share Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quote Document Preview Area (Renders on Click) -->
+      <div id="adv-quote-preview" style="display:none;margin-top:24px;"></div>
+    </div>
+  </section>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="adv-toast" id="advToast"></div>
 
   <!-- ═══ ABOUT / WHY CHOOSE US (TEAM-FIRST, CHARLIE'S PATTERN) ═══ -->
   <section class="about-section" id="about">
@@ -1793,6 +2695,649 @@
       enforceMobileChatPosition();
     });
     ghlObserver.observe(document.body, { childList: true, subtree: true });
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       ADVANCED MOVING CALCULATOR ENGINE (1:1 movingquote.netlify.app)
+       ═══════════════════════════════════════════════════════════════════════ */
+    const ADV_CO = {
+      name: 'Top Movers Co.',
+      phone: '(470) 637-0909',
+      phoneRaw: '14706370909',
+      email: 'info@movemakers.com',
+      city: 'Atlanta, GA',
+      rates: {
+        localHr: 60,
+        ldHr: 75,
+        truckSm: 150,
+        truckLg: 200,
+        siBase: 150,
+        siMile: 3,
+        assembly: 50,
+        junkSm: 150,
+        junkMd: 250,
+        junkLg: 350,
+        junkFull: 450,
+        piano: 200,
+        safe: 150,
+        pool: 200,
+        jacuzzi: 250,
+        appliance: 100,
+        treadmill: 100,
+        moto: 150
+      }
+    };
+
+    const ADV_SPECIAL_ADDONS = [
+      { id: 'piano',     key: 'piano',     rk: 'piano',     price: 200 },
+      { id: 'safe',      key: 'safe',      rk: 'safe',      price: 150 },
+      { id: 'pool',      key: 'pool',      rk: 'pool',      price: 200 },
+      { id: 'jacuzzi',   key: 'jacuzzi',   rk: 'jacuzzi',   price: 250 },
+      { id: 'appliance', key: 'appliance', rk: 'appliance', price: 100 },
+      { id: 'treadmill', key: 'treadmill', rk: 'treadmill', price: 100 },
+      { id: 'moto',      key: 'moto',      rk: 'moto',      price: 150 }
+    ];
+
+    const ADV_TR = {
+      en: {
+        calcTitle: 'ADVANCED MOVING CALCULATOR',
+        calcSubtitle: 'Configure every variable of your relocation with real-time transparent pricing — crew size, hours, truck capacity, mileage, assembly, and specialty items.',
+        step1: '1 · Service Type',
+        step2: '2 · Service Details',
+        step3: '3 · Additional Services',
+        step4: '4 · Client Information',
+        optional: '(Optional / Required for PDF & Sync)',
+        svcLocal: 'Local Move',
+        svcLong: 'Long Distance',
+        svcSingle: 'Single Item',
+        svcLabor: 'Labor Only',
+        svcJunk: 'Junk Removal',
+        numMovers: 'Number of Movers',
+        estHours: 'Estimated Hours',
+        minHours: '2 hour minimum',
+        truckSize: 'Truck Size',
+        truckSmall: 'Small (under 20ft)',
+        truckLarge: 'Large (20ft or more)',
+        milesLabel: 'Miles Distance',
+        milesHint: 'Enter driving miles or auto-calculate based on addresses in Step 4',
+        itemDesc: 'Item Description',
+        loadSize: 'Volume to Remove',
+        loadSmall: 'Small Load',
+        loadMedium: 'Medium Load',
+        loadLarge: 'Large Load',
+        loadFull: 'Full Truck',
+        junkDesc: 'Items to Remove',
+        assemblyLabel: 'Items to Assemble / Disassemble',
+        specialItems: 'Special Items',
+        clientName: 'Full Name',
+        clientPhone: 'Phone Number',
+        clientEmail: 'Email Address',
+        clientDate: 'Estimated Move Date',
+        originAddr: 'Origin Address',
+        destAddr: 'Destination Address',
+        homeSize: 'Home Size',
+        notes: 'Additional Inventory & Logistics Notes',
+        estTotal: 'Estimated Total',
+        estNote: '*Transparent itemized pricing — subject to adjustments on service day',
+        genQuote: 'Generate Official Quote',
+        btnPDF: 'PDF',
+        btnEmail: 'Email Estimate',
+        btnLink: 'Copy Share Link',
+        piano: 'Piano Move',
+        safe: 'Heavy Safe',
+        pool: 'Pool Table',
+        jacuzzi: 'Hot Tub / Jacuzzi',
+        appliance: 'Large Appliance',
+        treadmill: 'Treadmill / Gym Equip',
+        moto: 'Motorcycle'
+      },
+      es: {
+        calcTitle: 'CALCULADORA AVANZADA DE MUDANZAS',
+        calcSubtitle: 'Configura cada variable de tu mudanza con desglose matemático transparente — cantidad de ayudantes, horas, camión, millaje, ensamblaje y artículos pesados.',
+        step1: '1 · Tipo de Servicio',
+        step2: '2 · Detalles del Servicio',
+        step3: '3 · Servicios Adicionales',
+        step4: '4 · Información del Cliente',
+        optional: '(Opcional / Requerido para PDF y Sincronización)',
+        svcLocal: 'Mudanza Local',
+        svcLong: 'Larga Distancia',
+        svcSingle: 'Artículo Especial',
+        svcLabor: 'Solo Ayudantes (Mano de Obra)',
+        svcJunk: 'Remoción de Basura / Escombros',
+        numMovers: 'Número de Mudadores',
+        estHours: 'Horas Estimadas',
+        minHours: 'Mínimo 2 horas',
+        truckSize: 'Tamaño del Camión',
+        truckSmall: 'Pequeño (menos de 20ft)',
+        truckLarge: 'Grande (20ft o más)',
+        milesLabel: 'Millas de Distancia',
+        milesHint: 'Ingresa las millas o calcúlalas automáticamente con las direcciones del Paso 4',
+        itemDesc: 'Descripción del Artículo',
+        loadSize: 'Volumen a Remover',
+        loadSmall: 'Carga Pequeña',
+        loadMedium: 'Carga Mediana',
+        loadLarge: 'Carga Grande',
+        loadFull: 'Camión Completo',
+        junkDesc: 'Artículos a remover',
+        assemblyLabel: 'Artículos a Armar / Desarmar',
+        specialItems: 'Artículos Especiales',
+        clientName: 'Nombre Completo',
+        clientPhone: 'Teléfono',
+        clientEmail: 'Correo Electrónico',
+        clientDate: 'Fecha Estimada',
+        originAddr: 'Dirección de Origen',
+        destAddr: 'Dirección de Destino',
+        homeSize: 'Tamaño del Hogar',
+        notes: 'Notas Adicionales de Inventario',
+        estTotal: 'Total Estimado',
+        estNote: '*Precios transparentes y desglosados — sujeto a ajustes el día del servicio',
+        genQuote: 'Generar Estimado Oficial',
+        btnPDF: 'PDF',
+        btnEmail: 'Enviar por Email',
+        btnLink: 'Copiar Enlace',
+        piano: 'Piano',
+        safe: 'Caja Fuerte Pesada',
+        pool: 'Mesa de Billar',
+        jacuzzi: 'Jacuzzi / Tina de Hidromasaje',
+        appliance: 'Electrodoméstico Grande',
+        treadmill: 'Caminadora / Gimnasio',
+        moto: 'Motocicleta'
+      }
+    };
+
+    const S_ADV = {
+      svc: 'local',
+      movers: 2,
+      hours: 2,
+      truck: 'small',
+      load: 'small',
+      assembly: 0,
+      addons: new Set(),
+      lang: 'en',
+      total: 490,
+      breakdown: []
+    };
+
+    function tAdv(k) {
+      return ADV_TR[S_ADV.lang]?.[k] || ADV_TR.en[k] || k;
+    }
+
+    function setAdvLang(lang) {
+      S_ADV.lang = lang;
+      document.getElementById('adv-lang-en')?.classList.toggle('active', lang === 'en');
+      document.getElementById('adv-lang-es')?.classList.toggle('active', lang === 'es');
+      
+      document.querySelectorAll('[data-adv-t]').forEach(el => {
+        const k = el.getAttribute('data-adv-t');
+        if (ADV_TR[lang] && ADV_TR[lang][k]) {
+          if (k === 'calcTitle') {
+            el.innerHTML = lang === 'es' ? 'CALCULADORA AVANZADA DE <span class="orange">MUDANZAS</span>' : 'ADVANCED MOVING <span class="orange">CALCULATOR</span>';
+          } else {
+            el.textContent = ADV_TR[lang][k];
+          }
+        }
+      });
+      renderAdvAddons();
+      calcAdv();
+    }
+
+    function setAdvService(svc) {
+      S_ADV.svc = svc;
+      ['local', 'longdistance', 'singleitem', 'laboronly', 'junk'].forEach(s => {
+        document.getElementById(`adv-svc-${s}`)?.classList.toggle('active', s === svc);
+      });
+
+      const isLocal = (svc === 'local');
+      const isLD = (svc === 'longdistance');
+      const isSI = (svc === 'singleitem');
+      const isLabor = (svc === 'laboronly');
+      const isJunk = (svc === 'junk');
+
+      const showEl = (id, visible) => {
+        document.getElementById(id)?.classList.toggle('adv-hidden', !visible);
+      };
+
+      showEl('adv-d-movers-hours', isLocal || isLD || isLabor);
+      showEl('adv-d-truck', isLocal || isLD);
+      showEl('adv-d-miles', isLD);
+      showEl('adv-d-singleitem', isSI);
+      showEl('adv-d-junk', isJunk);
+      showEl('adv-d-assembly', !isJunk);
+
+      calcAdv();
+    }
+
+    const ADV_MINS = { movers: 1, hours: 2, assembly: 0 };
+    function adjAdv(k, delta) {
+      S_ADV[k] = Math.max(ADV_MINS[k] ?? 0, (S_ADV[k] || 0) + delta);
+      const el = document.getElementById(`adv-v-${k}`);
+      if (el) el.textContent = S_ADV[k];
+      calcAdv();
+    }
+
+    function adjAdvMiles(type, delta) {
+      const inputId = (type === 'ld') ? 'adv-v-miles' : 'adv-v-miles-si';
+      const el = document.getElementById(inputId);
+      if (el) {
+        el.value = Math.max(0, (parseInt(el.value) || 0) + delta);
+        calcAdv();
+      }
+    }
+
+    function setAdvTruck(sz) {
+      S_ADV.truck = sz;
+      ['small', 'large'].forEach(s => {
+        document.getElementById(`adv-tk-${s}`)?.classList.toggle('active', s === sz);
+      });
+      calcAdv();
+    }
+
+    function setAdvLoad(sz) {
+      S_ADV.load = sz;
+      ['small', 'medium', 'large', 'full'].forEach(s => {
+        document.getElementById(`adv-ld-${s}`)?.classList.toggle('active', s === sz);
+      });
+      calcAdv();
+    }
+
+    function renderAdvAddons() {
+      const container = document.getElementById('adv-addons-special');
+      if (!container) return;
+      const r = ADV_CO.rates;
+      container.innerHTML = ADV_SPECIAL_ADDONS.map(a => {
+        const isActive = S_ADV.addons.has(a.id) ? 'active' : '';
+        return `
+          <div class="adv-addon-item ${isActive}" onclick="toggleAdvAddon('${a.id}')" id="adv-ad-${a.id}">
+            <div class="adv-addon-check"></div>
+            <span class="adv-addon-name">${tAdv(a.key)}</span>
+            <span class="adv-addon-price">+$${r[a.rk]}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAdvAddon(id) {
+      if (S_ADV.addons.has(id)) {
+        S_ADV.addons.delete(id);
+      } else {
+        S_ADV.addons.add(id);
+      }
+      renderAdvAddons();
+      calcAdv();
+    }
+
+    function calcAdv() {
+      const r = ADV_CO.rates;
+      const bd = [];
+      let total = 0;
+      const add = (desc, amt) => {
+        bd.push({ desc, amt });
+        total += amt;
+      };
+
+      if (S_ADV.svc === 'local') {
+        add(`${S_ADV.movers} movers × ${S_ADV.hours} hrs × $${r.localHr}/hr`, S_ADV.movers * S_ADV.hours * r.localHr);
+        add(`Truck (${S_ADV.truck === 'small' ? 'Small — under 20ft' : 'Large — 20ft or more'})`, S_ADV.truck === 'small' ? r.truckSm : r.truckLg);
+      } else if (S_ADV.svc === 'longdistance') {
+        const mi = parseInt(document.getElementById('adv-v-miles')?.value || 50);
+        add(`${S_ADV.movers} movers × ${S_ADV.hours} hrs × $${r.ldHr}/hr`, S_ADV.movers * S_ADV.hours * r.ldHr);
+        add(`Truck (${S_ADV.truck === 'small' ? 'Small — under 20ft' : 'Large — 20ft or more'})`, S_ADV.truck === 'small' ? r.truckSm : r.truckLg);
+        add(`Distance fee (${mi} mi × $${r.siMile}.00)`, mi * r.siMile);
+      } else if (S_ADV.svc === 'singleitem') {
+        const mi = parseInt(document.getElementById('adv-v-miles-si')?.value || 15);
+        add('Single Item — Base Rate', r.siBase);
+        add(`Distance (${mi} mi × $${r.siMile}/mi)`, mi * r.siMile);
+      } else if (S_ADV.svc === 'laboronly') {
+        add(`${S_ADV.movers} movers × ${S_ADV.hours} hrs × $${r.localHr}/hr (Labor Only)`, S_ADV.movers * S_ADV.hours * r.localHr);
+      } else if (S_ADV.svc === 'junk') {
+        const loadPrices = { small: r.junkSm, medium: r.junkMd, large: r.junkLg, full: r.junkFull };
+        const loadNames = {
+          small: 'Small Load (1/4 truck)',
+          medium: 'Medium Load (1/2 truck)',
+          large: 'Large Load (3/4 truck)',
+          full: 'Full Truck Load'
+        };
+        add(loadNames[S_ADV.load], loadPrices[S_ADV.load]);
+      }
+
+      if (S_ADV.assembly > 0 && S_ADV.svc !== 'junk') {
+        add(`Assembly / Disassembly (${S_ADV.assembly} items × $${r.assembly})`, S_ADV.assembly * r.assembly);
+      }
+
+      S_ADV.addons.forEach(id => {
+        const a = ADV_SPECIAL_ADDONS.find(x => x.id === id);
+        if (a) add(tAdv(a.key), r[a.rk]);
+      });
+
+      S_ADV.total = total;
+      S_ADV.breakdown = bd;
+
+      const totalDisplay = document.getElementById('adv-total-display');
+      if (totalDisplay) totalDisplay.textContent = `$${total.toLocaleString()}`;
+
+      const bl = document.getElementById('adv-breakdown-list');
+      if (bl) {
+        bl.innerHTML = bd.length
+          ? bd.map(b => `<div class="adv-bd-item"><span>${b.desc}</span><span>$${b.amt.toLocaleString()}</span></div>`).join('')
+            + `<div class="adv-bd-item total-row"><span>TOTAL</span><span style="color:var(--orange);">$${total.toLocaleString()}</span></div>`
+          : '';
+      }
+    }
+
+    // Geocoding & Distance calculation (Nominatim + OSRM)
+    async function geocodeAdv(address) {
+      const url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(address) + '&format=json&limit=1';
+      const resp = await fetch(url, { headers: { 'Accept-Language': 'en', 'User-Agent': 'TopMoversCoCalculator/1.0' } });
+      const data = await resp.json();
+      if (!data.length) throw new Error('Address not found: ' + address);
+      return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+    }
+
+    async function calcAdvDistanceAPI(type) {
+      const origin = document.getElementById('adv-c-origin')?.value.trim();
+      const dest   = document.getElementById('adv-c-dest')?.value.trim();
+      if (!origin || !dest) {
+        showAdvToast('Please enter Origin & Destination in Step 4 first');
+        document.getElementById('adv-c-origin')?.focus();
+        return;
+      }
+      const btn = document.getElementById('adv-dist-btn-' + type);
+      if (!btn) return;
+      const origText = btn.innerHTML;
+      btn.innerHTML = '⏳ Calculating distance...';
+      btn.disabled = true;
+
+      try {
+        const [o, d] = await Promise.all([geocodeAdv(origin), geocodeAdv(dest)]);
+        const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${o.lon},${o.lat};${d.lon},${d.lat}?overview=false`;
+        const r2 = await fetch(osrmUrl);
+        const routeData = await r2.json();
+        if (!routeData.routes || !routeData.routes.length) throw new Error('No route found');
+        const miles = Math.round(routeData.routes[0].distance * 0.000621371);
+        const inputId = (type === 'ld') ? 'adv-v-miles' : 'adv-v-miles-si';
+        const inputEl = document.getElementById(inputId);
+        if (inputEl) inputEl.value = miles;
+        calcAdv();
+        btn.innerHTML = `✓ ${miles} miles calculated`;
+        showAdvToast(`📍 Calculated: ${miles} driving miles`);
+        setTimeout(() => {
+          btn.innerHTML = '📍 Auto-Calculate Distance from Addresses';
+          btn.disabled = false;
+        }, 4000);
+      } catch (e) {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+        showAdvToast('Could not calculate distance. Check addresses or enter miles manually.');
+      }
+    }
+
+    // Generate Official Quote Document Preview
+    function generateAdvQuote() {
+      if (S_ADV.total === 0) {
+        showAdvToast('Please configure service details first.');
+        return;
+      }
+
+      const getV = id => document.getElementById(id)?.value.trim() || '—';
+      const clientName = getV('adv-c-name');
+      const clientPhone = getV('adv-c-phone');
+      const clientEmail = getV('adv-c-email');
+      const date = getV('adv-c-date');
+      const origin = getV('adv-c-origin');
+      const dest = getV('adv-c-dest');
+      const homeSize = getV('adv-c-homesize');
+      const notes = getV('adv-c-notes');
+
+      const svcLabels = {
+        local: 'Local Residential / Commercial Move',
+        longdistance: 'Interstate & Long Distance Relocation',
+        singleitem: 'Single Specialty Item Move',
+        laboronly: 'Professional Labor Only (Loading/Unloading)',
+        junk: 'Full-Service Junk Removal & Hauling'
+      };
+      const svcLabel = svcLabels[S_ADV.svc] || 'Moving Service';
+
+      const quoteNum = `TMC-${Date.now().toString().slice(-6)}`;
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      const rows = S_ADV.breakdown.map(b => `
+        <tr style="border-bottom:1px solid #E2E8F0;">
+          <td style="padding:10px 14px;color:#0B2345;font-weight:600;">${b.desc}</td>
+          <td style="padding:10px 14px;text-align:center;color:#4A5568;">1</td>
+          <td style="padding:10px 14px;text-align:right;color:#4A5568;">$${b.amt.toLocaleString()}</td>
+          <td style="padding:10px 14px;text-align:right;font-weight:800;color:#0B2345;">$${b.amt.toLocaleString()}</td>
+        </tr>
+      `).join('');
+
+      const previewHtml = `
+        <div id="advQuotePrintableDoc" style="background:#FFFFFF;color:#0B2345;border-radius:12px;padding:36px;font-family:'Montserrat',sans-serif;box-shadow:0 15px 40px rgba(0,0,0,0.3);max-width:850px;margin:0 auto;text-align:left;">
+          <!-- Header -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:20px;border-bottom:3px solid #0B2345;margin-bottom:24px;">
+            <div style="display:flex;align-items:center;gap:18px;">
+              <img src="logo_transparent.png" alt="Top Movers Co" style="height:68px;width:auto;object-fit:contain;">
+              <div>
+                <h2 style="margin:0;color:#0B2345;font-size:24px;font-weight:900;letter-spacing:-0.5px;">Top Movers Co.</h2>
+                <p style="margin:4px 0 0;font-size:12px;color:#555;">📞 (470) 637-0909 · ✉ info@movemakers.com</p>
+                <p style="margin:2px 0 0;font-size:12px;color:#555;">📍 Atlanta, GA — Nationwide Relocation</p>
+                <p style="margin:2px 0 0;font-size:11px;color:#888;font-weight:700;">DOT #394021 · FMCSA Certified · GA PSC</p>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <h2 style="margin:0;color:#FF6B00;font-size:24px;font-weight:900;letter-spacing:1px;">OFFICIAL ESTIMATE</h2>
+              <p style="margin:4px 0 0;font-size:13px;color:#4A5568;font-weight:800;"># ${quoteNum}</p>
+              <p style="margin:2px 0 0;font-size:12px;color:#718096;">Date: ${today}</p>
+            </div>
+          </div>
+
+          <!-- Client & Move Details -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;background:#F8FAFC;padding:18px;border-radius:8px;border:1px solid #E2E8F0;">
+            <div>
+              <div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">CLIENT INFORMATION</div>
+              <p style="margin:0;font-size:15px;font-weight:800;color:#0B2345;">${clientName !== '—' ? clientName : 'Valued Customer'}</p>
+              <p style="margin:4px 0 0;font-size:13px;color:#4A5568;">📞 ${clientPhone}</p>
+              <p style="margin:2px 0 0;font-size:13px;color:#4A5568;">✉ ${clientEmail}</p>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">MOVE DETAILS</div>
+              <p style="margin:0;font-size:13px;color:#0B2345;"><strong>Service:</strong> ${svcLabel}</p>
+              <p style="margin:3px 0 0;font-size:13px;color:#0B2345;"><strong>Date:</strong> ${date}</p>
+              <p style="margin:3px 0 0;font-size:13px;color:#0B2345;"><strong>Size:</strong> ${homeSize}</p>
+              <p style="margin:3px 0 0;font-size:13px;color:#0B2345;"><strong>From:</strong> ${origin}</p>
+              <p style="margin:3px 0 0;font-size:13px;color:#0B2345;"><strong>To:</strong> ${dest}</p>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <table style="width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px;">
+            <thead>
+              <tr style="background:#0B2345;color:#FFFFFF;font-size:11px;text-transform:uppercase;letter-spacing:1px;">
+                <th style="padding:10px 14px;text-align:left;">DESCRIPTION</th>
+                <th style="padding:10px 14px;text-align:center;">QTY</th>
+                <th style="padding:10px 14px;text-align:right;">RATE</th>
+                <th style="padding:10px 14px;text-align:right;">AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+
+          <!-- Total Bar -->
+          <div style="background:#F0F4FA;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #0B2345;margin-bottom:24px;border-radius:6px;">
+            <span style="font-size:14px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;">ESTIMATED TOTAL</span>
+            <span style="font-size:28px;font-weight:900;color:#FF6B00;">$${S_ADV.total.toLocaleString()}</span>
+          </div>
+
+          ${notes !== '—' && notes !== '' ? `
+            <div style="background:#FFF9F5;border:1px solid #FFE0CC;padding:14px;border-radius:6px;margin-bottom:20px;">
+              <div style="font-size:11px;font-weight:800;color:#FF6B00;text-transform:uppercase;letter-spacing:0.5px;">SPECIAL INVENTORY NOTES</div>
+              <p style="margin:4px 0 0;font-size:12px;color:#4A5568;white-space:pre-wrap;">${notes}</p>
+            </div>
+          ` : ''}
+
+          <!-- Inclusions & Payment Methods -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#F8FAFC;padding:18px;border-radius:6px;margin-bottom:24px;font-size:12px;line-height:1.8;border:1px solid #E2E8F0;">
+            <div>
+              <div style="font-size:11px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">SERVICE INCLUDES</div>
+              <div>✓ Professional uniformed crew</div>
+              <div>✓ Heavy-duty moving blankets & shrink wrap</div>
+              <div>✓ Floor, door frame & banister protection</div>
+              <div>✓ Basic cargo valuation coverage</div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:800;color:#0B2345;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">PAYMENT METHODS</div>
+              <div>✓ Cash / Cashier's Check</div>
+              <div>✓ Zelle / Venmo / Direct Bank Transfer</div>
+              <div>✓ Major Credit / Debit Cards</div>
+              <div>✓ Balance due upon completion</div>
+            </div>
+          </div>
+
+          <!-- Fine Print -->
+          <div style="font-size:10px;color:#718096;line-height:1.5;border-top:1px solid #E2E8F0;padding-top:12px;">
+            <p style="margin:0 0 4px;"><strong>Labor Policy:</strong> 2 hours minimum charge on all hourly jobs. Rates are charged in full hour increments after 15 minutes past the hour.</p>
+            <p style="margin:0;">This estimate is non-binding and based on provided parameters. Final charges reflect actual service hours, distance, and added items on moving day. Licensed & Insured · DOT #394021 · Top Movers Co.</p>
+          </div>
+        </div>
+      `;
+
+      const previewContainer = document.getElementById('adv-quote-preview');
+      if (previewContainer) {
+        previewContainer.innerHTML = previewHtml;
+        previewContainer.style.display = 'block';
+        previewContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showAdvToast('✓ Official Quote Generated Below');
+      }
+
+      // Background sync to GHL
+      sendAdvQuoteToGHL(clientName, clientPhone, clientEmail, date, origin, dest, homeSize, notes, svcLabel, S_ADV.total);
+    }
+
+    // Silent sync to GoHighLevel via /api/quote
+    function sendAdvQuoteToGHL(name, phone, email, date, origin, dest, homeSize, notes, svcLabel, total) {
+      if (!name || name === '—' || !phone || phone === '—') return;
+      
+      const payload = {
+        name: name,
+        phone: phone,
+        email: (email !== '—') ? email : '',
+        pickup: (origin !== '—') ? origin : '',
+        destination: (dest !== '—') ? dest : '',
+        service: `Advanced Calculator: ${svcLabel}`,
+        moveDate: (date !== '—') ? date : '',
+        moveSize: (homeSize !== '—') ? homeSize : '',
+        estimatedPrice: `$${total.toLocaleString()}`,
+        notes: (notes !== '—') ? notes : '',
+        tag: 'advanced-calculator'
+      };
+
+      fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => {
+        console.log('Background GHL sync notice:', err);
+      });
+    }
+
+    // PDF Download
+    function generateAdvQuoteAndDownload() {
+      generateAdvQuote();
+      const doc = document.getElementById('advQuotePrintableDoc');
+      if (!doc) {
+        showAdvToast('Please click Generate Official Quote first.');
+        return;
+      }
+
+      showAdvToast('📄 Generating High-Resolution PDF...');
+      const opt = {
+        margin:       [0.35, 0.35, 0.35, 0.35],
+        filename:     `TopMoversCo_Estimate_${Date.now().toString().slice(-6)}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(doc).save().then(() => {
+        showAdvToast('✓ Estimate PDF downloaded successfully!');
+      }).catch(err => {
+        console.error('PDF error:', err);
+        window.print();
+      });
+    }
+
+    // WhatsApp Share
+    function shareAdvWA() {
+      const name = document.getElementById('adv-c-name')?.value.trim();
+      const svcLabels = {
+        local: 'Local Move',
+        longdistance: 'Long Distance Move',
+        singleitem: 'Single Item Move',
+        laboronly: 'Labor Only',
+        junk: 'Junk Removal'
+      };
+      const svcLabel = svcLabels[S_ADV.svc] || 'Moving Service';
+
+      let msg = `*Top Movers Co. — Moving Estimate*\n\n`;
+      if (name) msg += `👤 Client: ${name}\n`;
+      msg += `📦 Service: ${svcLabel}\n`;
+      msg += `💰 Estimated Total: *$${S_ADV.total.toLocaleString()}*\n\n`;
+      msg += `*Itemized Breakdown:*\n`;
+      S_ADV.breakdown.forEach(b => {
+        msg += `  • ${b.desc}: $${b.amt.toLocaleString()}\n`;
+      });
+      msg += `\n📞 (470) 637-0909\n✉ info@movemakers.com\n🌐 topmoversco.com`;
+
+      window.open(`https://wa.me/14706370909?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Email Share
+    function shareAdvEmail() {
+      const name = document.getElementById('adv-c-name')?.value.trim();
+      const email = document.getElementById('adv-c-email')?.value.trim();
+      const svcLabels = {
+        local: 'Local Move',
+        longdistance: 'Long Distance Move',
+        singleitem: 'Single Item Move',
+        laboronly: 'Labor Only',
+        junk: 'Junk Removal'
+      };
+      const svcLabel = svcLabels[S_ADV.svc] || 'Moving Service';
+
+      let body = `Hello ${name || 'there'},\n\nThank you for choosing Top Movers Co.!\n\nHere is your transparent moving estimate:\nService: ${svcLabel}\nEstimated Total: $${S_ADV.total.toLocaleString()}\n\nBreakdown:\n`;
+      S_ADV.breakdown.forEach(b => {
+        body += `• ${b.desc}: $${b.amt.toLocaleString()}\n`;
+      });
+      body += `\n*Subject to adjustments on service day based on actual hours and volume.\n\nCall Us: (470) 637-0909\nEmail: info@movemakers.com\nTop Movers Co. — Atlanta, GA`;
+
+      window.location.href = `mailto:${email || 'info@movemakers.com'}?subject=${encodeURIComponent('Moving Estimate — Top Movers Co.')}&body=${encodeURIComponent(body)}`;
+    }
+
+    // Copy Share Link
+    function copyAdvShareLink() {
+      const shareUrl = window.location.origin + window.location.pathname + '#advanced-calculator';
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showAdvToast('🔗 Calculator link copied to clipboard!');
+      }).catch(() => {
+        showAdvToast('Calculator URL: ' + shareUrl);
+      });
+    }
+
+    // Toast Helper
+    function showAdvToast(msg) {
+      const el = document.getElementById('advToast');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => {
+        el.classList.remove('show');
+      }, 3500);
+    }
+
+    // Initial setup for Advanced Calculator
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAdvAddons();
+      calcAdv();
+    });
   </script>
 
   <!-- ═══ FLOATING GOOGLE REVIEWS MINI-WIDGET (BOTTOM-LEFT FIXED ON ALL SCROLLING) ═══ -->
