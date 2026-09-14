@@ -2657,7 +2657,7 @@
           <!-- Header with Logo & Official Estimate Title -->
           <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:3px solid #0B2345;margin-bottom:20px;">
             <div style="display:flex;align-items:center;gap:14px;">
-              <img src="logo_transparent.png" style="height:60px;width:auto;object-fit:contain;" alt="Top Movers Co">
+              <img src="${TMC_LOGO_DATA}" style="height:60px;width:auto;object-fit:contain;" alt="Top Movers Co">
               <div>
                 <h2 style="margin:0;color:#0B2345;font-size:21px;font-weight:900;letter-spacing:-0.5px;">Top Movers Co.</h2>
                 <p style="margin:3px 0 0;font-size:11px;color:#555;">Phone: (470) 637-0909 · Email: topmoversolutions@gmail.com</p>
@@ -2745,39 +2745,54 @@
       `;
     }
 
-    // PDF Download Engine (Targets visible on-screen document directly, 0 blank pages)
+    // PDF Download Engine (100% inline template with non-tainting Data URI logo, pattern from main landing)
     function generateAndDownloadPDF() {
-      // 1. Ensure official quote is generated and visible on screen
       generateQuote(false);
       const isEn = (S.lang === 'en');
-      const quoteDoc = document.getElementById('quotePrintableDoc');
-      
-      if (!quoteDoc) {
+      const element = document.getElementById('pdfEstimateDoc');
+      if (!element) {
         showToast(isEn ? 'Please configure move details first.' : 'Por favor configura los detalles primero.');
         return;
       }
 
       showToast(isEn ? 'Generating official PDF...' : 'Generando PDF oficial...');
 
+      // Render 100% inline-styled template with base64 logo
+      buildPdfEstimateDoc();
+
+      // Show template on top of viewport (not behind, not hidden) for perfect capture
+      element.style.position = 'fixed';
+      element.style.top = '0px';
+      element.style.left = '50%';
+      element.style.transform = 'translateX(-50%)';
+      element.style.zIndex = '99999';
+      element.style.display = 'block';
+      element.style.background = '#FFFFFF';
+      element.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+
       const quoteId = window._currentQuoteNum || Date.now().toString().slice(-6);
       const opt = {
-        margin:       [0.3, 0.3, 0.3, 0.3],
+        margin:       [0.35, 0.35, 0.35, 0.35],
         filename:     `TopMoversCo_Official_Estimate_${quoteId}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { 
           scale: 2, 
           useCORS: true,
-          logging: false
+          scrollY: 0
         },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(quoteDoc).save().then(() => {
-        showToast(isEn ? 'PDF downloaded successfully!' : '¡PDF descargado exitosamente!');
-      }).catch(err => {
-        console.warn('html2pdf notice, triggering print fallback:', err);
-        printEstimate();
-      });
+      setTimeout(() => {
+        html2pdf().set(opt).from(element).save().then(() => {
+          element.style.display = 'none';
+          showToast(isEn ? 'PDF downloaded successfully!' : '¡PDF descargado exitosamente!');
+        }).catch(err => {
+          element.style.display = 'none';
+          console.warn('html2pdf notice, triggering print fallback:', err);
+          printEstimate();
+        });
+      }, 100);
     }
 
 
