@@ -2760,30 +2760,42 @@
       // Render updated content
       buildPdfEstimateDoc();
 
-      // Show document temporarily for html2pdf capture
+      // Position container fixed at top:0, left:0, behind content (z-index:-9999) and visible so html2canvas renders exact pixels without scroll distortion or blank space
+      doc.style.position = 'fixed';
+      doc.style.top = '0px';
+      doc.style.left = '0px';
+      doc.style.zIndex = '-9999';
       doc.style.display = 'block';
+      doc.style.opacity = '1';
+      doc.style.visibility = 'visible';
 
       const quoteId = window._currentQuoteNum || Date.now().toString().slice(-6);
       const opt = {
-        margin:       [0.4, 0.4, 0.4, 0.4],
+        margin:       [0.35, 0.35, 0.35, 0.35],
         filename:     `TopMoversCo_Official_Estimate_${quoteId}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { 
           scale: 2, 
           useCORS: true,
-          logging: false
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 800
         },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(doc).save().then(() => {
-        doc.style.display = 'none';
-        showToast(isEn ? 'PDF downloaded successfully!' : '¡PDF descargado exitosamente!');
-      }).catch(err => {
-        doc.style.display = 'none';
-        console.warn('html2pdf notice, triggering print fallback:', err);
-        printEstimate();
-      });
+      // Ensure browser paint & images render before html2canvas snapshot
+      setTimeout(() => {
+        html2pdf().set(opt).from(doc).save().then(() => {
+          doc.style.display = 'none';
+          showToast(isEn ? 'PDF downloaded successfully!' : '¡PDF descargado exitosamente!');
+        }).catch(err => {
+          doc.style.display = 'none';
+          console.warn('html2pdf notice, triggering print fallback:', err);
+          printEstimate();
+        });
+      }, 150);
     }
 
 
